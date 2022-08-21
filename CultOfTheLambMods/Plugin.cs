@@ -14,6 +14,7 @@ namespace CultOfTheLambMods
         public static ConfigEntry<bool> SkipIntros;
         public static ConfigEntry<bool> EasyFishing;
         public static ConfigEntry<bool> RemoveMenuClutter;
+        public static ConfigEntry<bool> RemoveTwitchButton;
 
         private void Awake()
         {
@@ -23,7 +24,8 @@ namespace CultOfTheLambMods
             _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
             SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
             EasyFishing = Config.Bind("General", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese.");
-            RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menu.");
+            RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
+            RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
 
             if (_modEnabled.Value)
             {
