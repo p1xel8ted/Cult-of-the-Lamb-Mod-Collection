@@ -22,6 +22,8 @@
     <Authors>p1xel8ted</Authors>
     <Company>p1xel8ted</Company>
     <Product>p1xel8ted's CultOfTheLambMods</Product>
+    <AssemblyVersion>1.1</AssemblyVersion>
+    <FileVersion>1.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
