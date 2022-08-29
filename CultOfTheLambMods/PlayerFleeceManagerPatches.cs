@@ -1,6 +1,4 @@
-﻿using System;
-using FMOD;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace CultOfTheLambMods
 {
