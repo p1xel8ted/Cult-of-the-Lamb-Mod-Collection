@@ -21,17 +21,17 @@ namespace CultOfTheLambMods
             }
         }
 
-        [HarmonyPatch(typeof(RefineryItem), nameof(RefineryItem.UpdateQuantity))]
-        public static class RefineryItemUpdateQuantityPatches
-        {
-            [HarmonyPostfix]
-            public static void Postfix(ref MMButton ____button, ref Image ____canAffordIcon,
-                ref Image ____cantAffordIcon)
-            {
-                ____button.Confirmable = true;
-                ____canAffordIcon.gameObject.SetActive(true);
-                ____cantAffordIcon.gameObject.SetActive(false);
-            }
-        }
+        //[HarmonyPatch(typeof(RefineryItem), nameof(RefineryItem.UpdateQuantity))]
+        //public static class RefineryItemUpdateQuantityPatches
+        //{
+        //    [HarmonyPostfix]
+        //    public static void Postfix(ref MMButton ____button, ref Image ____canAffordIcon,
+        //        ref Image ____cantAffordIcon)
+        //    {
+        //        ____button.Confirmable = true;
+        //        ____canAffordIcon.gameObject.SetActive(true);
+        //        ____cantAffordIcon.gameObject.SetActive(false);
+        //    }
+        //}
     }
 }
