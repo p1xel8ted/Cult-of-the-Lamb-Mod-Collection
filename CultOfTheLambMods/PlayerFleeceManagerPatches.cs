@@ -24,18 +24,15 @@ namespace CultOfTheLambMods
                 {
                     if (playerFleece == 1)
                     {
-                        UnityEngine.Debug.Log($"[Fleece-OldDamage-Reverse]: {___damageMultiplier}");
                         ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
-                        UnityEngine.Debug.Log($"[Fleece-NewDamage-Reverse]: {___damageMultiplier}");
+                       
                     }
                 }
                 else
                 {
                     if (playerFleece == 1 && ___damageMultiplier < 2f)
                     {
-                        UnityEngine.Debug.Log($"[Fleece-OldDamage-NoReverse]: {___damageMultiplier}");
                         ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
-                        UnityEngine.Debug.Log($"[Fleece-NewDamage-NoReverse]: {___damageMultiplier}");
                     }
                 }
    
