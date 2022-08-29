@@ -68,7 +68,7 @@ namespace CultOfTheLambMods
         }
 
         [HarmonyPatch(typeof(UIPauseMenuController), "Start")]
-        public static class UIPauseMenuControllerStartPatches
+        public static class UiPauseMenuControllerStartPatches
         {
             [HarmonyPostfix]
             public static void Postfix(ref MMButton ____bugReportButton, ref MMButton ____discordButton)

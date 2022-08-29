@@ -25,7 +25,6 @@ namespace CultOfTheLambMods
                     if (playerFleece == 1)
                     {
                         ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
-                       
                     }
                 }
                 else

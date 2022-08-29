@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace CultOfTheLambMods
 {
-    [BepInPlugin("com.p1xel8ted.CultOfTheLamb.CultOfTheLambMods", "p1xel8ted's Cult of the Lamb mods!", "1.1")]
+    [BepInPlugin("com.p1xel8ted.CultOfQoLCollection", "Cult of QoL Collection", "1.2")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource Log;
@@ -19,10 +19,12 @@ namespace CultOfTheLambMods
         public static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
         public static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate;
         public static ConfigEntry<bool> AdjustRefineryRequirements;
+        public static ConfigEntry<bool> AlwaysGoForOuthouseWithLeastPoop;
+        public static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp;
 
         private void Awake()
         {
-            Log = new ManualLogSource("CultOfTheLambMods-Log");
+            Log = new ManualLogSource("CultOfQoLCollection-Log");
             BepInEx.Logging.Logger.Sources.Add(Log);
 
             _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
@@ -34,15 +36,17 @@ namespace CultOfTheLambMods
             ReverseGoldenFleeceDamageChange = Config.Bind("General", "Reverse Golden Fleece Change", true, "Removes the 200% cap on damage multiplier.");
             IncreaseGoldenFleeceDamageRate = Config.Bind("General", "Increase Golden Fleece Rate", true, "Increases the damage gain by 20% per kill instead of 10%.");
             AdjustRefineryRequirements = Config.Bind("General", "Adjust Refinery Requirements", true, "Where possible, halves the materials needed to convert items in the refinery. Rounds up.");
+            AlwaysGoForOuthouseWithLeastPoop = Config.Bind("General", "Prioritize Less Poopy Outhouses", true, "Where possible, followers will go to the outhouse that has the least amount of poop.");
+            CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("General", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");
 
             if (_modEnabled.Value)
             {
                 Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-                Log.LogInfo($"Plugin p1xel8ted's CultOfTheLambMods is loaded!");
+                Log.LogMessage($"Plugin p1xel8ted's Cult of QoL Collection is enabled!");
             }
             else
             {
-                Log.LogInfo($"Plugin p1xel8ted's CultOfTheLambMods is disabled!");
+                Log.LogMessage($"Plugin p1xel8ted's Cult of QoL Collection is disabled!");
             }
         }
     }
