@@ -6,28 +6,35 @@ using System.Reflection;
 
 namespace CultOfTheLambMods
 {
-    [BepInPlugin("com.p1xel8ted.CultOfQoLCollection", "Cult of QoL Collection", "1.2")]
+    [BepInPlugin(PluginGuid, PluginName, PluginVer)]
     public class Plugin : BaseUnityPlugin
     {
-        public static ManualLogSource Log;
-        private static ConfigEntry<bool> _modEnabled;
-        public static ConfigEntry<bool> SkipIntros;
-        public static ConfigEntry<bool> EasyFishing;
-        public static ConfigEntry<bool> RemoveMenuClutter;
-        public static ConfigEntry<bool> RemoveTwitchButton;
-        public static ConfigEntry<bool> BulkInspireAndExtort;
-        public static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
-        public static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate;
-        public static ConfigEntry<bool> AdjustRefineryRequirements;
-        public static ConfigEntry<bool> AlwaysGoForOuthouseWithLeastPoop;
-        public static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp;
+        private const string PluginGuid = "com.p1xel8ted.CultOfQoLCollection";
+        private const string PluginName = "Cult of QoL Collection";
+        private const string PluginVer = "1.3";
+
+        internal static ManualLogSource Log;
+
+        internal static ConfigEntry<bool> SkipIntros;
+        internal static ConfigEntry<bool> EasyFishing;
+        internal static ConfigEntry<bool> RemoveMenuClutter;
+        internal static ConfigEntry<bool> RemoveTwitchButton;
+        internal static ConfigEntry<bool> BulkInspireAndExtort;
+        internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
+        internal static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate;
+        internal static ConfigEntry<bool> AdjustRefineryRequirements;
+        internal static ConfigEntry<bool> AlwaysGoForOuthouseWithLeastPoop;
+        internal static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp;
+        internal static ConfigEntry<bool> UnlockTwitchStuff;
+        internal static ConfigEntry<bool> LumberAndMiningStationsDontAge;
+        internal static ConfigEntry<bool> CollectTitheFromOldFollowers;
 
         private void Awake()
         {
-            Log = new ManualLogSource("CultOfQoLCollection-Log");
+            Log = new ManualLogSource("Cult-of-QoL-Collection");
             BepInEx.Logging.Logger.Sources.Add(Log);
 
-            _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
+            var modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
             SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
             EasyFishing = Config.Bind("General", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese.");
             RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
@@ -38,8 +45,11 @@ namespace CultOfTheLambMods
             AdjustRefineryRequirements = Config.Bind("General", "Adjust Refinery Requirements", true, "Where possible, halves the materials needed to convert items in the refinery. Rounds up.");
             AlwaysGoForOuthouseWithLeastPoop = Config.Bind("General", "Prioritize Less Poopy Outhouses", true, "Where possible, followers will go to the outhouse that has the least amount of poop.");
             CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("General", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");
+            UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
+            LumberAndMiningStationsDontAge = Config.Bind("General", "Infinite Lumber & Mining Stations", true, "Lumber and mining stations should never run out and collapse.");
+            CollectTitheFromOldFollowers = Config.Bind("General", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
 
-            if (_modEnabled.Value)
+            if (modEnabled.Value)
             {
                 Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
                 Log.LogMessage($"Plugin p1xel8ted's Cult of QoL Collection is enabled!");

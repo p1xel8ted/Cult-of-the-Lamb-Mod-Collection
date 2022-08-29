@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
+using Lamb.UI.FollowerInteractionWheel;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -57,6 +59,9 @@ public static class FollowerPatches
             var originalFollower = __instance.follower;
             foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
             {
+                if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
+                    continue;
+
                 __instance.follower = follower;
                 __instance.follower.Brain.Stats.Inspired = true;
                 if (follower == originalFollower)
@@ -123,6 +128,9 @@ public static class FollowerPatches
 
                     foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
                     {
+                        if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
+                            continue;
+
                         __instance.follower = follower;
                         __instance.follower.Brain.Stats.PaidTithes = true;
                         __instance.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
@@ -167,6 +175,25 @@ public static class FollowerPatches
             {
                 __instance.follower.Brain.Stats.Illness = 0f;
                 Plugin.Log.LogMessage($"Resetting follower {__instance.follower.name} from illness!");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(UIFollowerInteractionWheelOverlayController), nameof(UIFollowerInteractionWheelOverlayController.Show), typeof(Follower), typeof(List<CommandItem>), typeof(bool), typeof(bool))]
+    public static class UiFollowerInteractionWheelOverlayControllerPatches
+    {
+        [HarmonyPrefix]
+        public static void Prefix(ref Follower follower, ref List<CommandItem> commandItems)
+        {
+            if (!Plugin.CollectTitheFromOldFollowers.Value) return;
+            var item = new CommandItem
+            {
+                Command = FollowerCommands.ExtortMoney
+            };
+
+            if (follower.Brain.CurrentState is FollowerState_OldAge && follower.State.CURRENT_STATE != StateMachine.State.Sleeping)
+            {
+                commandItems.Add(item);
             }
         }
     }
