@@ -6,7 +6,7 @@
 * Cheese the fishing mini-game. (No need to press anything apart from the initial cast).
 * Remove extra buttons from menus (Discord, bug report, Twitch etc.)
 * Collect tithes/inspire all at once. Inspire has some quirks I'm working on (the main one being when a follower levels up(?), it comes from the follower you initiated the conversation with, not the follower that's levelling up.)
-* Reverse the 200% golden fleece cap introduced in patch 1.0.12
+* Reverse the damage change to the golden fleece introduced in 1.0.13.
 * Double the rate the damage increases with the golden fleece.
 * Halves (where possible) the cost of refining goods. Gets rounded up. i.e. something that costs 3 originally ends up being 2. Something that costs 10, becomes 5.
 * Cure illness/exhaustion when a follower gains loyalty (the floaty white eyes thing).
@@ -36,6 +36,7 @@ Feel free to reach out to me on the channel below.
 ### 1.3.1
 
 * Fixed the Twitch patches causing the game to lock you onto the portal platform, thingy.
+* Modified golden fleece patch to be inline with changes from 1.0.13.
 
 ### 1.3
 

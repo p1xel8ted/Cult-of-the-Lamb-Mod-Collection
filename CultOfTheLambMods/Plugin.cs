@@ -11,7 +11,7 @@ namespace CultOfTheLambMods
     {
         private const string PluginGuid = "com.p1xel8ted.CultOfQoLCollection";
         private const string PluginName = "Cult of QoL Collection";
-        private const string PluginVer = "1.3.1";
+        private const string PluginVer = "1.4";
 
         internal static ManualLogSource Log;
 
@@ -28,6 +28,7 @@ namespace CultOfTheLambMods
         internal static ConfigEntry<bool> UnlockTwitchStuff;
         internal static ConfigEntry<bool> LumberAndMiningStationsDontAge;
         internal static ConfigEntry<bool> CollectTitheFromOldFollowers;
+        internal static ConfigEntry<bool> EnableGameSpeedManipulation;
 
         private void Awake()
         {
@@ -48,6 +49,7 @@ namespace CultOfTheLambMods
             UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
             LumberAndMiningStationsDontAge = Config.Bind("General", "Infinite Lumber & Mining Stations", true, "Lumber and mining stations should never run out and collapse.");
             CollectTitheFromOldFollowers = Config.Bind("General", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
+            EnableGameSpeedManipulation = Config.Bind("General", "Enable Game Speed Manipulation", true, "Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.");
 
             if (modEnabled.Value)
             {

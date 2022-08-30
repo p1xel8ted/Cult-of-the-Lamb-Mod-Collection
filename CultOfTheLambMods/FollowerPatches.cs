@@ -179,21 +179,16 @@ public static class FollowerPatches
         }
     }
 
-    [HarmonyPatch(typeof(UIFollowerInteractionWheelOverlayController), nameof(UIFollowerInteractionWheelOverlayController.Show), typeof(Follower), typeof(List<CommandItem>), typeof(bool), typeof(bool))]
-    public static class UiFollowerInteractionWheelOverlayControllerPatches
+    [HarmonyPatch(typeof(FollowerCommandGroups), nameof(FollowerCommandGroups.OldAgeCommands), typeof(Follower))]
+    public static class FollowerCommandGroupsOldAgeCommands
     {
-        [HarmonyPrefix]
-        public static void Prefix(ref Follower follower, ref List<CommandItem> commandItems)
+        [HarmonyPostfix]
+        public static void Postfix(ref List<CommandItem> __result)
         {
             if (!Plugin.CollectTitheFromOldFollowers.Value) return;
-            var item = new CommandItem
+            if (DoctrineUpgradeSystem.GetUnlocked(DoctrineUpgradeSystem.DoctrineType.Possessions_ExtortTithes))
             {
-                Command = FollowerCommands.ExtortMoney
-            };
-
-            if (follower.Brain.CurrentState is FollowerState_OldAge && follower.State.CURRENT_STATE != StateMachine.State.Sleeping)
-            {
-                commandItems.Add(item);
+                __result.Add(FollowerCommandItems.Extort());
             }
         }
     }
