@@ -11,7 +11,7 @@ namespace CultOfTheLambMods
     {
         private const string PluginGuid = "com.p1xel8ted.CultOfQoLCollection";
         private const string PluginName = "Cult of QoL Collection";
-        private const string PluginVer = "1.3";
+        private const string PluginVer = "1.3.1";
 
         internal static ManualLogSource Log;
 

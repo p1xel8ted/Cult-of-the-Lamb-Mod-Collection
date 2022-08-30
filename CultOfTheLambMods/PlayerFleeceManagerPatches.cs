@@ -19,29 +19,18 @@ namespace CultOfTheLambMods
                 ref PlayerFleeceManager.DamageEvent ___OnDamageMultiplierModified)
             {
                 var playerFleece = DataManager.Instance.PlayerFleece;
-
-                if (Plugin.ReverseGoldenFleeceDamageChange.Value)
+                if (playerFleece == 1)
                 {
-                    if (playerFleece == 1)
+                    if (Plugin.ReverseGoldenFleeceDamageChange.Value)
                     {
                         ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
                     }
-                }
-                else
-                {
-                    if (playerFleece == 1 && ___damageMultiplier < 2f)
+                    else
                     {
-                        ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
+                        ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.1f : 0.05f;
                     }
                 }
-   
-
-                if (___OnDamageMultiplierModified == null)
-                {
-                    return;
-                }
-
-                ___OnDamageMultiplierModified(___damageMultiplier);
+                ___OnDamageMultiplierModified?.Invoke(___damageMultiplier);
             }
         }
     }

@@ -5,13 +5,14 @@ namespace CultOfTheLambMods;
 
 internal static class TwitchJunk
 {
-    [HarmonyPatch(typeof(GameManager))]
-    public static class GameManagerPatches
+    [HarmonyPatch(typeof(BuildingShrine))]
+    public static class BuildingShrinePatches
     {
         [HarmonyPostfix]
-        [HarmonyPatch("Awake")]
+        [HarmonyPatch(nameof(BuildingShrine.OnEnableInteraction))]
         public static void Postfix()
         {
+
             var availableTwitchTotemDecorations = DataManager.GetAvailableTwitchTotemDecorations();
             var availableTwitchTotemSkins = DataManager.GetAvailableTwitchTotemSkins();
 
@@ -69,7 +70,11 @@ internal static class TwitchJunk
             }
         }
 
-        [HarmonyPostfix]
+    }
+
+    [HarmonyPatch(typeof(GameManager))]
+    public static class GameManagerPatches
+    {
         //[HarmonyPatch(nameof(GameManager.AuthenticateCultistDLC))] -- pay the $6
         [HarmonyPatch(nameof(GameManager.AuthenticatePrePurchaseDLC))]
         [HarmonyPatch(nameof(GameManager.AuthenticatePlushBonusDLC))]

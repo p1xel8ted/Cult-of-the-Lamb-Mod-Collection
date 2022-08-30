@@ -1,60 +1,65 @@
-![BepInEx logo](https://avatars2.githubusercontent.com/u/39589027?s=256)
+![QoL Logo](https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/blob/e197c9e251b87b5f2602deec890eacbcad7a4c53/thunderstore/icon.png?raw=true)
 
-# BepInExPack for Cult of the Lamb
+# Cult of QoL - A Collection
 
-This is [BepInEx 5.4.21](https://github.com/BepInEx/BepInEx) pack for Cult of the Lamb.
+* Removes intros.
+* Cheese the fishing mini-game. (No need to press anything apart from the initial cast).
+* Remove extra buttons from menus (Discord, bug report, Twitch etc.)
+* Collect tithes/inspire all at once. Inspire has some quirks I'm working on (the main one being when a follower levels up(?), it comes from the follower you initiated the conversation with, not the follower that's levelling up.)
+* Reverse the 200% golden fleece cap introduced in patch 1.0.12
+* Double the rate the damage increases with the golden fleece.
+* Halves (where possible) the cost of refining goods. Gets rounded up. i.e. something that costs 3 originally ends up being 2. Something that costs 10, becomes 5.
+* Cure illness/exhaustion when a follower gains loyalty (the floaty white eyes thing).
+* If you have multiple outhouses, followers should now go to the "less full" one more often than not.
+* Unlock pre-order DLC and Twitch items (Plushie building, drops)
+* You can now collect tithe from the oldies again. Brutal.
 
-BepInEx is a general purpose framework for Unity modding.
-BepInEx includes tools and libraries to
+Each mod can be enabled/disabled individually from within the config.
 
-* load custom code (hereafter *plugins*) into the game on launch;
-* patch in-game methods, classes and even entire assemblies without touching original game files;
-* configure plugins and log game to desired outputs like console or file;
-* manage plugin dependencies.
+## Installation
 
-BepInEx is currently [one of the most popular modding tools for Unity on GitHub](https://github.com/topics/modding?o=desc&s=stars).
+* Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)
+* Place the plugin DLL (CultOfTheLambMods.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
 
-## This pack's contents
+## Configuration
 
-This pack is preconfigured and usable for Cult of the Lamb.
-In particular, this pack comes with preconfigured `BepInEx.cfg` that enables the BepInEx console and more extensive logging.
-
-## Installation (game, automated)
-
-This is the recommended way to install BepInEx on the game.
-
-1. Download and install [Thunderstore Mod Manager](https://www.overwolf.com/app/Thunderstore-Thunderstore_Mod_Manager) or [r2modman](https://for-the-king.thunderstore.io/package/ebkr/r2modman/)
-2. Click **Install with Mod Manager** button on top of the page
-3. Run the game via the mod manager
-
-## Installation (manual)
-
-If you are installing this manually, do the following
-
-1. Extract the archive into a folder. **Do not extract into the game folder.**
-2. Move the contents of `BepInExPack_CultOfTheLamb` folder into the game folder (where the game executable is located).
-3. Run the game. If everything runs correctly, you will see BepInEx console pop up on your desktop.
-4. Follow the game running instructions below:
-
-### Configuration
-
-No need to configure. Simply run the game. If everything is correct, you will see a console pop up.
-
-## Useful links
-
-* [BepInEx: writing basic plugin walkthrough](https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/index.html)
-* [BepInEx: useful plugins for modding](https://docs.bepinex.dev/articles/dev_guide/dev_tools.html)
-* [BepInEx: patching game methods at runtime](https://docs.bepinex.dev/articles/dev_guide/runtime_patching.html)
+The configuration file is generated when you first run the game with the mod enabled. It can be found in the "...\Cult of the Lamb\BepInEx\config" folder.
 
 ## Issues, questions, etc.
 
-At this moment, you can use the following channels to ask for help
+Feel free to reach out to me on the channel below.
 
 * [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
-* [BepInEx Discord](https://discord.gg/MpFEDAg) -- **Only technical support for THIS PACKAGE. No support for plugins.**
 
 ## Changelog
 
-### 5.4.21
+### 1.3.1
 
-* Initial release
+* Fixed the Twitch patches causing the game to lock you onto the portal platform, thingy.
+
+### 1.3
+
+* Added ability to unlock Twitch items (will unlock on game load)
+* Added being able to collect tithe from the oldies. Brutal.
+* Added lumber/stone mine immortality.
+* Added being able to extort the elderly. Brutal.
+
+### 1.2
+
+* Inspire all is somewhat fixed. Instead of being stuck sometimes, they'll move on to their next task.
+* Added option to cure illness/exhaustion when a follower gains loyalty (the floaty white eyes thing).
+* Fixed refinery config not being there.
+* More
+
+### 1.1
+
+* Collect tithes/inspire all at once. Inspire has some quirks I'm working on.
+* Reverse the 200% golden fleece cap.
+* Double the rate the damage increases with the golden fleece.
+* Halves (where possible) the cost of refining goods. Gets rounded up.
+
+### 1.0 - Initial release
+
+* Remove intros
+* Cheese fishing min-game
+* Remove button clutter (Discord, Bugs, Twitch etc..)
