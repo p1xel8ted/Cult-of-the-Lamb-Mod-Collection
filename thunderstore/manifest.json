@@ -1,0 +1,9 @@
+{
+    "name": "Cult_of_QoL_Collection",
+    "version_number": "1.3.0",
+    "website_url": "https://www.nexusmods.com/cultofthelamb/mods/1?tab=description",
+    "description": "A collection of random QoL mods, as well as other random things that I come up with or people, suggest.",
+    "dependencies": [
+        "BepInEx-BepInExPack_CultOfTheLamb-5.4.21"
+    ]
+}
