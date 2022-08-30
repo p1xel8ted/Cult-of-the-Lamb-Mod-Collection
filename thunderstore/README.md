@@ -33,6 +33,12 @@ Feel free to reach out to me on the channel below.
 
 ## Changelog
 
+### 1.4.0
+
+* Made some adjustments to the outhouse stuff, see how it goes. Still a WIP.
+* Added game speed manipulation. Left/Right arrows to increase/decrease in 0.25 increments. Up arrow resets it to default. Maximum (artifical cap) is 5, and good luck to you playing it at that speed.
+* Improved the elderly extortion patch. Should now grey out when they've already been extorted, and only appear once you've unlocked that doctrine.
+
 ### 1.3.1
 
 * Fixed the Twitch patches causing the game to lock you onto the portal platform, thingy.
