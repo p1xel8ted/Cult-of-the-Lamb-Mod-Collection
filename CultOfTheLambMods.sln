@@ -1,36 +1,28 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.4.32804.182
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultOfQoL", "CultOfQoL\CultOfQoL.csproj", "{402779EA-B31B-4242-8B95-54FA3C3DC8A6}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CultOfQoL", "CultOfQoL\CultOfQoL.csproj", "{665CB750-FA02-4BC5-BE42-7B5BE870118C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bleaterer", "Bleaterer\Bleaterer.csproj", "{4ACCC3B5-8308-4E43-AEE2-09E1C0E60F70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bleaterer", "Bleaterer\Bleaterer.csproj", "{9CA32326-F877-4488-A758-7258B3FC6851}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{7AC090A1-D651-4D63-8A2C-02A46CB907FE}"
-	ProjectSection(SolutionItems) = preProject
-		Bleaterer\lib\COTL_API.dll = Bleaterer\lib\COTL_API.dll
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COTL_API", "lib\COTL_API\COTL_API\COTL_API.csproj", "{7289E63D-13C2-413C-A93E-F180EB5AB1D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{402779EA-B31B-4242-8B95-54FA3C3DC8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{402779EA-B31B-4242-8B95-54FA3C3DC8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{402779EA-B31B-4242-8B95-54FA3C3DC8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{402779EA-B31B-4242-8B95-54FA3C3DC8A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4ACCC3B5-8308-4E43-AEE2-09E1C0E60F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4ACCC3B5-8308-4E43-AEE2-09E1C0E60F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4ACCC3B5-8308-4E43-AEE2-09E1C0E60F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4ACCC3B5-8308-4E43-AEE2-09E1C0E60F70}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EB33E171-59B5-475B-BEEA-B75065F2D441}
+		{9CA32326-F877-4488-A758-7258B3FC6851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA32326-F877-4488-A758-7258B3FC6851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA32326-F877-4488-A758-7258B3FC6851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA32326-F877-4488-A758-7258B3FC6851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7289E63D-13C2-413C-A93E-F180EB5AB1D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7289E63D-13C2-413C-A93E-F180EB5AB1D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7289E63D-13C2-413C-A93E-F180EB5AB1D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7289E63D-13C2-413C-A93E-F180EB5AB1D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

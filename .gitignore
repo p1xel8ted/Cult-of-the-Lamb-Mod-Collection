@@ -361,4 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/thunderstore/CultOfQoL.v1.3.zip
+
+##########
+thunderstore/
+.vscode/
+.idea/
+.vs/
+bin/
+obj/

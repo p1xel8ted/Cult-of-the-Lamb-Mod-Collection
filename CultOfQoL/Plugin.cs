@@ -17,6 +17,7 @@ namespace CultOfQoL
 
         internal static ConfigEntry<bool> SkipIntros;
         internal static ConfigEntry<bool> EasyFishing;
+        internal static ConfigEntry<bool> FastCollecting;
         internal static ConfigEntry<bool> RemoveMenuClutter;
         internal static ConfigEntry<bool> RemoveTwitchButton;
         internal static ConfigEntry<bool> BulkInspireAndExtort;
@@ -38,6 +39,7 @@ namespace CultOfQoL
             var modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
             SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
             EasyFishing = Config.Bind("General", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese.");
+            FastCollecting = Config.Bind("General", "sped up collection", true, "Collect resources as fast as it can be");
             RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
             RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
             BulkInspireAndExtort = Config.Bind("General", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
