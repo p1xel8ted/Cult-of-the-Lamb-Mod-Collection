@@ -5,12 +5,14 @@
         <ReleaseVersion>1.0.0</ReleaseVersion>
         <Description></Description>
         <Authors>p1xel8ted</Authors>
+
+        <LangVersion>latest</LangVersion> <!-- For some reason it won't detect this :P -->
     </PropertyGroup>
 
-    <Import Project="..\CultOfTheLambMods.Common.props"/>
+    <Import Project="..\CultOfTheLambMods.Common.props" />
 
     <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*"/>
-        <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj"/>
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*" />
+        <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
     </ItemGroup>
 </Project>
