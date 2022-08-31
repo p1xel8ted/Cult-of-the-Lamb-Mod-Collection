@@ -60,14 +60,14 @@ public static class FollowerPatches
             var originalFollower = __instance.follower;
             foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
             {
-                if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
-                    continue;
+                // if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
+                //     continue;
 
                 __instance.follower = follower;
                 __instance.follower.Brain.Stats.Inspired = true;
                 if (follower == originalFollower)
                 {
-                    __instance.StartCoroutine("DanceRoutine");
+                    __instance.StartCoroutine(nameof(interaction_FollowerInteraction.DanceRoutine));
                 }
                 else
                 {
@@ -97,15 +97,9 @@ public static class FollowerPatches
     private static IEnumerator ExtortMoneyRoutine(Follower follower, interaction_FollowerInteraction instance)
     {
         var position = follower.transform.position;
-        ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate
-        {
-            Inventory.AddItem(20, 1);
-        });
+        ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
         yield return new WaitForSeconds(0.2f);
-        ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate
-        {
-            Inventory.AddItem(20, 1);
-        });
+        ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
     }
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
@@ -130,8 +124,8 @@ public static class FollowerPatches
 
                     foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
                     {
-                        if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
-                            continue;
+                        // if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
+                        //     continue;
 
                         __instance.follower = follower;
                         __instance.follower.Brain.Stats.PaidTithes = true;

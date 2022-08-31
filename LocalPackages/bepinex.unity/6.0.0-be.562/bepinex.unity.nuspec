@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>BepInEx.Unity</id>
+    <version>6.0.0-be.562</version>
+    <authors>BepInEx</authors>
+    <licenseUrl>https://github.com/BepInEx/BepInEx/blob/master/LICENSE</licenseUrl>
+    <icon>logo.png</icon>
+    <projectUrl>https://github.com/BepInEx/BepInEx</projectUrl>
+    <description>BepInEx support library for Mono Unity games</description>
+    <copyright>Copyright © 2021 BepInEx Team</copyright>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5">
+        <dependency id="BepInEx.Core" version="6.0.0-be.562" exclude="Build,Analyzers" />
+        <dependency id="HarmonyX" version="2.10.0" exclude="Build,Analyzers" />
+        <dependency id="UnityEngine" version="5.6.1" exclude="Runtime,Build,Native,Analyzers,BuildTransitive" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="BepInEx.Core" version="6.0.0-be.562" exclude="Build,Analyzers" />
+        <dependency id="HarmonyX" version="2.10.0" exclude="Build,Analyzers" />
+        <dependency id="UnityEngine" version="5.6.1" exclude="Runtime,Build,Native,Analyzers,BuildTransitive" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

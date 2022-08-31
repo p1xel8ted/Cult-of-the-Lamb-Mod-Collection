@@ -18,26 +18,29 @@ namespace CultOfQoL
 
             }
         }
+  
         
-        [HarmonyPatch(typeof(Structures_SiloFertiliser))]
-        public static class StructuresSiloFertiliserPatches
+        [HarmonyPatch(typeof(Structures_SiloFertiliser), MethodType.Constructor)]
+        public static class StructuresSiloFertiliserBrain
         {
-            [HarmonyPrefix]
-            public static void Prefix(ref float ___Capacity)
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_SiloFertiliser __instance)
             {
                 if (!Plugin.JustRightSiloCapacity.Value) return;
-                ___Capacity = 32f;
+                __instance.Capacity = 32f;
+
             }
         }
-
-        [HarmonyPatch(typeof(Structures_SiloSeed))]
-        public static class StructuresSiloSeedPatches
+        
+        [HarmonyPatch(typeof(Structures_SiloSeed), MethodType.Constructor)]
+        public static class StructureBrainCreateBrainPatches
         {
-            [HarmonyPrefix]
-            public static void Prefix(ref float ___Capacity)
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_SiloSeed __instance)
             {
                 if (!Plugin.JustRightSiloCapacity.Value) return;
-                ___Capacity = 32f;
+                __instance.Capacity = 32f;
+
             }
         }
         
