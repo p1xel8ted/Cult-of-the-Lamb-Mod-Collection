@@ -13,6 +13,6 @@
 
     <ItemGroup>
         <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*" />
-        <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
+        <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" Private="false" />
     </ItemGroup>
 </Project>
