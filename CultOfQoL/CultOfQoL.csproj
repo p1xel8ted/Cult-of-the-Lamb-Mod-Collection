@@ -7,9 +7,9 @@
         <Authors>p1xel8ted</Authors>
     </PropertyGroup>
 
-    <Import Project="..\CultOfTheLambMods.Common.props"/>
+    <Import Project="..\CultOfTheLambMods.Common.props" />
 
     <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*"/>
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*" />
     </ItemGroup>
 </Project>
