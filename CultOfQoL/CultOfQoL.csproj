@@ -1,15 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>CultOfQoL</AssemblyName>
-        <AssemblyVersion>1.4.0</AssemblyVersion>
-        <ReleaseVersion>1.4.0</ReleaseVersion>
+        <AssemblyVersion>1.5.0</AssemblyVersion>
+        <ReleaseVersion>1.5.0</ReleaseVersion>
         <Description>General QoL Tweaks</Description>
         <Authors>p1xel8ted</Authors>
+        <PackageVersion>1.5.0</PackageVersion>
+        <Title>Cult of QoL Collection</Title>
+        <PackageProjectUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</RepositoryUrl>
+        <FileVersion>1.5.0</FileVersion>
+        <BaseOutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins</BaseOutputPath>
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
 
     <ItemGroup>
         <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="icon.png">
+        <Pack>True</Pack>
+      </None>
     </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CultOfQoL
 {
-    internal static class GameMangagerPatches
+    internal static class GameManagerPatches
     {
         [HarmonyPatch(typeof(GameManager), "Update")]
         public static class FollowerCommandGroupsOldAgeCommands

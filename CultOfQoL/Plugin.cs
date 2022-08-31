@@ -11,7 +11,7 @@ namespace CultOfQoL
     {
         private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
         private const string PluginName = "Cult of QoL Collection";
-        private const string PluginVer = "1.4";
+        private const string PluginVer = "1.5";
 
         internal static ManualLogSource Log;
 
@@ -30,8 +30,7 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> LumberAndMiningStationsDontAge;
         internal static ConfigEntry<bool> CollectTitheFromOldFollowers;
         internal static ConfigEntry<bool> EnableGameSpeedManipulation;
-        internal static ConfigEntry<bool> FastCollecting;
-        internal static ConfigEntry<bool> JustRightSiloCopacity;
+        internal static ConfigEntry<bool> JustRightSiloCapacity;
 
         private void Awake()
         {
@@ -41,7 +40,6 @@ namespace CultOfQoL
             var modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
             SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
             EasyFishing = Config.Bind("General", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese.");
-            FastCollecting = Config.Bind("General", "sped up collection", true, "Collect resources as fast as it can be");
             RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
             RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
             BulkInspireAndExtort = Config.Bind("General", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
@@ -54,8 +52,8 @@ namespace CultOfQoL
             LumberAndMiningStationsDontAge = Config.Bind("General", "Infinite Lumber & Mining Stations", true, "Lumber and mining stations should never run out and collapse.");
             CollectTitheFromOldFollowers = Config.Bind("General", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
             EnableGameSpeedManipulation = Config.Bind("General", "Enable Game Speed Manipulation", true, "Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.");
-            FastCollecting = Config.Bind("General", "sped up collection", true, "Collect resources as fast as it can be");
-            JustRightSiloCopacity = Config.Bind("General", "sets Silo's copacity to 32", true, "Set's Silo copacity for Seed and Fertilizer at 32");
+            FastCollecting = Config.Bind("General", "Speed Up Collection From Shrine", true, "Increases the rate you can collect from the shrine.");
+            JustRightSiloCapacity = Config.Bind("General", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
 
             if (modEnabled.Value)
             {

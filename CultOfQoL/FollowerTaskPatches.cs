@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CultOfQoL
 {
-    public static class FollowerTaskBathroomPatches
+    public static class FollowerTaskPatches
     {
 
         [HarmonyPatch(typeof(FollowerTask_Bathroom), MethodType.Constructor, typeof(int))]
