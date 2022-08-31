@@ -40,6 +40,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="lib\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <None Remove="lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
@@ -54,6 +60,15 @@
     <Reference Update="mscorlib">
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="spine-unity">
+      <HintPath>..\lib\spine-unity.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\lib\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   
@@ -121,10 +136,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="lib\" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <None Include="..\thunderstore\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -133,23 +144,5 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>lib\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="spine-unity">
-      <HintPath>lib\spine-unity.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>lib\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
   </ItemGroup>
 </Project>

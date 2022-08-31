@@ -9,7 +9,7 @@ namespace CultOfQoL
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
     public class Plugin : BaseUnityPlugin
     {
-        private const string PluginGuid = "com.p1xel8ted.CultOfQoLCollection";
+        private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
         private const string PluginName = "Cult of QoL Collection";
         private const string PluginVer = "1.4";
 

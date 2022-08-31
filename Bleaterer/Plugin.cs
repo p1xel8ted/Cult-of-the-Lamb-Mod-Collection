@@ -15,8 +15,8 @@ namespace Bleaterer
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
-        public const string PluginGuid = "IngoH.cotl.$safeprojectname$";
-        public const string PluginName = "$safeprojectname$";
+        public const string PluginGuid = "p1xel8ted.cotl.bleaterer";
+        public const string PluginName = "Bleaterer!";
         public const string PluginVer = "1.0.0";
 
         internal static ManualLogSource Log;
