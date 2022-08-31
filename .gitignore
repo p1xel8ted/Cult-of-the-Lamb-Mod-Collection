@@ -364,5 +364,8 @@ FodyWeavers.xsd
 
 ##########
 thunderstore/
+.vscode/
+.idea/
+.vs/
 bin/
 obj/
