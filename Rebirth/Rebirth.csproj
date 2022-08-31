@@ -1,10 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyName>Bleaterer</AssemblyName>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <ReleaseVersion>1.0.0</ReleaseVersion>
         <Description></Description>
         <Authors>p1xel8ted</Authors>
+        <PackageId>Rebirth</PackageId>
+        <Title>Rebirth</Title>
+        <PackageIcon>rebirth_command.png</PackageIcon>
+        <FileVersion>1.0.0</FileVersion>
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />

@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.zip
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -363,7 +364,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 ##########
-thunderstore/
 .vscode/
 .idea/
 .vs/

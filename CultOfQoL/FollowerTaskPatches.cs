@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.Linq;
+using Map;
 
 namespace CultOfQoL
 {
@@ -15,7 +16,7 @@ namespace CultOfQoL
                 if (!Plugin.AlwaysGoForOuthouseWithLeastPoop.Value) return;
                 var toilets = StructureManager.GetAllStructuresOfType<Structures_Outhouse>().Where(a => !a.ReservedByPlayer || !a.ReservedForTask).ToList();
                 if (toilets.Count <= 1) return; //let the game take care of the decision
-
+             
                 var allToiletsFull = toilets.All(t => t.IsFull);
 
                 if (allToiletsFull) return; //let the game take care of the decision

@@ -1,32 +1,28 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using COTL_API.CustomInventory;
 using System.IO;
-using Bleaterer.CustomFollowerCommands;
-using Bleaterer.Items;
-using static InventoryItem;
 using COTL_API.CustomFollowerCommand;
+using UnityEngine;
 
-namespace Bleaterer
+
+namespace Rebirth
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
     [BepInDependency("io.github.xhayper.COTL_API")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
-        public const string PluginGuid = "p1xel8ted.cotl.bleaterer";
-        public const string PluginName = "Bleaterer!";
-        public const string PluginVer = "1.0.0";
+        private const string PluginGuid = "p1xel8ted.cotl.rebirth";
+        private const string PluginName = "Rebirth";
+        private const string PluginVer = "1.0.0";
 
-        internal static ManualLogSource Log;
-        internal readonly static Harmony Harmony = new(PluginGuid);
+        public static ManualLogSource Log { get; private set; }
+        private static readonly Harmony Harmony = new(PluginGuid);
 
-        internal static string PluginPath;
+        public static string PluginPath { get; private set; }
 
-        internal static ITEM_TYPE ExampleItem;
-
-        internal static FollowerCommands FollowerCommand;
+        private static FollowerCommands _followerCommand;
 
         private void Awake()
         {
@@ -34,9 +30,7 @@ namespace Bleaterer
             Plugin.Log = base.Logger;
 
             PluginPath = Path.GetDirectoryName(Info.Location);
-
-            ExampleItem = CustomItemManager.Add(new ExampleItem());
-            FollowerCommand = CustomFollowerCommandManager.Add(new ExampleFollowerCommand());
+            _followerCommand = CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
         }
 
         private void OnEnable()

@@ -19,7 +19,7 @@ namespace CultOfQoL
             }
         }
   
-        
+        //original author is Matthew-X, I just refactored.
         [HarmonyPatch(typeof(Structures_SiloFertiliser), MethodType.Constructor)]
         public static class StructuresSiloFertiliserBrain
         {
@@ -32,6 +32,7 @@ namespace CultOfQoL
             }
         }
         
+        //original author is Matthew-X, I just refactored.
         [HarmonyPatch(typeof(Structures_SiloSeed), MethodType.Constructor)]
         public static class StructureBrainCreateBrainPatches
         {
