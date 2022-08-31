@@ -30,6 +30,8 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> LumberAndMiningStationsDontAge;
         internal static ConfigEntry<bool> CollectTitheFromOldFollowers;
         internal static ConfigEntry<bool> EnableGameSpeedManipulation;
+        internal static ConfigEntry<bool> FastCollecting;
+        internal static ConfigEntry<bool> JustRightSiloCopacity;
 
         private void Awake()
         {
@@ -52,6 +54,8 @@ namespace CultOfQoL
             LumberAndMiningStationsDontAge = Config.Bind("General", "Infinite Lumber & Mining Stations", true, "Lumber and mining stations should never run out and collapse.");
             CollectTitheFromOldFollowers = Config.Bind("General", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
             EnableGameSpeedManipulation = Config.Bind("General", "Enable Game Speed Manipulation", true, "Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.");
+            FastCollecting = Config.Bind("General", "sped up collection", true, "Collect resources as fast as it can be");
+            JustRightSiloCopacity = Config.Bind("General", "sets Silo's copacity to 32", true, "Set's Silo copacity for Seed and Fertilizer at 32");
 
             if (modEnabled.Value)
             {
