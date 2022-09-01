@@ -3,8 +3,6 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.IO;
 using COTL_API.CustomFollowerCommand;
-using UnityEngine;
-
 
 namespace Rebirth
 {
@@ -19,30 +17,28 @@ namespace Rebirth
 
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);
-
         public static string PluginPath { get; private set; }
-
-        private static FollowerCommands _followerCommand;
 
         private void Awake()
         {
-            Logger.LogInfo($"Loaded {PluginName}!");
-            Plugin.Log = base.Logger;
+            Log = Logger;
+            Log.LogInfo($"Loaded {PluginName}!");
 
             PluginPath = Path.GetDirectoryName(Info.Location);
-            _followerCommand = CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
+            CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
+         
         }
 
         private void OnEnable()
         {
             Harmony.PatchAll();
-            Logger.LogInfo($"Loaded {PluginName}!");
+            Log.LogInfo($"Loaded {PluginName}!");
         }
 
         private void OnDisable()
         {
             Harmony.UnpatchSelf();
-            Logger.LogInfo($"Unloaded {PluginName}!");
+            Log.LogInfo($"Unloaded {PluginName}!");
         }
     }
 }

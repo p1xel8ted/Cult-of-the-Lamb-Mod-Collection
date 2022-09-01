@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Collections;
 using System.IO;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
-using Lamb.UI;
+using I2.Loc;
 using UnityEngine;
 
 namespace Rebirth
@@ -18,23 +18,54 @@ namespace Rebirth
             return "Rebirth";
         }
 
+        public RebirthFollowerCommand()
+        {
+            SubCommands = FollowerCommandGroups.AreYouSureCommands();
+        }
+
         public override string GetDescription(Follower follower)
         {
             return "Tired of looking at this sheep? Order a rebirth!";
         }
 
+        public override string GetLockedDescription(Follower follower)
+        {
+            return IsOld(follower) ? "Not enough life essence left to satisfy those below." : $"{follower.name} has already been born again!";
+        }
+
+        private static bool IsOld(Follower follower) 
+        {
+            Plugin.Log.LogWarning($"Follower null: {follower == null}");
+            return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old || follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge);
+        }
+
+        public override bool ShouldAppearFor(Follower follower)
+        {
+            Plugin.Log.LogWarning($"Follower task: {follower.Brain.CurrentTask.Type}");
+            Plugin.Log.LogWarning($"Follower outfit: {follower.Outfit.CurrentOutfit}");
+            Plugin.Log.LogWarning($"Follower old: {follower.Brain.Info.OldAge}");
+            Plugin.Log.LogWarning($"Follower age: {follower.Brain.Info.Age}");
+      
+            return !IsOld(follower);
+        }
+
+        private IEnumerator SpawnRecruit(Follower follower)
+        {
+            var name = follower.name;
+            follower.Die(deathNotificationType:NotificationCentre.NotificationType.None, force:true);
+            FollowerManager.ConsumeFollower(follower.Brain.Info.ID);
+            // FollowerManager.CreateNewRecruit(FollowerLocation.Base, NotificationCentre.NotificationType.NewRecruit);
+            var newFollower = FollowerManager.CreateNewRecruit(FollowerLocation.Base, "",NotificationCentre.NotificationType.NewRecruit);
+            yield return new WaitForSeconds(5f);
+            NotificationCentre.Instance.PlayGenericNotification($"{name} died to be reborn as {newFollower.Name}! All hail {newFollower.Name}!");
+        }
+
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
-            var rebirthMenu = MonoSingleton<UIManager>.Instance.ShowIndoctrinationMenu(interaction.follower);
-
-            rebirthMenu.OnIndoctrinationCompleted = (Action) Delegate.Combine(rebirthMenu.OnIndoctrinationCompleted, new Action(delegate
+            if (finalCommand == FollowerCommands.AreYouSureYes)
             {
-                GameManager.GetInstance().OnConversationEnd();
-                interaction.enabled = true;
-                interaction.follower.SimpleAnimator.ResetAnimationsToDefaults();
-                interaction.follower.Resume();
-                interaction.follower.Brain.CompleteCurrentTask();
-            }));
+                GameManager.GetInstance().StartCoroutine(SpawnRecruit(interaction.follower));
+            }
         }
     }
 }

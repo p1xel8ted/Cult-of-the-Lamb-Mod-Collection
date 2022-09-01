@@ -14,7 +14,7 @@ namespace CultOfQoL
             public static void Postfix(ref Structures_Outhouse ____toilet, ref int ____toiletID)
             {
                 if (!Plugin.AlwaysGoForOuthouseWithLeastPoop.Value) return;
-                var toilets = StructureManager.GetAllStructuresOfType<Structures_Outhouse>().Where(a => !a.ReservedByPlayer || !a.ReservedForTask).ToList();
+                var toilets = StructureManager.GetAllStructuresOfType<Structures_Outhouse>(FollowerLocation.Base).Where(a => !a.ReservedByPlayer || !a.ReservedForTask).ToList();
                 if (toilets.Count <= 1) return; //let the game take care of the decision
              
                 var allToiletsFull = toilets.All(t => t.IsFull);
@@ -24,7 +24,7 @@ namespace CultOfQoL
                 toilets.Sort((x, y) => x.GetPoopCount().CompareTo(y.GetPoopCount()));
 
                 Structures_Outhouse toilet = null;
-                foreach (var t in toilets.Where(t => !t.IsFull && !t.ReservedByPlayer && !t.ReservedForTask))
+                foreach (var t in toilets.Where(t => !t.IsFull || !t.ReservedByPlayer || !t.ReservedForTask))
                 {
                     toilet = t;
                 }

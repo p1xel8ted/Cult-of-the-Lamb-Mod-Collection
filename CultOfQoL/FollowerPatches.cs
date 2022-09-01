@@ -29,9 +29,9 @@ public static class FollowerPatches
         follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Inspire, delegate
         {
             Plugin.Log.LogInfo($"Adding Adoration thoughts to {follower.name}");
-            follower.Brain.AddThought(Thought.DancedWithLeader, true, true);
+            follower.Brain.AddThought(Thought.DancedWithLeader, forced:true);
             instance.eventListener.PlayFollowerVO(instance.bowVO);
-            CultFaithManager.AddThought(Thought.Cult_Inspire, -1, 1f, Array.Empty<string>());
+            CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, Array.Empty<string>());
             if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
             {
                 Plugin.Log.LogInfo($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
@@ -65,14 +65,16 @@ public static class FollowerPatches
 
                 __instance.follower = follower;
                 __instance.follower.Brain.Stats.Inspired = true;
-                if (follower == originalFollower)
-                {
-                    __instance.StartCoroutine(nameof(interaction_FollowerInteraction.DanceRoutine));
-                }
-                else
-                {
-                    __instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
-                }
+                // if (follower == originalFollower)
+                // {
+                //     //GameManager.GetInstance().StartCoroutine(nameof(interaction_FollowerInteraction.DanceRoutine));
+                //     __instance.StartCoroutine(nameof(interaction_FollowerInteraction.DanceRoutine));
+                // }
+                // else
+                // {
+                    GameManager.GetInstance().StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                   // __instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                // }
 
                 __instance.eventListener.PlayFollowerVO(
                     "event:/dialogue/followers/general_acknowledge");
@@ -129,7 +131,8 @@ public static class FollowerPatches
 
                         __instance.follower = follower;
                         __instance.follower.Brain.Stats.PaidTithes = true;
-                        __instance.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
+                        GameManager.GetInstance().StartCoroutine(ExtortMoneyRoutine(follower, __instance));
+                       // __instance.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
 
                         __instance.eventListener.PlayFollowerVO(
                             "event:/dialogue/followers/general_acknowledge");
@@ -188,4 +191,5 @@ public static class FollowerPatches
             }
         }
     }
+    
 }
