@@ -52,12 +52,24 @@ namespace Rebirth
         private IEnumerator SpawnRecruit(Follower follower)
         {
             var name = follower.name;
+            var oldId = follower.Brain.Info.ID;
             follower.Die(deathNotificationType:NotificationCentre.NotificationType.None, force:true);
             FollowerManager.ConsumeFollower(follower.Brain.Info.ID);
-            // FollowerManager.CreateNewRecruit(FollowerLocation.Base, NotificationCentre.NotificationType.NewRecruit);
             var newFollower = FollowerManager.CreateNewRecruit(FollowerLocation.Base, "",NotificationCentre.NotificationType.NewRecruit);
             yield return new WaitForSeconds(5f);
             NotificationCentre.Instance.PlayGenericNotification($"{name} died to be reborn as {newFollower.Name}! All hail {newFollower.Name}!");
+            RemoveFromDeadLists(oldId);
+        }
+
+        //this is stop being able to resurrect a born-again follower
+        private static void RemoveFromDeadLists(int id)
+        {
+            for (var i = 0; i < DataManager.Instance.Followers_Dead.Count; i++)
+            {
+                if (DataManager.Instance.Followers_Dead[i].ID != id) continue;
+                DataManager.Instance.Followers_Dead.RemoveAt(i);
+                DataManager.Instance.Followers_Dead_IDs.RemoveAt(i);
+            }
         }
 
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)

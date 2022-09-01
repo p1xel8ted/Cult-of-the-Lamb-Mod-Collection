@@ -9,7 +9,7 @@ using MonoMod.Utils;
 namespace CultOfQoL;
 
 [HarmonyPatch]
-public static class BuildingShrinePatches
+public static class FastCollectingPatches
 {
     [HarmonyPatch(typeof(BuildingShrine), nameof(BuildingShrine.Update))]
     public static class BuildingShrineOnInteractPatches
@@ -87,7 +87,7 @@ public static class BuildingShrinePatches
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
         {
             var codes = new List<CodeInstruction>(instructions);
-
+            if (!Plugin.FastCollecting.Value) return codes.AsEnumerable();
             var editIndex = -1;
             var newValue = 0f;
             for (var i = 0; i < codes.Count; i++)
@@ -120,7 +120,8 @@ public static class BuildingShrinePatches
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
         {
             var codes = new List<CodeInstruction>(instructions);
-            var newValue = 0.05f;
+            if (!Plugin.FastCollecting.Value) return codes.AsEnumerable();
+            const float newValue = 0.05f;
             var editIndex = -1;
             for (var i = 0; i < codes.Count; i++)
             {
