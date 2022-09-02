@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using src.Extensions;
 using UnityEngine;
 
 namespace CultOfQoL;
@@ -43,61 +44,10 @@ public static class FollowerPatches
         follower.ResetStateAnimations();
         follower.Brain.ContinueToNextTask();
     }
-
-    [HarmonyPatch(typeof(interaction_FollowerInteraction))]
-    public static class DanceRoutinePatch
+    
+    private static IEnumerator ExtortMoneyRoutine(Follower follower, Interaction instance)
     {
-        [HarmonyPatch("DanceRoutine")]
-        [HarmonyPostfix]
-        public static void Postfix(ref interaction_FollowerInteraction __instance, ref string ___CacheAnimation,
-            ref bool ___CacheLoop,
-            ref SimpleSpineAnimator ___CacheSpineAnimator,
-            ref float ___CacheFacing,
-            ref float ___CacheAnimationProgress)
-        {
-            if (!Plugin.BulkInspireAndExtort.Value) return;
-
-            var originalFollower = __instance.follower;
-            foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
-            {
-                // if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
-                //     continue;
-
-                __instance.follower = follower;
-                __instance.follower.Brain.Stats.Inspired = true;
-                // if (follower == originalFollower)
-                // {
-                //     //GameManager.GetInstance().StartCoroutine(nameof(interaction_FollowerInteraction.DanceRoutine));
-                //     __instance.StartCoroutine(nameof(interaction_FollowerInteraction.DanceRoutine));
-                // }
-                // else
-                // {
-                    GameManager.GetInstance().StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
-                   // __instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
-                // }
-
-                __instance.eventListener.PlayFollowerVO(
-                    "event:/dialogue/followers/general_acknowledge");
-                AudioManager.Instance.PlayOneShot("event:/followers/pop_in",
-                    __instance.follower.transform.position);
-                Plugin.Log.LogMessage($"Inspired {__instance.follower.name}");
-
-                ___CacheSpineAnimator.enabled = true;
-                __instance.follower.SetBodyAnimation(___CacheAnimation, ___CacheLoop);
-                __instance.follower.Spine.Skeleton.ScaleX = ___CacheFacing;
-                __instance.follower.Spine.AnimationState.GetCurrent(1).TrackTime = ___CacheAnimationProgress;
-                if (__instance.follower.Brain.CurrentTaskType == FollowerTaskType.ManualControl)
-                {
-                    __instance.follower.Brain.CompleteCurrentTask();
-                }
-            }
-
-            __instance.follower = originalFollower;
-        }
-    }
-
-    private static IEnumerator ExtortMoneyRoutine(Follower follower, interaction_FollowerInteraction instance)
-    {
+        follower.Brain.Stats.PaidTithes = true;
         var position = follower.transform.position;
         ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
         yield return new WaitForSeconds(0.2f);
@@ -105,59 +55,37 @@ public static class FollowerPatches
     }
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
+    [HarmonyWrapSafe]
     public static class InteractionFollowerInteraction
     {
+
         [HarmonyPatch("OnFollowerCommandFinalized")]
         [HarmonyPostfix]
-        public static void Postfix(ref interaction_FollowerInteraction __instance, ref string ___CacheAnimation,
-            ref bool ___CacheLoop,
-            ref SimpleSpineAnimator ___CacheSpineAnimator,
-            ref float ___CacheFacing,
-            ref float ___CacheAnimationProgress,
-            params FollowerCommands[] followerCommands)
+        public static void Postfix(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
         {
             if (!Plugin.BulkInspireAndExtort.Value) return;
-            var originalFollower = __instance.follower;
-            var followerCommands2 = followerCommands[0];
-
-            switch (followerCommands2)
+           
+            if (followerCommands[0] == FollowerCommands.ExtortMoney)
             {
-                case FollowerCommands.ExtortMoney:
-
-                    foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
-                    {
-                        // if (DataManager.Instance.Followers_Recruit.Contains(FollowerInfo.GetInfoByID(follower.Brain.Info.ID)))
-                        //     continue;
-
-                        __instance.follower = follower;
-                        __instance.follower.Brain.Stats.PaidTithes = true;
-                        GameManager.GetInstance().StartCoroutine(ExtortMoneyRoutine(follower, __instance));
-                       // __instance.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
-
-                        __instance.eventListener.PlayFollowerVO(
-                            "event:/dialogue/followers/general_acknowledge");
-                        AudioManager.Instance.PlayOneShot("event:/followers/pop_in",
-                            __instance.follower.transform.position);
-                        Plugin.Log.LogMessage($"Collected tithe from {__instance.follower.name}");
-
-                        ___CacheSpineAnimator.enabled = true;
-                        __instance.follower.SetBodyAnimation(___CacheAnimation, ___CacheLoop);
-                        __instance.follower.Spine.Skeleton.ScaleX = ___CacheFacing;
-                        __instance.follower.Spine.AnimationState.GetCurrent(1).TrackTime = ___CacheAnimationProgress;
-                        if (__instance.follower.Brain.CurrentTaskType == FollowerTaskType.ManualControl)
-                        {
-                            __instance.follower.Brain.CompleteCurrentTask();
-                        }
-                    }
-
-                    break;
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
+                {
+                    follower.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
+                }
             }
-
-            __instance.follower = originalFollower;
+            
+            if (followerCommands[0] == FollowerCommands.Dance)
+            {
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
+                {
+                    __instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                    
+                }
+            }
         }
     }
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.GiveDiscipleRewardRoutine))]
+    [HarmonyWrapSafe]
     public static class GiveDiscipleRewardRoutinePatch
     {
         [HarmonyPostfix]
@@ -179,6 +107,7 @@ public static class FollowerPatches
     }
 
     [HarmonyPatch(typeof(FollowerCommandGroups), nameof(FollowerCommandGroups.OldAgeCommands), typeof(Follower))]
+    [HarmonyWrapSafe]
     public static class FollowerCommandGroupsOldAgeCommands
     {
         [HarmonyPostfix]
@@ -191,5 +120,4 @@ public static class FollowerPatches
             }
         }
     }
-    
 }

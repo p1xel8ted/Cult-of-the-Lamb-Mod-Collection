@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Collections;
+using HarmonyLib;
 using Lamb.UI.MainMenu;
 using Lamb.UI.PauseMenu;
 using MMTools;
@@ -7,15 +8,21 @@ namespace CultOfQoL
 {
     public static class MenuCleanupPatches
     {
-        [HarmonyPatch(typeof(LoadMainMenu), "Start")]
-        public static class LoadMainMenuStartPatches
+        //thanks to Ingo for the better skip intros patch
+        [HarmonyPatch(typeof(LoadMainMenu), "RunSplashScreens")]
+        public class SplashScreenPatch
         {
-            [HarmonyPostfix]
-            public static void Postfix()
+            [HarmonyPrefix]
+            public static bool Prefix(LoadMainMenu __instance)
             {
-                if (!Plugin.SkipIntros.Value) return;
-                MMTransition.Play(MMTransition.TransitionType.ChangeSceneAutoResume, MMTransition.Effect.BlackFade,
-                    "Main Menu", 1f, "", null);
+                MMTransition.Play(MMTransition.TransitionType.ChangeSceneAutoResume, MMTransition.Effect.BlackFade, "Main Menu", 1f, "", null);
+                return false;
+            }
+
+            [HarmonyPostfix]
+            public static IEnumerator Postfix(IEnumerator enumerator, LoadMainMenu __instance)
+            {
+                yield break;
             }
         }
 

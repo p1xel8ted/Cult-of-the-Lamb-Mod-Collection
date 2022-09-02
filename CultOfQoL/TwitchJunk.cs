@@ -12,7 +12,6 @@ internal static class TwitchJunk
         [HarmonyPatch(nameof(BuildingShrine.OnEnableInteraction))]
         public static void Postfix()
         {
-
             var availableTwitchTotemDecorations = DataManager.GetAvailableTwitchTotemDecorations();
             var availableTwitchTotemSkins = DataManager.GetAvailableTwitchTotemSkins();
 

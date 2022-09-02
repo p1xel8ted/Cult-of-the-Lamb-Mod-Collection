@@ -18,6 +18,34 @@ namespace CultOfQoL
 
             }
         }
+        
+        [HarmonyPatch(typeof(Structures_Bed), MethodType.Constructor)]
+        public static class StructuresBedSoulMax
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_Bed __instance)
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __instance.SoulMax *= 2;
+
+            }
+        }
+
+        
+        [HarmonyPatch(typeof(Structures_Shrine), "SoulMax", MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine_Misfit), "SoulMax", MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine_Passive), "SoulMax", MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine_Ratau), "SoulMax", MethodType.Getter)]
+        public static class StructuresShrinesSoulMax
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref int __result)
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+
+            }
+        }
   
         //original author is Matthew-X, I just refactored.
         [HarmonyPatch(typeof(Structures_SiloFertiliser), MethodType.Constructor)]

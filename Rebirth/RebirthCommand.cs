@@ -2,7 +2,6 @@
 using System.IO;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
-using I2.Loc;
 using UnityEngine;
 
 namespace Rebirth
@@ -35,7 +34,6 @@ namespace Rebirth
 
         private static bool IsOld(Follower follower) 
         {
-            Plugin.Log.LogWarning($"Follower null: {follower == null}");
             return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old || follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge);
         }
 
@@ -61,7 +59,7 @@ namespace Rebirth
             RemoveFromDeadLists(oldId);
         }
 
-        //this is stop being able to resurrect a born-again follower
+        //this is stop being able to resurrect the old dead body of a born-again follower
         private static void RemoveFromDeadLists(int id)
         {
             for (var i = 0; i < DataManager.Instance.Followers_Dead.Count; i++)
@@ -74,9 +72,11 @@ namespace Rebirth
 
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
+
             if (finalCommand == FollowerCommands.AreYouSureYes)
             {
                 GameManager.GetInstance().StartCoroutine(SpawnRecruit(interaction.follower));
+                
             }
         }
     }

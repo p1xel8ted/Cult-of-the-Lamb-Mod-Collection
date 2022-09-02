@@ -13,6 +13,8 @@
 * If you have multiple outhouses, followers should now go to the "less full" one more often than not.
 * Unlock pre-order DLC and Twitch items (Plushie building, drops)
 * You can now collect tithe from the oldies again. Brutal.
+* Increase silo/fertilizer capacity to 32.
+* Increase collection speed from certain structures (shrines, beds, outhouse, chest near main portal, windmill(?))
 
 Each mod can be enabled/disabled individually from within the config.
 
@@ -31,7 +33,18 @@ Feel free to reach out to me on the channel below.
 
 * [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
 
+## Contributors
+
+* p1xel8ted
+* Matthew-X
+
 ## Changelog
+
+### 1.5.0 - 02/09/2022
+
+* Collection delays from the main shrine (credits to Matthew-X), the smaller shrines, the chest near the portal, the outhouses and the beds have been reduced to zero, otherwise shortened (otherwise animations look like junk).
+* The seed and fertilizer silos can be expanded to 32 slots, which is the number of plots you can build around them. (credits to Matthew-X).
+* Further adjustments to Inspire All - I have not found a consistent way to reproduce the issue. If it occurs (stand there dancing), save, exit to the menu and go back in.
 
 ### 1.4.0
 
