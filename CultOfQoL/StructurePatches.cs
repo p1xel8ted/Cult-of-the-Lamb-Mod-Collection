@@ -12,12 +12,21 @@ namespace CultOfQoL
             [HarmonyPrefix]
             public static void Prefix(ref Structures_LumberjackStation __instance)
             {
+                if (Plugin.SlowDownAgingInstead.Value)
+                {
+                    __instance.Data.Age /= 2;
+                    Plugin.L($"Halving new age of lumber/mining station!");
+                    return;
+                }
+
                 if (!Plugin.LumberAndMiningStationsDontAge.Value) return;
+                
                 __instance.Data.Age = 0;
-                Plugin.Log.LogWarning($"Resetting age of lumber/mining station to 0!");
+                Plugin.L($"Resetting age of lumber/mining station to 0!");
 
             }
         }
+        
         
         [HarmonyPatch(typeof(Structures_Bed), MethodType.Constructor)]
         public static class StructuresBedSoulMax

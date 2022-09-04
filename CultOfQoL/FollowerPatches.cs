@@ -35,11 +35,11 @@ public static class FollowerPatches
             CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, Array.Empty<string>());
             if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
             {
-                Plugin.Log.LogInfo($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
+                Plugin.L($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
                 instance.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
             }
         });
-        Plugin.Log.LogInfo($"Resetting {follower.name} and sending to next task.");
+        Plugin.L($"Resetting {follower.name} and sending to next task.");
         follower.Dropped();
         follower.ResetStateAnimations();
         follower.Brain.ContinueToNextTask();
@@ -53,6 +53,7 @@ public static class FollowerPatches
         yield return new WaitForSeconds(0.2f);
         ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
     }
+   
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
     [HarmonyWrapSafe]

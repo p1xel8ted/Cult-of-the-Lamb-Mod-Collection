@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
-using MMTools;
 using UnityEngine;
 
 namespace CultOfQoL
@@ -9,16 +8,42 @@ namespace CultOfQoL
     {
         private static float _newGameSpeed;
         private static int _newSpeed;
+
+
+        [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.Simulate), typeof(float))]
+        public static class TimeManagerSimulatePatch
+        {
+            [HarmonyPrefix]
+            public static void Postfix(ref float deltaGameTime)
+            {
+                if (Plugin.SlowDownTime.Value)
+                {
+                    //4 is SUPER slow. 
+                    deltaGameTime /= Plugin.SlowDownTimeMultiplier.Value; 
+                }
+                
+            }
+        }
+
+        private static bool _timeMessageShown;
         
         [HarmonyPatch(typeof(GameManager), "Update")]
         public static class GameManagerUpdatePatches
         {
             [HarmonyPostfix]
-            public static void Postfix(ref int ___CurrentGameSpeed)
+            public static void Postfix(GameManager __instance, ref int ___CurrentGameSpeed)
             {
+                if (__instance is null) return;
+                if (Plugin.SlowDownTime.Value && !_timeMessageShown)
+                {
+                    _timeMessageShown = true;
+                    NotificationCentre.Instance.PlayGenericNotification($"Slow down time enabled at {Plugin.SlowDownTimeMultiplier.Value}x.");
+                }
+
                 if (!Plugin.EnableGameSpeedManipulation.Value) return;
                 var gameSpeedShort = new List<float>
                 {
+                    0,
                     1,
                     2,
                     3,
@@ -28,6 +53,7 @@ namespace CultOfQoL
                 };
                 var gameSpeed = new List<float>
                 {
+                    0,
                     1,
                     1.25f,
                     1.5f,

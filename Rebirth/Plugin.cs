@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using System.IO;
 using COTL_API.CustomFollowerCommand;
+using COTL_API.Saves;
 
 namespace Rebirth
 {
@@ -11,7 +12,7 @@ namespace Rebirth
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
-        private const string PluginGuid = "p1xel8ted.cotl.rebirth";
+        internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
         private const string PluginVer = "1.0.0";
 
@@ -26,7 +27,6 @@ namespace Rebirth
 
             PluginPath = Path.GetDirectoryName(Info.Location);
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
-         
         }
 
         private void OnEnable()

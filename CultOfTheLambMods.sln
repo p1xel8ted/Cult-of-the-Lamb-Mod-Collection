@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rebirth", "Rebirth\Rebirth.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COTL_API", "lib\COTL_API\COTL_API\COTL_API.csproj", "{7289E63D-13C2-413C-A93E-F180EB5AB1D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShamurasRevenge", "ShamurasRevenge\ShamurasRevenge.csproj", "{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|Any CPU = Release|Any CPU
@@ -24,5 +26,9 @@ Global
 		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{665CB750-FA02-4BC5-BE42-7B5BE870118C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

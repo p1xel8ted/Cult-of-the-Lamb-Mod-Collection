@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.IO;
+﻿using System.IO;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
 using UnityEngine;
@@ -29,33 +28,63 @@ namespace Rebirth
 
         public override string GetLockedDescription(Follower follower)
         {
-            return IsOld(follower) ? "Not enough life essence left to satisfy those below." : $"{follower.name} has already been born again!";
+            if (TooOld)
+            {
+                return "Not enough life essence left to satisfy those below.";
+            }
+
+            if (BornAgain)
+            {
+                return $"{follower.name} has already been born again!";
+
+            }
+
+            return string.Empty;
         }
 
-        private static bool IsOld(Follower follower) 
+        private static bool TooOld { get; set; }
+        private static bool BornAgain { get; set; }
+
+        public override bool IsAvailable(Follower follower)
         {
-            return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old || follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge);
+            BornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
+
+            TooOld= IsOld(follower);
+            BornAgain = BornAgainFollower is {BornAgain: true};
+            
+            if (TooOld)
+            {
+                return false;
+            }
+
+            return !BornAgain;
+        }
+        
+        private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
+        private static bool IsOld(Follower follower)
+        {
+            return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
         }
 
-        public override bool ShouldAppearFor(Follower follower)
+        private static void SpawnRecruit(Follower follower)
         {
-            Plugin.Log.LogWarning($"Follower task: {follower.Brain.CurrentTask.Type}");
-            Plugin.Log.LogWarning($"Follower outfit: {follower.Outfit.CurrentOutfit}");
-            Plugin.Log.LogWarning($"Follower old: {follower.Brain.Info.OldAge}");
-            Plugin.Log.LogWarning($"Follower age: {follower.Brain.Info.Age}");
-      
-            return !IsOld(follower);
-        }
-
-        private IEnumerator SpawnRecruit(Follower follower)
-        {
+            NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
-            follower.Die(deathNotificationType:NotificationCentre.NotificationType.None, force:true);
-            FollowerManager.ConsumeFollower(follower.Brain.Info.ID);
-            var newFollower = FollowerManager.CreateNewRecruit(FollowerLocation.Base, "",NotificationCentre.NotificationType.NewRecruit);
-            yield return new WaitForSeconds(5f);
-            NotificationCentre.Instance.PlayGenericNotification($"{name} died to be reborn as {newFollower.Name}! All hail {newFollower.Name}!");
+            follower.Die(NotificationCentre.NotificationType.None, force: true);
+
+
+            FollowerManager.CreateNewRecruit(FollowerLocation.Base, NotificationCentre.NotificationType.None);
+            var newFollower = DataManager.Instance.Followers_Recruit.LastElement();
+            if (newFollower != null)
+            {
+                Plugin.Log.LogWarning($"New follower: {newFollower.Name}");
+                var bornAgainFollower = new SaveData.BornAgainFollowerData(newFollower, true);
+                SaveData.SetBornAgainFollowerData(bornAgainFollower);
+            }
+
+            NotificationCentre.NotificationsEnabled = true;
+            NotificationCentreScreen.Play($"{name} died to be reborn! All hail {name}!");
             RemoveFromDeadLists(oldId);
         }
 
@@ -70,14 +99,15 @@ namespace Rebirth
             }
         }
 
+
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
-
             if (finalCommand == FollowerCommands.AreYouSureYes)
             {
-                GameManager.GetInstance().StartCoroutine(SpawnRecruit(interaction.follower));
-                
+                SpawnRecruit(interaction.follower);
             }
+
+            // interaction.Close(true, true);
         }
     }
 }

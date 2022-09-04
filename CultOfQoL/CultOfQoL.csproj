@@ -25,4 +25,8 @@
         <Pack>True</Pack>
       </None>
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
+    </ItemGroup>
 </Project>

@@ -3,9 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using JetBrains.Annotations;
 using MonoMod.Utils;
-using UnityEngine;
 
 namespace CultOfQoL;
 
@@ -59,8 +57,7 @@ public static class FastCollectingPatches
         [HarmonyPatch(typeof(Interaction_CollectedResources), "GiveResourcesRoutine", MethodType.Enumerator)]
         public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
         {
-            var waitForReturn = AccessTools.Constructor(typeof(UnityEngine.WaitForSeconds));
-            
+           
             var codes = new List<CodeInstruction>(instructions);
             if (!Plugin.FastCollecting.Value) return codes.AsEnumerable();
             var editIndex = -1;
@@ -109,7 +106,7 @@ public static class FastCollectingPatches
                 }
             }
 
-            Plugin.Log.LogWarning(editIndex != -1 ? $"Found delay position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
+            Plugin.L(editIndex != -1 ? $"Found delay position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
 
             return codes.AsEnumerable();
         }
@@ -136,7 +133,7 @@ public static class FastCollectingPatches
                 }
             }
 
-            Plugin.Log.LogWarning(editIndex != -1 ? $"Found delay position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
+            Plugin.L(editIndex != -1 ? $"Found delay position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
 
             return codes.AsEnumerable();
         }
@@ -163,7 +160,7 @@ public static class FastCollectingPatches
                 }
             }
 
-            Plugin.Log.LogWarning(editIndex != -1 ? $"Found delay position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
+            Plugin.L(editIndex != -1 ? $"Found delay position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
 
             return codes.AsEnumerable();
         }
