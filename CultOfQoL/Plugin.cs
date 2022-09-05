@@ -2,8 +2,6 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
-using System.Reflection;
-using UnityEngine.ProBuilder;
 
 namespace CultOfQoL
 {
@@ -26,7 +24,7 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
         internal static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate;
         internal static ConfigEntry<bool> AdjustRefineryRequirements;
-        internal static ConfigEntry<bool> AlwaysGoForOuthouseWithLeastPoop;
+        
         internal static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp;
         internal static ConfigEntry<bool> UnlockTwitchStuff;
         internal static ConfigEntry<bool> LumberAndMiningStationsDontAge;
@@ -37,10 +35,12 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> ShortenGameSpeedIncrements;
         internal static ConfigEntry<bool> SlowDownTime;
         internal static ConfigEntry<float> SlowDownTimeMultiplier;
-        internal static ConfigEntry<bool> SlowDownAgingInstead;
-        internal static ConfigEntry<int> OuthouseAttemptsWhenInQueue;
+        internal static ConfigEntry<bool> DoubleLifespanInstead;
+        
         private static ConfigEntry<bool> _modEnabled;
+        internal static ConfigEntry<bool> TurnOffSpeakersAtNight;
 
+       
         private void Awake()
         {
             Log = new ManualLogSource("Cult-of-QoL-Collection");
@@ -54,7 +54,6 @@ namespace CultOfQoL
             RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
             
             //Game Mechanics
-            
             CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("Game Mechanics", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");
             UnlockTwitchStuff = Config.Bind("Game Mechanics", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
             CollectTitheFromOldFollowers = Config.Bind("Game Mechanics", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
@@ -64,14 +63,13 @@ namespace CultOfQoL
             BulkInspireAndExtort = Config.Bind("Game Mechanics", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
             EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
             
-            //Outhouse
-            OuthouseAttemptsWhenInQueue = Config.Bind("Outhouse", "Queue Attempts", 6, "By default, Followers try 3 times to use an outhouse before they move on to crapping in the bushes. Increase this to make them wait longer.");
-                AlwaysGoForOuthouseWithLeastPoop = Config.Bind("Outhouse", "Prioritize Less Poopy Outhouses", true, "Where possible, followers will go to the outhouse that has the least amount of poop.");
-            
             //Lumber/mining
-            LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", true, "Lumber and mining stations should never run out and collapse.");
-            SlowDownAgingInstead = Config.Bind("Lumber/Mine Mods", "Slow Down Aging Instead", true, "Slows down aging of lumber/mining stations by half. This setting overrides the above.");
+            LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse.");
+            DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", true, "Doubles the life span of lumber/mining stations. This setting has no effect if the above is true.");
 
+            //Propaganda
+            TurnOffSpeakersAtNight = Config.Bind("Propaganda Mods", "Turn Off Speakers At Night", true, "Turns the speakers off, and stops fuel consumption at night time.");
+            
             //Speed
             EnableGameSpeedManipulation = Config.Bind("Speed", "Enable Game Speed Manipulation", true, "Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.");
             ShortenGameSpeedIncrements = Config.Bind("Speed", "Shorten Game Speed Increments", false, "Increments in steps of 1, instead of 0.25.");

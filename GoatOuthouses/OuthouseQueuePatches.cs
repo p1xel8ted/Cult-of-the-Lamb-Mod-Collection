@@ -1,15 +1,11 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-
 using HarmonyLib;
 using MonoMod.Utils;
-using UnityEngine;
 
-namespace CultOfQoL
+namespace GoatOuthouses
 {
     [HarmonyPatch]
     public static class OuthouseQueuePatches
@@ -21,9 +17,6 @@ namespace CultOfQoL
             var codes = new List<CodeInstruction>(instructions);
             if (Plugin.OuthouseAttemptsWhenInQueue.Value <= 3) return codes.AsEnumerable();
             var tryUseField = AccessTools.Field(originalMethod.GetRealDeclaringType(), "tryUseOuthouseCounter");
-
-            // var startAgain = AccessTools.Method(typeof(FollowerTask), nameof(FollowerTask.StartAgain), new[] {typeof(Follower)});
-            // var onDoingBegin = AccessTools.Method(typeof(FollowerTask_Bathroom), nameof(FollowerTask_Bathroom.OnDoingBegin), new[] {typeof(Follower)});
             
             var editIndex = -1;
             for (var i = 0; i < codes.Count; i++)
@@ -37,16 +30,7 @@ namespace CultOfQoL
                     break;
                 }
             }
-
-            // var newCodes = new List<CodeInstruction>
-            // {
-            //     new(OpCodes.Ldarg_0),
-            //     new(OpCodes.Ldloc_0),
-            //     codes[59],
-            //     new(OpCodes.Callvirt, onDoingBegin)
-            // };
-            //
-            // codes.InsertRange(107, newCodes);
+            
             Plugin.Log.LogWarning(editIndex != -1 ? $"Found outhouse queue position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {Plugin.OuthouseAttemptsWhenInQueue.Value}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
         
             return codes.AsEnumerable();
@@ -77,11 +61,16 @@ namespace CultOfQoL
             // }
             toilets.RemoveAll(a => a.ReservedForTask || a.IsFull);
             toilets.Sort((x, y) => x.GetPoopCount().CompareTo(y.GetPoopCount()));
-            
-            if (toilets.Count <= 1) return null;
+
+            if (toilets.Count <= 1)
+            {
+                Plugin.L($"Only one toilet, cancelling.");
+                return null;
+            }
             
             if (toilets[0] == null)
             {
+                Plugin.L($"NULL toilet at [0]!");
                 return null;
             }
 
@@ -108,40 +97,6 @@ namespace CultOfQoL
         }
         
         private static GoldenToilet _theToilet;
-        
-        [HarmonyPatch(typeof(FollowerTask_Bathroom),nameof(FollowerTask_Bathroom.OnAbort))]
-        [HarmonyPatch(typeof(FollowerTask_Bathroom),nameof(FollowerTask_Bathroom.OnEnd))]
-        public static class FollowerTaskBathroomCleanupPatch
-        {
-            [HarmonyPostfix]
-            public static void Postfix(ref FollowerTask_Bathroom __instance)
-            {
-                if (!Plugin.AlwaysGoForOuthouseWithLeastPoop.Value) return;
-                Plugin.L("Released toilet reservations via OnAbort & OnEnd");
-                __instance.ReleaseReservations();
-              
-            }
-        }
-        
-        [HarmonyPatch(typeof(FollowerTask_Bathroom),"DoorCoroutine")]
-        public static class FollowerTaskDoorCoroutinePatch
-        {
-            [HarmonyPostfix]
-            public static void Postfix(ref FollowerTask_Bathroom __instance)
-            {
-                if (!Plugin.AlwaysGoForOuthouseWithLeastPoop.Value) return;
-                if (__instance._doorCoroutine == null)
-                {
-                    Plugin.L("DoorCoroutine is null, releasing toilet reservations.");
-                    __instance.ReleaseReservations();
-                    __instance._toilet.ReservedForTask = false;
-                }
-              
-              
-            }
-        }
-
-
         
         [HarmonyPatch(typeof(FollowerTask_Bathroom),nameof(FollowerTask_Bathroom.ClaimReservations))]
         public static class FollowerTaskBathroomClaimReservationsPatch

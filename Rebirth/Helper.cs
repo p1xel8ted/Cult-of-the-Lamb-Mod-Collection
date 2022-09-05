@@ -1,45 +1,54 @@
-// using HarmonyLib;
-// using UnityEngine.ProBuilder.MeshOperations;
-//
-// namespace Rebirth;
-//
-// [HarmonyPatch]
-// public static class Helper
-// {
-//     public static bool TooOld { get; private set; }
-//     public static bool BornAgain { get; private set; }
-//     public static bool Available { get; private set; }
-//     private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
-//     private static bool IsOld(Follower follower)
-//     {
-//         return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
-//     }
-//     
-//     [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnInteract))]
-//     public static class IsAvailablePatch
-//     {
-//         [HarmonyPrefix]
-//         public static void Prefix(interaction_FollowerInteraction __instance)
-//         {
-//             BornAgainFollower = SaveData.GetBornAgainFollowerData(__instance.follower.Brain._directInfoAccess);
-//
-//             TooOld = IsOld(__instance.follower);
-//             BornAgain = BornAgainFollower is {BornAgain: true};
-//             
-//             if (TooOld)
-//             {
-//                 Available = false;
-//                 return;
-//             }
-//
-//             if (BornAgain)
-//             {
-//                 Available = false;
-//                 return;
-//             }
-//
-//             Available = true;
-//
-//         }
-//     }
-// }
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
+using MonoMod.Utils;
+
+namespace Rebirth;
+
+[HarmonyPatch]
+public static class Helper
+{
+    [HarmonyPatch(typeof(FollowerRecruit), nameof(FollowerRecruit.Update))]
+    public static class FollowerRecruitUpdate
+    {
+        // [HarmonyPrefix]
+        // public static void Prefix(ref FollowerRecruit __instance)
+        // {
+        //     Plugin.Log.LogWarning($"Triggered: {__instance.triggered}");
+        //     __instance.triggered = false;
+        // }
+        //
+        [HarmonyDebug]
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(FollowerRecruit), nameof(FollowerRecruit.Update))]
+        public static IEnumerable<CodeInstruction> InteractionOuthouseTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
+        {
+           
+            var codes = new List<CodeInstruction>(instructions);
+ 
+            var newValue = 20f;
+            var editIndex = -1;
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Call && 
+                    codes[i + 1].opcode == OpCodes.Callvirt && 
+                    codes[i + 2].opcode == OpCodes.Call && 
+                    codes[i + 3].opcode == OpCodes.Ldc_R4 && 
+                    codes[i + 4].opcode == OpCodes.Bge_Un)
+                {
+                    editIndex = i + 3;
+
+                    codes[editIndex].operand = newValue;
+
+                    break;
+                }
+            }
+
+            Plugin.Log.LogWarning(editIndex != -1 ? $"Found distance position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name} at line {editIndex}. New value: {newValue}" : $"Did not find transpiler position for {originalMethod.GetRealDeclaringType().Name}.{originalMethod.Name}!");
+
+            return codes.AsEnumerable();
+        }
+    }
+}

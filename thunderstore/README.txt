@@ -1,45 +1,3 @@
-![QoL Logo](https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/blob/e197c9e251b87b5f2602deec890eacbcad7a4c53/thunderstore/icon.png?raw=true)
-
-# Cult of QoL - A Collection
-
-* Removes intros.
-* Cheese the fishing mini-game. (No need to press anything apart from the initial cast).
-* Remove extra buttons from menus (Discord, bug report, Twitch etc.)
-* Collect tithes/inspire all at once (unless they're in prison, sleeping, using the bathroom or dissenting.)
-* Reverse the damage change to the golden fleece introduced in 1.0.13.
-* Double the rate the damage increases with the golden fleece.
-* Halves (where possible) the cost of refining goods. Gets rounded up. i.e. something that costs 3 originally ends up being 2. Something that costs 10, becomes 5.
-* Cure illness/exhaustion when a follower gains loyalty (the floaty white eyes thing).
-* Unlock pre-order DLC and Twitch items (Plushie building, drops)
-* You can now collect tithe from the oldies again. Brutal.
-* Increase silo/fertilizer capacity to 32.
-* Increase collection speed from certain structures (shrines, beds, chest near main portal, windmill(?))
-* Turn off propaganda speakers of a night. Despite the flame being on, they don't use fuel. Working on the flame part.
-* Make the days longer. The default is 2x, and that already feels long.
-* Manipulate game speed, or halt it. Not to be confused with day length, this makes EVERYTHING faster.). Left/Right arrow keys to change, default speed is the up key.
-
-Each mod can be enabled/disabled individually from within the config.
-
-## Installation
-
-* Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)
-* Place the plugin DLL (CultOfTheLambMods.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
-
-## Configuration
-
-The configuration file is generated when you first run the game with the mod enabled. It can be found in the "...\Cult of the Lamb\BepInEx\config" folder.
-
-## Issues, questions, etc.
-
-Feel free to reach out to me on the channel below.
-
-* [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
-
-## Contributors
-
-* p1xel8ted
-* Matthew-X
-
 ## Changelog
 
 ### 1.6.0 - 05/09/2022
@@ -50,8 +8,9 @@ Feel free to reach out to me on the channel below.
 * Added checks to ensure we're not inspiring/extorting when sleeping/dissenting/bathroom/prison.
 * Inspire All "should" be fixed now.
 * Added option to double lumber/mine stations age instead of only lasting forever.
+* Added option to turn off propaganda speakers of a night. The fuel animation still runs for now but doesn't consume fuel.
 
-* Removed anything outhouse related as they're being put into a seperate outhouse specific mod.
+* Removed anything outhouse related as they're being put into a separate outhouse-specific mod.
 
 * WIP - Option to double the storage capacity of shrines (not quite done, the main one ignores it for some reason).
 

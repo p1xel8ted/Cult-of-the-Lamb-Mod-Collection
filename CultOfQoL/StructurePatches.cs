@@ -6,20 +6,70 @@ namespace CultOfQoL
 {
     internal static class StructurePatches
     {
+        
+        [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.LifeSpawn), MethodType.Getter)]
+        public static class StructuresLumberjackStationGetAgePatches
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref int __result)
+            {
+                if (!Plugin.DoubleLifespanInstead.Value) return;
+                var old = __result;
+                var newSpan = old * 2;
+                __result = newSpan;
+                if (!Plugin.LumberAndMiningStationsDontAge.Value)
+                {
+                    Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}");
+                }
+
+            }
+        }
+        
+  
+            
+                 
+        [HarmonyPatch(typeof(PropagandaSpeaker), nameof(PropagandaSpeaker.Update))]
+        public static class PropagandaSpeakerUpdate
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref PropagandaSpeaker __instance)
+            {
+                if (!Plugin.TurnOffSpeakersAtNight.Value) return;
+                if (!__instance.gameObject.activeSelf)
+                {
+                    __instance.OnEnable();
+                }
+                if (!TimeManager.IsNight) return;
+                
+                __instance.Spine.AnimationState.SetAnimation(0, "off", true);
+                AudioManager.Instance.StopLoop(__instance.loopedInstance);
+                __instance.VOPlaying = false;
+               // Plugin.L($"Night time! Turning speakers off! Sleep well, little followers!");
+                __instance.OnDisable();
+                
+            }
+        }
+        
+        [HarmonyPatch(typeof(Structures_PropagandaSpeaker), nameof(Structures_PropagandaSpeaker.OnNewPhaseStarted))]
+        public static class StructuresFullUpdate
+        {
+            [HarmonyPrefix]
+            public static bool Prefix()
+            {
+                if (!Plugin.TurnOffSpeakersAtNight.Value) return true;
+                return !TimeManager.IsNight;
+            }
+        }
+        
+        
         [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.IncreaseAge))]
         public static class StructuresLumberjackStationAgePatches
         {
-            [HarmonyPrefix]
-            public static void Prefix(ref Structures_LumberjackStation __instance)
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_LumberjackStation __instance)
             {
-                if (Plugin.SlowDownAgingInstead.Value)
-                {
-                    __instance.Data.Age /= 2;
-                    Plugin.L($"Halving new age of lumber/mining station!");
-                    return;
-                }
-
-                if (!Plugin.LumberAndMiningStationsDontAge.Value) return;
+              
+               if (!Plugin.LumberAndMiningStationsDontAge.Value) return;
                 
                 __instance.Data.Age = 0;
                 Plugin.L($"Resetting age of lumber/mining station to 0!");

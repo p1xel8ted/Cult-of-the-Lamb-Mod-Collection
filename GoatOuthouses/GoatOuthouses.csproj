@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <ReleaseVersion>1.0.0</ReleaseVersion>
+        <Description></Description>
+        <Authors>p1xel8ted</Authors>
+        <PackageId>GoatOuthouses</PackageId>
+        <Title>GoatOuthouses</Title>
+        <FileVersion>1.0.0</FileVersion>
+        <AssemblyName>GoatOuthouses</AssemblyName>
+        <RootNamespace>GoatOuthouses</RootNamespace>
+        <Product>GoatOuthouses</Product>
+    </PropertyGroup>
+
+    <Import Project="..\CultOfTheLambMods.Common.props" />
+
+    <ItemGroup>
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-r.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Project>

@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using src.Extensions;
 using UnityEngine;
 
 namespace CultOfQoL;
@@ -27,10 +26,11 @@ public static class FollowerPatches
         AudioManager.Instance.SetFollowersDance(0f);
         AudioManager.Instance.PlayOneShot("event:/followers/gain_loyalty", instance.follower.transform.position);
         ObjectiveManager.CompleteCustomObjective(Objectives.CustomQuestTypes.BlessAFollower);
+        follower.Brain.Stats.Inspired = true;
         follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Inspire, delegate
         {
             Plugin.Log.LogInfo($"Adding Adoration thoughts to {follower.name}");
-            follower.Brain.AddThought(Thought.DancedWithLeader, forced:true);
+            follower.Brain.AddThought(Thought.DancedWithLeader, forced: true);
             instance.eventListener.PlayFollowerVO(instance.bowVO);
             CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, Array.Empty<string>());
             if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
@@ -44,7 +44,7 @@ public static class FollowerPatches
         follower.ResetStateAnimations();
         follower.Brain.ContinueToNextTask();
     }
-    
+
     private static IEnumerator ExtortMoneyRoutine(Follower follower, Interaction instance)
     {
         follower.Brain.Stats.PaidTithes = true;
@@ -53,33 +53,41 @@ public static class FollowerPatches
         yield return new WaitForSeconds(0.2f);
         ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
     }
-   
+
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
     [HarmonyWrapSafe]
     public static class InteractionFollowerInteraction
     {
-
         [HarmonyPatch("OnFollowerCommandFinalized")]
         [HarmonyPostfix]
         public static void Postfix(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
         {
             if (!Plugin.BulkInspireAndExtort.Value) return;
-           
+
             if (followerCommands[0] == FollowerCommands.ExtortMoney)
             {
                 foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
                 {
+                    if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
+                    if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
+                    if (follower.Brain.CurrentTask is FollowerTask_Imprisoned) continue;
+                    if (follower.Brain.CurrentTask is FollowerTask_Bathroom) continue;
+
+
                     follower.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
                 }
             }
-            
+
             if (followerCommands[0] == FollowerCommands.Dance)
             {
                 foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
                 {
+                    if (follower.Brain.CurrentTask is FollowerTask_Bathroom) continue;
+                    if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
+                    if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
+                    if (follower.Brain.CurrentTask is FollowerTask_Imprisoned) continue;
                     __instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
-                    
                 }
             }
         }

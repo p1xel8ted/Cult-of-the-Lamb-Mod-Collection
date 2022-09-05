@@ -36,7 +36,6 @@ namespace Rebirth
             if (BornAgain)
             {
                 return $"{follower.name} has already been born again!";
-
             }
 
             return string.Empty;
@@ -49,9 +48,9 @@ namespace Rebirth
         {
             BornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
 
-            TooOld= IsOld(follower);
+            TooOld = IsOld(follower);
             BornAgain = BornAgainFollower is {BornAgain: true};
-            
+
             if (TooOld)
             {
                 return false;
@@ -59,21 +58,23 @@ namespace Rebirth
 
             return !BornAgain;
         }
-        
+
         private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
+
         private static bool IsOld(Follower follower)
         {
             return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
         }
-
+        
         private static void SpawnRecruit(Follower follower)
         {
             NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
+            var newXp = Mathf.CeilToInt(follower.Brain.Info.XPLevel / 2f);
             follower.Die(NotificationCentre.NotificationType.None, force: true);
 
-
+         //   var fi = CreateNewRecruit(FollowerInfo.NewCharacter(FollowerLocation.Base, ""), BiomeBaseManager.Instance.RecruitSpawnLocation.transform.position);
             FollowerManager.CreateNewRecruit(FollowerLocation.Base, NotificationCentre.NotificationType.None);
             var newFollower = DataManager.Instance.Followers_Recruit.LastElement();
             if (newFollower != null)
@@ -81,6 +82,12 @@ namespace Rebirth
                 Plugin.Log.LogWarning($"New follower: {newFollower.Name}");
                 var bornAgainFollower = new SaveData.BornAgainFollowerData(newFollower, true);
                 SaveData.SetBornAgainFollowerData(bornAgainFollower);
+                newFollower.XPLevel = newXp;
+    
+            }
+            else
+            {
+                Plugin.Log.LogWarning($"New follower is null!");
             }
 
             NotificationCentre.NotificationsEnabled = true;
