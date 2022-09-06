@@ -10,16 +10,12 @@ namespace Rebirth;
 [HarmonyPatch]
 public static class Helper
 {
+
     [HarmonyPatch(typeof(FollowerRecruit), nameof(FollowerRecruit.Update))]
     public static class FollowerRecruitUpdate
     {
-        // [HarmonyPrefix]
-        // public static void Prefix(ref FollowerRecruit __instance)
-        // {
-        //     Plugin.Log.LogWarning($"Triggered: {__instance.triggered}");
-        //     __instance.triggered = false;
-        // }
-        //
+        //TODO: Add transpiler for BiomeManager Update for spawn distance
+
         [HarmonyDebug]
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(FollowerRecruit), nameof(FollowerRecruit.Update))]
@@ -51,4 +47,6 @@ public static class Helper
             return codes.AsEnumerable();
         }
     }
+
+    
 }

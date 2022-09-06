@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.IO;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
 using UnityEngine;
@@ -66,24 +67,44 @@ namespace Rebirth
             return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
         }
         
+        private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
+        {
+            yield return DieRoutine(old);
+            yield return new WaitForSeconds(3f);
+            BiomeBaseManager.Instance.SpawnExistingRecruits = false;
+            yield return new WaitForEndOfFrame();
+           // GameManager.GetInstance().OnConversationNew(false, false, false);
+            //GameManager.GetInstance().OnConversationNext(BiomeBaseManager.Instance.RecruitSpawnLocation);
+            yield return new WaitForSeconds(3f);
+            DataManager.Instance.Followers_Recruit.Add(f);
+            FollowerManager.SpawnExistingRecruits(BiomeBaseManager.Instance.RecruitSpawnLocation.transform.position);
+            UnityEngine.Object.FindObjectOfType<FollowerRecruit>().ManualTriggerAnimateIn();
+            BiomeBaseManager.Instance.SpawnExistingRecruits = true;
+            yield return new WaitForSeconds(2f);
+            //GameManager.GetInstance().OnConversationNext(BiomeBaseManager.Instance.RecruitSpawnLocation);
+            //yield return new WaitForSeconds(1f);
+            //GameManager.GetInstance().OnConversationEnd();
+        }
+
+
         private static void SpawnRecruit(Follower follower)
         {
+            BiomeBaseManager.Instance.SpawnExistingRecruits = true;
             NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
             var newXp = Mathf.CeilToInt(follower.Brain.Info.XPLevel / 2f);
-            follower.Die(NotificationCentre.NotificationType.None, force: true);
-
-         //   var fi = CreateNewRecruit(FollowerInfo.NewCharacter(FollowerLocation.Base, ""), BiomeBaseManager.Instance.RecruitSpawnLocation.transform.position);
-            FollowerManager.CreateNewRecruit(FollowerLocation.Base, NotificationCentre.NotificationType.None);
-            var newFollower = DataManager.Instance.Followers_Recruit.LastElement();
-            if (newFollower != null)
+          // // follower.Die(NotificationCentre.NotificationType.None, force: true);
+          //  GameManager.GetInstance().StartCoroutine(DieRoutine(follower));
+            var fi = FollowerInfo.NewCharacter(FollowerLocation.Base);
+           
+            if (fi != null)
             {
-                Plugin.Log.LogWarning($"New follower: {newFollower.Name}");
-                var bornAgainFollower = new SaveData.BornAgainFollowerData(newFollower, true);
+                GameManager.GetInstance().StartCoroutine(GiveFollowerIE(fi, follower));
+                Plugin.Log.LogWarning($"New follower: {fi.Name}");
+                var bornAgainFollower = new SaveData.BornAgainFollowerData(fi, true);
                 SaveData.SetBornAgainFollowerData(bornAgainFollower);
-                newFollower.XPLevel = newXp;
-    
+                bornAgainFollower.FollowerInfo.XPLevel = newXp;
             }
             else
             {
@@ -105,6 +126,27 @@ namespace Rebirth
                 DataManager.Instance.Followers_Dead_IDs.RemoveAt(i);
             }
         }
+        
+        private static IEnumerator DieRoutine(Follower follower)
+        {
+            follower.HideAllFollowerIcons();
+            yield return new WaitForSeconds(0.5f);
+      
+            follower.State.CURRENT_STATE = StateMachine.State.CustomAnimation;
+        
+            // yield return new WaitForSeconds(0.1f);
+            // follower.SetOutfit(FollowerOutfitType.Old, false, Thought.None);
+            yield return new WaitForSeconds(1f);
+            follower.SetBodyAnimation("wave", true);
+            yield return new WaitForSeconds(0.75f);
+      //      yield return new WaitForSeconds(1.8f);
+            //follower.AddBodyAnimation("idle", false, 0f);
+           
+            //follower.State.CURRENT_STATE = StateMachine.State.Idle;
+            
+            follower.Die(NotificationCentre.NotificationType.None, force: true);
+            yield break;
+        }
 
 
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
@@ -112,9 +154,10 @@ namespace Rebirth
             if (finalCommand == FollowerCommands.AreYouSureYes)
             {
                 SpawnRecruit(interaction.follower);
+                //interaction.Close(true, true);
             }
-
-            // interaction.Close(true, true);
         }
+
+        // interaction.Close(true, true);
     }
 }
