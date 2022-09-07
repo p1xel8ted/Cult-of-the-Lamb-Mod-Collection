@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 namespace CultOfQoL;
@@ -35,8 +36,8 @@ public static class FollowerPatches
             CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, Array.Empty<string>());
             if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
             {
-                Plugin.L($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
-                instance.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
+                instance.follower = follower;
+                follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
             }
         });
         Plugin.L($"Resetting {follower.name} and sending to next task.");
@@ -54,6 +55,28 @@ public static class FollowerPatches
         ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
     }
 
+    private static IEnumerator GiveRewards(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType)
+    {
+        yield return DanceRoutine(follower, instance, previousTaskType);
+      //  yield return new WaitForSeconds(5f);
+        if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
+        {
+            Plugin.L($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
+            follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, delegate
+            {
+	            follower.Brain.Stats.Adoration = 0f;
+	            var info = follower.Brain.Info;
+	            var xplevel = info.XPLevel;
+	            info.XPLevel = xplevel + 1;
+	            var speedUpSequenceMultiplier = 0.75f;
+	            follower.AdorationUI.BarController.ShrinkBarToEmpty(2f * speedUpSequenceMultiplier);
+                follower.Dropped();
+                follower.ResetStateAnimations();
+                follower.Brain.ContinueToNextTask();
+            }, false));
+        }
+    }
+   
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
     [HarmonyWrapSafe]
@@ -87,7 +110,8 @@ public static class FollowerPatches
                     if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Imprisoned) continue;
-                    __instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                     //__instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                    __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
                 }
             }
         }

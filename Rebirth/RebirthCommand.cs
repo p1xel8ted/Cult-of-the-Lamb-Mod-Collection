@@ -29,35 +29,38 @@ namespace Rebirth
 
         public override string GetLockedDescription(Follower follower)
         {
+            TooOld = IsOld(follower);
             if (TooOld)
             {
                 return "Not enough life essence left to satisfy those below.";
             }
 
-            if (BornAgain)
-            {
-                return $"{follower.name} has already been born again!";
-            }
-
-            return string.Empty;
+            return "Yeah, you shouldn't be seeing this...";
         }
 
         private static bool TooOld { get; set; }
-        private static bool BornAgain { get; set; }
 
         public override bool IsAvailable(Follower follower)
         {
-            BornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
-
             TooOld = IsOld(follower);
-            BornAgain = BornAgainFollower is {BornAgain: true};
-
             if (TooOld)
             {
                 return false;
             }
 
-            return !BornAgain;
+            BornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
+            if (BornAgainFollower is {BornAgain: true})
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool ShouldAppearFor(Follower follower)
+        {
+            var bornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
+            return bornAgainFollower is {BornAgain: false};
         }
 
         private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
@@ -66,45 +69,46 @@ namespace Rebirth
         {
             return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
         }
-        
+
+
         private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
         {
             yield return DieRoutine(old);
             yield return new WaitForSeconds(3f);
             BiomeBaseManager.Instance.SpawnExistingRecruits = false;
             yield return new WaitForEndOfFrame();
-           // GameManager.GetInstance().OnConversationNew(false, false, false);
-            //GameManager.GetInstance().OnConversationNext(BiomeBaseManager.Instance.RecruitSpawnLocation);
+
             yield return new WaitForSeconds(3f);
             DataManager.Instance.Followers_Recruit.Add(f);
             FollowerManager.SpawnExistingRecruits(BiomeBaseManager.Instance.RecruitSpawnLocation.transform.position);
-            UnityEngine.Object.FindObjectOfType<FollowerRecruit>().ManualTriggerAnimateIn();
+            Object.FindObjectOfType<FollowerRecruit>().ManualTriggerAnimateIn();
             BiomeBaseManager.Instance.SpawnExistingRecruits = true;
             yield return new WaitForSeconds(2f);
-            //GameManager.GetInstance().OnConversationNext(BiomeBaseManager.Instance.RecruitSpawnLocation);
-            //yield return new WaitForSeconds(1f);
-            //GameManager.GetInstance().OnConversationEnd();
         }
 
 
-        private static void SpawnRecruit(Follower follower)
+        internal static void SpawnRecruit(Follower follower, bool bones = false)
         {
             BiomeBaseManager.Instance.SpawnExistingRecruits = true;
             NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
             var newXp = Mathf.CeilToInt(follower.Brain.Info.XPLevel / 2f);
-          // // follower.Die(NotificationCentre.NotificationType.None, force: true);
-          //  GameManager.GetInstance().StartCoroutine(DieRoutine(follower));
+
+
             var fi = FollowerInfo.NewCharacter(FollowerLocation.Base);
-           
+
             if (fi != null)
             {
                 GameManager.GetInstance().StartCoroutine(GiveFollowerIE(fi, follower));
                 Plugin.Log.LogWarning($"New follower: {fi.Name}");
                 var bornAgainFollower = new SaveData.BornAgainFollowerData(fi, true);
                 SaveData.SetBornAgainFollowerData(bornAgainFollower);
-                bornAgainFollower.FollowerInfo.XPLevel = newXp;
+
+                if (!bones)
+                {
+                    fi.XPLevel = newXp;
+                }
             }
             else
             {
@@ -126,26 +130,19 @@ namespace Rebirth
                 DataManager.Instance.Followers_Dead_IDs.RemoveAt(i);
             }
         }
-        
+
         private static IEnumerator DieRoutine(Follower follower)
         {
             follower.HideAllFollowerIcons();
             yield return new WaitForSeconds(0.5f);
-      
+
             follower.State.CURRENT_STATE = StateMachine.State.CustomAnimation;
-        
-            // yield return new WaitForSeconds(0.1f);
-            // follower.SetOutfit(FollowerOutfitType.Old, false, Thought.None);
+
             yield return new WaitForSeconds(1f);
             follower.SetBodyAnimation("wave", true);
             yield return new WaitForSeconds(0.75f);
-      //      yield return new WaitForSeconds(1.8f);
-            //follower.AddBodyAnimation("idle", false, 0f);
-           
-            //follower.State.CURRENT_STATE = StateMachine.State.Idle;
-            
+
             follower.Die(NotificationCentre.NotificationType.None, force: true);
-            yield break;
         }
 
 
@@ -154,10 +151,7 @@ namespace Rebirth
             if (finalCommand == FollowerCommands.AreYouSureYes)
             {
                 SpawnRecruit(interaction.follower);
-                //interaction.Close(true, true);
             }
         }
-
-        // interaction.Close(true, true);
     }
 }

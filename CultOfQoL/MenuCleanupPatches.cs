@@ -8,25 +8,6 @@ namespace CultOfQoL
 {
     public static class MenuCleanupPatches
     {
-        //thanks to IngoH for the better skip intros patch
-        [HarmonyPatch(typeof(LoadMainMenu), "RunSplashScreens")]
-        public class SplashScreenPatch
-        {
-            [HarmonyPrefix]
-            public static bool Prefix(LoadMainMenu __instance)
-            {
-                if (!Plugin.SkipIntros.Value) return true;
-                MMTransition.Play(MMTransition.TransitionType.ChangeSceneAutoResume, MMTransition.Effect.BlackFade, "Main Menu", 0f, "", null);
-                return false;
-
-            }
-
-            [HarmonyPostfix]
-            public static IEnumerator Postfix(IEnumerator enumerator, LoadMainMenu __instance)
-            {
-                yield break;
-            }
-        }
 
         [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
         public static class MainMenuStartPatches

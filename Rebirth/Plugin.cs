@@ -2,8 +2,8 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using System.IO;
+using BepInEx.Configuration;
 using COTL_API.CustomFollowerCommand;
-using COTL_API.Saves;
 
 namespace Rebirth
 {
@@ -19,20 +19,31 @@ namespace Rebirth
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);
         public static string PluginPath { get; private set; }
+        private static ConfigEntry<bool> _modEnabled;
 
         private void Awake()
         {
+            _modEnabled = Config.Bind("General", "Enabled", true, "Enable/disable this mod.");
+
             Log = Logger;
             Log.LogInfo($"Loaded {PluginName}!");
 
             PluginPath = Path.GetDirectoryName(Info.Location);
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
+            CustomFollowerCommandManager.Add(new RebirthSubCommand());
         }
 
         private void OnEnable()
         {
-            Harmony.PatchAll();
-            Log.LogInfo($"Loaded {PluginName}!");
+            if (_modEnabled.Value)
+            {
+                Harmony.PatchAll();
+                Log.LogInfo($"Loaded {PluginName}!");
+            }
+            else
+            {
+                Log.LogInfo($"{PluginName} is disabled in config!"); 
+            }
         }
 
         private void OnDisable()
