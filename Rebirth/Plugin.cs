@@ -4,6 +4,7 @@ using HarmonyLib;
 using System.IO;
 using BepInEx.Configuration;
 using COTL_API.CustomFollowerCommand;
+using COTL_API.CustomInventory;
 
 namespace Rebirth
 {
@@ -14,12 +15,14 @@ namespace Rebirth
     {
         internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
-        private const string PluginVer = "1.0.0";
+        private const string PluginVer = "0.1";
 
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);
         public static string PluginPath { get; private set; }
         private static ConfigEntry<bool> _modEnabled;
+        //public static AssetBundle Assets { get; private set; }
+        public static InventoryItem.ITEM_TYPE RebirthItem { get; private set; }
 
         private void Awake()
         {
@@ -29,8 +32,12 @@ namespace Rebirth
             Log.LogInfo($"Loaded {PluginName}!");
 
             PluginPath = Path.GetDirectoryName(Info.Location);
+            // Assets = AssetBundle.LoadFromFile(Path.Combine(PluginPath!, "assets", "rebirth", "rebirth"));
+           // Assets.Unload(false);
+            
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
             CustomFollowerCommandManager.Add(new RebirthSubCommand());
+            RebirthItem = CustomItemManager.Add(new RebirthItem());
         }
 
         private void OnEnable()

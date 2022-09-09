@@ -6,28 +6,36 @@ namespace CultOfQoL
 {
     internal static class StructurePatches
     {
-        
         [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.LifeSpawn), MethodType.Getter)]
         public static class StructuresLumberjackStationGetAgePatches
         {
             [HarmonyPostfix]
-            public static void Postfix(ref int __result)
+            public static void Postfix(Structures_LumberjackStation __instance, ref int __result)
             {
-                if (!Plugin.DoubleLifespanInstead.Value) return;
+                if (Plugin.LumberAndMiningStationsDontAge.Value) return;
                 var old = __result;
-                var newSpan = old * 2;
+                var newSpan = 0; 
                 __result = newSpan;
-                if (!Plugin.LumberAndMiningStationsDontAge.Value)
+                
+                if (Plugin.DoubleLifespanInstead.Value)
                 {
-                    Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}");
+                    newSpan = old * 2;
+                    __result *= 2;
+                    Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
+                    return;
                 }
-
+                if (Plugin.FiftyPercentIncreaseToLifespanInstead.Value)
+                {
+                    newSpan = (int) (old * 1.5f);
+                    __result = newSpan;
+                    Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
+                  
+                }
+                
             }
         }
-        
-  
-            
-                 
+
+
         [HarmonyPatch(typeof(PropagandaSpeaker), nameof(PropagandaSpeaker.Update))]
         public static class PropagandaSpeakerUpdate
         {
@@ -39,17 +47,17 @@ namespace CultOfQoL
                 {
                     __instance.OnEnable();
                 }
+
                 if (!TimeManager.IsNight) return;
-                
+
                 __instance.Spine.AnimationState.SetAnimation(0, "off", true);
                 AudioManager.Instance.StopLoop(__instance.loopedInstance);
                 __instance.VOPlaying = false;
-               // Plugin.L($"Night time! Turning speakers off! Sleep well, little followers!");
+                // Plugin.L($"Night time! Turning speakers off! Sleep well, little followers!");
                 __instance.OnDisable();
-                
             }
         }
-        
+
         [HarmonyPatch(typeof(Structures_PropagandaSpeaker), nameof(Structures_PropagandaSpeaker.OnNewPhaseStarted))]
         public static class StructuresFullUpdate
         {
@@ -60,24 +68,22 @@ namespace CultOfQoL
                 return !TimeManager.IsNight;
             }
         }
-        
-        
+
+
         [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.IncreaseAge))]
         public static class StructuresLumberjackStationAgePatches
         {
             [HarmonyPostfix]
             public static void Postfix(ref Structures_LumberjackStation __instance)
             {
-              
-               if (!Plugin.LumberAndMiningStationsDontAge.Value) return;
-                
+                if (!Plugin.LumberAndMiningStationsDontAge.Value) return;
+
                 __instance.Data.Age = 0;
                 Plugin.L($"Resetting age of lumber/mining station to 0!");
-
             }
         }
-        
-        
+
+
         [HarmonyPatch(typeof(Structures_Bed), MethodType.Constructor)]
         public static class StructuresBedSoulMax
         {
@@ -86,11 +92,10 @@ namespace CultOfQoL
             {
                 if (!Plugin.DoubleSoulCapacity.Value) return;
                 __instance.SoulMax *= 2;
-
             }
         }
+        //TODO: Fix these ShrineMaxes, some dont work.
 
-        
         [HarmonyPatch(typeof(Structures_Shrine), "SoulMax", MethodType.Getter)]
         [HarmonyPatch(typeof(Structures_Shrine_Misfit), "SoulMax", MethodType.Getter)]
         [HarmonyPatch(typeof(Structures_Shrine_Passive), "SoulMax", MethodType.Getter)]
@@ -102,10 +107,9 @@ namespace CultOfQoL
             {
                 if (!Plugin.DoubleSoulCapacity.Value) return;
                 __result *= 2;
-
             }
         }
-  
+
         //original author is Matthew-X, I just refactored.
         [HarmonyPatch(typeof(Structures_SiloFertiliser), MethodType.Constructor)]
         public static class StructuresSiloFertiliserBrain
@@ -115,10 +119,9 @@ namespace CultOfQoL
             {
                 if (!Plugin.JustRightSiloCapacity.Value) return;
                 __instance.Capacity = 32f;
-
             }
         }
-        
+
         //original author is Matthew-X, I just refactored.
         [HarmonyPatch(typeof(Structures_SiloSeed), MethodType.Constructor)]
         public static class StructureBrainCreateBrainPatches
@@ -128,10 +131,9 @@ namespace CultOfQoL
             {
                 if (!Plugin.JustRightSiloCapacity.Value) return;
                 __instance.Capacity = 32f;
-
             }
         }
-        
+
         [HarmonyPatch(typeof(Structures_Refinery), nameof(Structures_Refinery.GetCost), typeof(InventoryItem.ITEM_TYPE))]
         public static class RefineryItemCheckCanAffordPatches
         {

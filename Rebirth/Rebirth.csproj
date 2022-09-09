@@ -1,25 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <ReleaseVersion>1.0.0</ReleaseVersion>
+        <AssemblyVersion>0.1</AssemblyVersion>
+        <ReleaseVersion>0.1</ReleaseVersion>
         <Description></Description>
         <Authors>p1xel8ted</Authors>
         <PackageId>Rebirth</PackageId>
         <Title>Rebirth</Title>
         <PackageIcon>rebirth_command.png</PackageIcon>
-        <FileVersion>1.0.0</FileVersion>
+        <FileVersion>0.1</FileVersion>
+        <PackageVersion>0.1</PackageVersion>
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
 
     <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-r.1" />
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-r.*" />
         <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" Private="false" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Assembly-CSharp">
-        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp.dll</HintPath>
-      </Reference>
     </ItemGroup>
 </Project>

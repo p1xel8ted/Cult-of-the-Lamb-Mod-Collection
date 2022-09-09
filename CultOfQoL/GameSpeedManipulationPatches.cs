@@ -9,12 +9,11 @@ namespace CultOfQoL
         private static float _newGameSpeed;
         private static int _newSpeed;
 
-
         [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.Simulate), typeof(float))]
         public static class TimeManagerSimulatePatch
         {
             [HarmonyPrefix]
-            public static void Postfix(ref float deltaGameTime)
+            public static void Prefix(ref float deltaGameTime)
             {
                 if (Plugin.SlowDownTime.Value)
                 {
@@ -31,7 +30,7 @@ namespace CultOfQoL
         public static class GameManagerUpdatePatches
         {
             [HarmonyPostfix]
-            public static void Postfix(GameManager __instance, ref int ___CurrentGameSpeed)
+            public static void Postfix(GameManager __instance)
             {
                 if (__instance is null) return;
                 if (Plugin.SlowDownTime.Value && !_timeMessageShown)
@@ -40,6 +39,7 @@ namespace CultOfQoL
                     NotificationCentre.Instance.PlayGenericNotification($"Slow down time enabled at {Plugin.SlowDownTimeMultiplier.Value}x.");
                 }
 
+               
                 if (!Plugin.EnableGameSpeedManipulation.Value) return;
                 var gameSpeedShort = new List<float>
                 {
@@ -80,7 +80,7 @@ namespace CultOfQoL
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     
-                    ___CurrentGameSpeed = 1;
+                    __instance.CurrentGameSpeed = 1;
                     _newGameSpeed = 1;
                     GameManager.SetTimeScale(1);
                     NotificationCentre.Instance.PlayGenericNotification($"Returned game speed to 1 (default)"
@@ -89,18 +89,18 @@ namespace CultOfQoL
                 }
                 if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    num = ___CurrentGameSpeed + 1;
+                    num = __instance.CurrentGameSpeed + 1;
                     if (Plugin.ShortenGameSpeedIncrements.Value)
                     {
-                        ___CurrentGameSpeed = num % gameSpeedShort.Count;
+                        __instance.CurrentGameSpeed = num % gameSpeedShort.Count;
                         _newSpeed  = num % gameSpeedShort.Count;
-                        _newGameSpeed = gameSpeedShort[___CurrentGameSpeed];   
+                        _newGameSpeed = gameSpeedShort[__instance.CurrentGameSpeed];   
                     }
                     else
                     {
-                        ___CurrentGameSpeed = num % gameSpeed.Count;
+                        __instance.CurrentGameSpeed = num % gameSpeed.Count;
                         _newSpeed  = num % gameSpeed.Count;
-                        _newGameSpeed = gameSpeed[___CurrentGameSpeed];
+                        _newGameSpeed = gameSpeed[__instance.CurrentGameSpeed];
                     }
 
                     GameManager.SetTimeScale(_newGameSpeed);
@@ -111,18 +111,18 @@ namespace CultOfQoL
                 }
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    num = ___CurrentGameSpeed - 1;
+                    num = __instance.CurrentGameSpeed - 1;
                     if (Plugin.ShortenGameSpeedIncrements.Value)
                     {
-                        ___CurrentGameSpeed = num % gameSpeedShort.Count;
+                        __instance.CurrentGameSpeed = num % gameSpeedShort.Count;
                         _newSpeed  = num % gameSpeedShort.Count;
-                        _newGameSpeed = gameSpeedShort[___CurrentGameSpeed];   
+                        _newGameSpeed = gameSpeedShort[__instance.CurrentGameSpeed];   
                     }
                     else
                     {
-                        ___CurrentGameSpeed = num % gameSpeed.Count;
+                        __instance.CurrentGameSpeed = num % gameSpeed.Count;
                         _newSpeed  = num % gameSpeed.Count;
-                        _newGameSpeed = gameSpeed[___CurrentGameSpeed];
+                        _newGameSpeed = gameSpeed[__instance.CurrentGameSpeed];
                     }
 
                     GameManager.SetTimeScale(_newGameSpeed);
@@ -134,7 +134,7 @@ namespace CultOfQoL
                 if(_newGameSpeed <= 0 || _newSpeed <= 0) return;
                 
                 GameManager.SetTimeScale(_newGameSpeed);
-                ___CurrentGameSpeed = _newSpeed;
+                __instance.CurrentGameSpeed = _newSpeed;
             }
         }
     }

@@ -17,7 +17,7 @@
     <Import Project="..\CultOfTheLambMods.Common.props" />
 
     <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-*" />
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-*" />
     </ItemGroup>
 
     <ItemGroup>

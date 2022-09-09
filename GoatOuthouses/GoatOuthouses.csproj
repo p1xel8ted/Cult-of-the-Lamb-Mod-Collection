@@ -17,10 +17,4 @@
     <ItemGroup>
         <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-r.1" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Assembly-CSharp">
-        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp.dll</HintPath>
-      </Reference>
-    </ItemGroup>
 </Project>

@@ -36,9 +36,12 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> SlowDownTime;
         internal static ConfigEntry<float> SlowDownTimeMultiplier;
         internal static ConfigEntry<bool> DoubleLifespanInstead;
+        internal static ConfigEntry<bool> DisableGameOver;
         
         private static ConfigEntry<bool> _modEnabled;
         internal static ConfigEntry<bool> TurnOffSpeakersAtNight;
+        internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck;
+        internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead;
 
        
         private void Awake()
@@ -62,11 +65,14 @@ namespace CultOfQoL
             AdjustRefineryRequirements = Config.Bind("Game Mechanics", "Adjust Refinery Requirements", true, "Where possible, halves the materials needed to convert items in the refinery. Rounds up.");
             BulkInspireAndExtort = Config.Bind("Game Mechanics", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
             EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
+            DisableGameOver = Config.Bind("Game Mechanics", "No More Game-Over", false, "Disables the game over function when you have 0 followers for consecutive days.");
+            ThriceMultiplyTarotCardLuck = Config.Bind("Game Mechanics", "3x Tarot Luck", false, "Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards. ");
             
             //Lumber/mining
-            LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse.");
-            DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", true, "Doubles the life span of lumber/mining stations. This setting has no effect if the above is true.");
-
+            LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse. Takes 1st priority.");
+            DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", false, "Doubles the life span of lumber/mining stations. Takes 2nd priority.");
+            FiftyPercentIncreaseToLifespanInstead = Config.Bind("Lumber/Mine Mods", "Add 50% to Life Span Instead", true, "For when double is too long for your tastes. This will extend their life by 50% instead of 100%. Takes 3rd priority.");
+            
             //Propaganda
             TurnOffSpeakersAtNight = Config.Bind("Propaganda Mods", "Turn Off Speakers At Night", true, "Turns the speakers off, and stops fuel consumption at night time.");
             
@@ -75,7 +81,7 @@ namespace CultOfQoL
             ShortenGameSpeedIncrements = Config.Bind("Speed", "Shorten Game Speed Increments", false, "Increments in steps of 1, instead of 0.25.");
             FastCollecting = Config.Bind("Speed", "Speed Up Collection", true, "Increases the rate you can collect from the shrines, and other structures.");
             SlowDownTime = Config.Bind("Speed", "Slow Down Time", true, "Enables the ability to slow down time. This is different to the increase speed implementation. This will make the days longer, but not slow down animations.");
-            SlowDownTimeMultiplier = Config.Bind("Speed", "Slow Down Time Multiplier", 2f, "Increases the rate you can collect from the shrines, and other structures.");
+            SlowDownTimeMultiplier = Config.Bind("Speed", "Slow Down Time Multiplier", 2f, "The multiplier to use for slow down time. For example, the default value of 2 is making the day twice as long.");
                 
             //Capacity
             JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
@@ -85,9 +91,15 @@ namespace CultOfQoL
         
         private void OnEnable()
         {
-            if (!_modEnabled.Value) return;
-            Harmony.PatchAll();
-            L($"Loaded {PluginName}!");
+            if (_modEnabled.Value)
+            {
+                Harmony.PatchAll();
+                Log.LogInfo($"Loaded {PluginName}!");
+            }
+            else
+            {
+                Log.LogInfo($"{PluginName} is disabled in config!"); 
+            }
         }
 
         private void OnDisable()

@@ -25,7 +25,7 @@ internal static class TwitchJunk
                 StructureBrain.TYPES.DECORATION_TWITCH_WOODEN_GUARDIAN
             };
 
-            var twitchSkins = new List<string>(2) { "TwitchCat", "TwitchMouse" };
+            var twitchSkins = new List<string>(5) { "TwitchCat", "TwitchMouse", "TwitchPoggers", "TwitchDog", "TwitchDogAlt"};
 
             if (Plugin.UnlockTwitchStuff.Value)
             {

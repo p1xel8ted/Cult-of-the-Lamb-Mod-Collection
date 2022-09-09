@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShamurasRevenge", "Shamuras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoatOuthouses", "GoatOuthouses\GoatOuthouses.csproj", "{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{8AEFB8DA-7C1C-4AC4-B891-85596BAA198D}"
+	ProjectSection(SolutionItems) = preProject
+		lib\Assembly-CSharp-nstrip.dll = lib\Assembly-CSharp-nstrip.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

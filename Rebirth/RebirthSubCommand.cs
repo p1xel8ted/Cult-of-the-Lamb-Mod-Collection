@@ -8,7 +8,7 @@ namespace Rebirth
 {
     internal class RebirthSubCommand : CustomFollowerCommand
     {
-        private const InventoryItem.ITEM_TYPE Item = InventoryItem.ITEM_TYPE.BONE;
+        private static readonly InventoryItem.ITEM_TYPE Item = Plugin.RebirthItem;
         private const int ItemQty = 25;
         public override string InternalName => "REBIRTH_SUB_COMMAND";
 
@@ -16,7 +16,7 @@ namespace Rebirth
 
         public override string GetTitle(Follower follower)
         {
-            return $"Rebirth for {ItemQty} " + "<sprite name=\"icon_bones\">";
+            return $"Rebirth for {ItemQty} talismans.";
         }
 
         public RebirthSubCommand()
@@ -26,12 +26,12 @@ namespace Rebirth
 
         public override string GetDescription(Follower follower)
         {
-            return "Doesn't matter whose...";
+            return "Perform a Rebirth using special talismans ripped from the corpses of your enemies.";
         }
 
         public override string GetLockedDescription(Follower follower)
         {
-            return Inventory.GetItemQuantity(Item) < ItemQty  ? $"You don't have enough bones to perform this action. Come back when you have {ItemQty} bones!" : string.Empty;
+            return "Requires 25 Rebirth talismans to perform.";
         }
 
         public override bool ShouldAppearFor(Follower follower)
@@ -49,7 +49,7 @@ namespace Rebirth
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
             if (finalCommand != FollowerCommands.AreYouSureYes) return;
-            RebirthFollowerCommand.SpawnRecruit(interaction.follower,true);
+            RebirthFollowerCommand.SpawnRecruit(interaction.follower);
             Inventory.ChangeItemQuantity(Item,-ItemQty);
         }
     }

@@ -24,7 +24,7 @@ namespace Rebirth
 
         public override string GetDescription(Follower follower)
         {
-            return "Tired of looking at this sheep? Order a rebirth!";
+            return "This follower getting you down? Order a rebirth!";
         }
 
         public override string GetLockedDescription(Follower follower)
@@ -42,6 +42,7 @@ namespace Rebirth
 
         public override bool IsAvailable(Follower follower)
         {
+            
             TooOld = IsOld(follower);
             if (TooOld)
             {
@@ -70,6 +71,11 @@ namespace Rebirth
             return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
         }
 
+        private static bool DoHalfStats()
+        {
+            return Random.Range(0f, 1f) <= 0.2f;
+        }
+
 
         private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
         {
@@ -87,14 +93,14 @@ namespace Rebirth
         }
 
 
-        internal static void SpawnRecruit(Follower follower, bool bones = false)
+        internal static void SpawnRecruit(Follower follower)
         {
             BiomeBaseManager.Instance.SpawnExistingRecruits = true;
             NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
             var newXp = Mathf.CeilToInt(follower.Brain.Info.XPLevel / 2f);
-
+            var halfXp = DoHalfStats();
 
             var fi = FollowerInfo.NewCharacter(FollowerLocation.Base);
 
@@ -105,7 +111,7 @@ namespace Rebirth
                 var bornAgainFollower = new SaveData.BornAgainFollowerData(fi, true);
                 SaveData.SetBornAgainFollowerData(bornAgainFollower);
 
-                if (!bones)
+                if (halfXp)
                 {
                     fi.XPLevel = newXp;
                 }
@@ -116,8 +122,19 @@ namespace Rebirth
             }
 
             NotificationCentre.NotificationsEnabled = true;
-            NotificationCentreScreen.Play($"{name} died to be reborn! All hail {name}!");
+
+            GameManager.GetInstance().StartCoroutine(ShowMessages(name, halfXp));
             RemoveFromDeadLists(oldId);
+        }
+
+        private static IEnumerator ShowMessages(string name, bool halfXp)
+        {
+            NotificationCentreScreen.Play($"{name} died to be reborn! All hail {name}!");
+            yield return new WaitForSeconds(5f);
+            if (!halfXp) yield break;
+            NotificationCentre.Instance.PlayGenericNotification($"Oh no! {name} lost half of their XP during Rebirth!");
+            yield return new WaitForSeconds(3f);
+
         }
 
         //this is stop being able to resurrect the old dead body of a born-again follower
@@ -148,8 +165,10 @@ namespace Rebirth
 
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
+            
             if (finalCommand == FollowerCommands.AreYouSureYes)
             {
+                
                 SpawnRecruit(interaction.follower);
             }
         }
