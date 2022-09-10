@@ -1,4 +1,4 @@
-![Rebirth Logo](https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/blob/e197c9e251b87b5f2602deec890eacbcad7a4c53/thunderstore/icon.png?raw=true)
+![Rebirth Logo](https://raw.githubusercontent.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/dd8e32aed18a1d789ff8e24e59a21f786620bc94/thunderstore/rebirth/icon.png?raw=true)
 
 # Rebirth
 
