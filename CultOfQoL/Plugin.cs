@@ -42,7 +42,9 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> TurnOffSpeakersAtNight;
         internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck;
         internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead;
-     
+        
+        internal static ConfigEntry<bool> EnableAutoInteract;
+
         private void Awake()
         {
             Log = new ManualLogSource("Cult-of-QoL-Collection");
@@ -81,7 +83,8 @@ namespace CultOfQoL
             FastCollecting = Config.Bind("Speed", "Speed Up Collection", true, "Increases the rate you can collect from the shrines, and other structures.");
             SlowDownTime = Config.Bind("Speed", "Slow Down Time", true, "Enables the ability to slow down time. This is different to the increase speed implementation. This will make the days longer, but not slow down animations.");
             SlowDownTimeMultiplier = Config.Bind("Speed", "Slow Down Time Multiplier", 2f, "The multiplier to use for slow down time. For example, the default value of 2 is making the day twice as long.");
-                
+            EnableAutoInteract = Config.Bind("Speed", "Enable Auto Interact (Chests)", false, "Makes chests automatically send you the resources when you're nearby.");
+
             //Capacity
             JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
             DoubleSoulCapacity = Config.Bind("Capacity", "Double Soul Capacity", true, "Doubles the soul capacity of applicable structures.");

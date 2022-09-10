@@ -31,6 +31,11 @@ namespace Rebirth
 
         public override string GetLockedDescription(Follower follower)
         {
+            Helper.TooOld = Helper.IsOld(follower);
+            if (Helper.TooOld)
+            {
+                return "Not enough life essence left to satisfy those below.";
+            }
             return "Requires 25 Rebirth tokens to perform.";
         }
 
@@ -42,6 +47,13 @@ namespace Rebirth
 
         public override bool IsAvailable(Follower follower)
         {
+            
+            Helper.TooOld = Helper.IsOld(follower);
+            if (Helper.TooOld)
+            {
+                return false;
+            }
+
             return Inventory.GetItemQuantity((int)Plugin.RebirthItem) >= ItemQty;
         }
 

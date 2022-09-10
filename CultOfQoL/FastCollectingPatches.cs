@@ -110,10 +110,62 @@ public static class FastCollectingPatches
 
             return codes.AsEnumerable();
         }
+        
+        [HarmonyPatch(typeof(FarmStation), "Update")]
+        [HarmonyPrefix]
+        public static void FarmStationPrefix(ref Interaction_CollectResourceChest __instance)
+        {
+            if (Plugin.EnableAutoInteract.Value)
+            {
+                __instance.HoldToInteract = false;
+                __instance.ContinuouslyHold = false;
+                __instance.AutomaticallyInteract = true;
+            }
+        }
 
+        [HarmonyPatch(typeof(Interaction_CollectResourceChest), "Update")]
+        [HarmonyPrefix]
+        public static void InteractionCollectResourceChestPrefix(ref Interaction_CollectResourceChest __instance)
+        {
+            if (Plugin.EnableAutoInteract.Value)
+            {
+                __instance.HoldToInteract = false;
+                __instance.ContinuouslyHold = false;
+                __instance.AutomaticallyInteract = true;
+                
+            }
+        }
+        
+        [HarmonyPatch(typeof(Interaction_CollectedResources), "Update")]
+        [HarmonyPrefix]
+        public static void InteractionCollectdResourcePrefix(ref Interaction_CollectedResources __instance)
+        {
+            if (Plugin.EnableAutoInteract.Value)
+            {
+                __instance.HoldToInteract = false;
+                __instance.ContinuouslyHold = false;
+                __instance.AutomaticallyInteract = true;
+                
+            }
+        }
+        
+        [HarmonyPatch(typeof(LumberjackStation), "Update")]
+        [HarmonyPrefix]
+        public static void LumberjackStationPrefix(ref LumberjackStation __instance)
+        {
+            if (Plugin.EnableAutoInteract.Value)
+            {
+                __instance.HoldToInteract = false;
+                __instance.ContinuouslyHold = false;
+                __instance.AutomaticallyInteract = true;
+                
+            }
+        }
+        
         //collection speed for Interaction_CollectResourceChest - default speed is 0.1f
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
+        [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
         public static IEnumerable<CodeInstruction> InteractionCollectResourceChestTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
         {
             var delayField = AccessTools.Field(originalMethod.GetRealDeclaringType(), "Delay");
@@ -126,7 +178,10 @@ public static class FastCollectingPatches
                 if (codes[i].opcode == OpCodes.Call && codes[i + 1].opcode == OpCodes.Ldarg_0 && codes[i + 2].opcode == OpCodes.Ldc_R4 && codes[i + 3].opcode == OpCodes.Stfld && codes[i + 3].operand.Equals(delayField))
                 {
                     editIndex = i + 2;
-
+                    if (originalMethod.GetRealDeclaringType().Name.Contains("Lumber"))
+                    {
+                        newValue = 0.025f;
+                    }
                     codes[editIndex].operand = newValue;
 
                     break;

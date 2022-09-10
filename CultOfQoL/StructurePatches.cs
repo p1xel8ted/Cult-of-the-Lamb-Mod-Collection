@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using UnityEngine;
 
@@ -96,13 +97,15 @@ namespace CultOfQoL
         }
         //TODO: Fix these ShrineMaxes, some dont work.
 
-        [HarmonyPatch(typeof(Structures_Shrine), "SoulMax", MethodType.Getter)]
-        [HarmonyPatch(typeof(Structures_Shrine_Misfit), "SoulMax", MethodType.Getter)]
-        [HarmonyPatch(typeof(Structures_Shrine_Passive), "SoulMax", MethodType.Getter)]
-        [HarmonyPatch(typeof(Structures_Shrine_Ratau), "SoulMax", MethodType.Getter)]
+    
+        [HarmonyPatch(typeof(Structures_Shrine), nameof(Structures_Shrine.SoulMax), MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine_Misfit), nameof(Structures_Shrine_Misfit.SoulMax), MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine_Passive), nameof(Structures_Shrine_Passive.SoulMax), MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine_Ratau), nameof(Structures_Shrine_Ratau.SoulMax), MethodType.Getter)]
         public static class StructuresShrinesSoulMax
         {
             [HarmonyPostfix]
+            [MethodImpl(MethodImplOptions.NoInlining)]
             public static void Postfix(ref int __result)
             {
                 if (!Plugin.DoubleSoulCapacity.Value) return;

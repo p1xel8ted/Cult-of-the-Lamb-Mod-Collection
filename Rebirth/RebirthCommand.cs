@@ -29,8 +29,8 @@ namespace Rebirth
 
         public override string GetLockedDescription(Follower follower)
         {
-            TooOld = IsOld(follower);
-            if (TooOld)
+            Helper.TooOld = Helper.IsOld(follower);
+            if (Helper.TooOld)
             {
                 return "Not enough life essence left to satisfy those below.";
             }
@@ -38,13 +38,13 @@ namespace Rebirth
             return "Yeah, you shouldn't be seeing this...";
         }
 
-        private static bool TooOld { get; set; }
+       
 
         public override bool IsAvailable(Follower follower)
         {
             
-            TooOld = IsOld(follower);
-            if (TooOld)
+            Helper.TooOld = Helper.IsOld(follower);
+            if (Helper.TooOld)
             {
                 return false;
             }
@@ -66,15 +66,7 @@ namespace Rebirth
 
         private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
 
-        private static bool IsOld(Follower follower)
-        {
-            return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
-        }
-
-        private static bool DoHalfStats()
-        {
-            return Random.Range(0f, 1f) <= 0.2f;
-        }
+ 
         
         private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
         {
@@ -100,7 +92,7 @@ namespace Rebirth
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
             var newXp = Mathf.CeilToInt(follower.Brain.Info.XPLevel / 2f);
-            var halfXp = DoHalfStats();
+            var halfXp = Helper.DoHalfStats();
 
             var fi = FollowerInfo.NewCharacter(FollowerLocation.Base);
 

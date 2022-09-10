@@ -50,6 +50,13 @@ Feel free to reach out to me on the channel below.
 
 ## Changelog
 
+### 1.8.0 - 11/09/2022
+
+* Lumberjack stations now have their loot speed increased when collecting from the chest. Its not totally 0, because it makes the animations look like junk.
+* Added option for chests to make them no longer require the button to be held down.
+* Added option for chests to enable them to automatically give you the loot when you're nearby.
+
+
 ### 1.7.0 - 10/09/2022
 
 * Added option to multiply your tarot card draw luck by 3. This doesnt mean every draw will be a rare+, you just have a higher chance of drawing one (goes from around 20% to 60%).

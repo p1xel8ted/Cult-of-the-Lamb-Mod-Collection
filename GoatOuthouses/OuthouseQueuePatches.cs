@@ -166,5 +166,22 @@ namespace GoatOuthouses
                 __result = _theToilet.InteractionOuthouse;
             }
         }
+        
+        [HarmonyPatch(typeof(Interaction_Outhouse), "Update")]
+        [HarmonyPrefix]
+        public static void InteractionOuthousePrefix(ref Interaction_Outhouse __instance)
+        {
+           // if (Plugin.DisableHoldToCollect.Value)
+           // {
+                __instance.ContinuouslyHold = false;
+                __instance.HoldToInteract = false;
+           // }
+
+           // if (Plugin.EnableAutoInteract.Value)
+           // {
+                __instance.ActivateDistance = 5f;
+                __instance.AutomaticallyInteract = true;
+           // }
+        }
     }
 }

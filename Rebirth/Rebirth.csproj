@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>0.1</AssemblyVersion>
+        <AssemblyVersion>0.1.1</AssemblyVersion>
         <ReleaseVersion>0.1</ReleaseVersion>
         <Description></Description>
         <Authors>p1xel8ted</Authors>
         <PackageId>Rebirth</PackageId>
         <Title>Rebirth</Title>
         <PackageIcon>rebirth_command.png</PackageIcon>
-        <FileVersion>0.1</FileVersion>
-        <PackageVersion>0.1</PackageVersion>
+        <FileVersion>0.1.1</FileVersion>
+        <PackageVersion>0.1.1</PackageVersion>
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
