@@ -76,7 +76,8 @@ public static class FollowerPatches
             }, false));
         }
     }
-   
+
+    
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
     [HarmonyWrapSafe]
@@ -153,4 +154,6 @@ public static class FollowerPatches
             }
         }
     }
+    
+    
 }

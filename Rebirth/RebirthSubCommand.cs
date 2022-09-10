@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Rebirth
 {
     internal class RebirthSubCommand : CustomFollowerCommand
     {
-        private static readonly InventoryItem.ITEM_TYPE Item = Plugin.RebirthItem;
         private const int ItemQty = 25;
         public override string InternalName => "REBIRTH_SUB_COMMAND";
 
@@ -16,7 +16,7 @@ namespace Rebirth
 
         public override string GetTitle(Follower follower)
         {
-            return $"Rebirth for {ItemQty} talismans.";
+            return $"Rebirth for {ItemQty} tokens.";
         }
 
         public RebirthSubCommand()
@@ -26,12 +26,12 @@ namespace Rebirth
 
         public override string GetDescription(Follower follower)
         {
-            return "Perform a Rebirth using special talismans ripped from the corpses of your enemies.";
+            return "Perform a Rebirth using special tokens obtained while on crusades.";
         }
 
         public override string GetLockedDescription(Follower follower)
         {
-            return "Requires 25 Rebirth talismans to perform.";
+            return "Requires 25 Rebirth tokens to perform.";
         }
 
         public override bool ShouldAppearFor(Follower follower)
@@ -42,7 +42,7 @@ namespace Rebirth
 
         public override bool IsAvailable(Follower follower)
         {
-            return Inventory.GetItemQuantity(Item) >= ItemQty;
+            return Inventory.GetItemQuantity((int)Plugin.RebirthItem) >= ItemQty;
         }
 
 
@@ -50,7 +50,7 @@ namespace Rebirth
         {
             if (finalCommand != FollowerCommands.AreYouSureYes) return;
             RebirthFollowerCommand.SpawnRecruit(interaction.follower);
-            Inventory.ChangeItemQuantity(Item,-ItemQty);
+            Inventory.ChangeItemQuantity(Plugin.RebirthItem,-ItemQty);
         }
     }
 }

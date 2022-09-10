@@ -17,8 +17,11 @@
 * Turn off propaganda speakers of a night. Despite the flame being on, they don't use fuel. Working on the flame part.
 * Make the days longer. The default is 2x, and that already feels long.
 * Manipulate game speed, or halt it. Not to be confused with day length, this makes EVERYTHING faster.). Left/Right arrow keys to change, default speed is the up key.
+* Disable game over mechanic.
+* Multiple tarot rare draw chance multiplier by 3 (goes from around 20% to 60%).
+* Lumber/stone mines life span can be increased by 50%, 100% or unlimited.
 
-Each mod can be enabled/disabled individually from within the config.
+Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
 ## Installation
 
@@ -40,7 +43,19 @@ Feel free to reach out to me on the channel below.
 * p1xel8ted
 * Matthew-X
 
+## Known Issues
+
+* Speeding up time can break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
+* Doubling shrine capacitiy isnt working on main shrines.
+
 ## Changelog
+
+### 1.7.0 - 10/09/2022
+
+* Added option to multiply your tarot card draw luck by 3. This doesnt mean every draw will be a rare+, you just have a higher chance of drawing one (goes from around 20% to 60%).
+* Added option to disable the game over mechanic (user request).
+* Added option to increase lifespan of lumber/mines by 50%, as 100% felt way too long.
+* After being inspired with inspire all, any remaining glowy eyed followers should now level as well.
 
 ### 1.6.0 - 05/09/2022
 

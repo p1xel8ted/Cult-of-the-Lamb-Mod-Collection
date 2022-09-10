@@ -10,7 +10,7 @@ namespace CultOfQoL
     {
         private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
         private const string PluginName = "Cult of QoL Collection";
-        private const string PluginVer = "1.6.1";
+        private const string PluginVer = "1.7";
 
         internal static ManualLogSource Log;
         private static readonly Harmony Harmony = new(PluginGuid);
@@ -42,8 +42,7 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> TurnOffSpeakersAtNight;
         internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck;
         internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead;
-
-       
+     
         private void Awake()
         {
             Log = new ManualLogSource("Cult-of-QoL-Collection");
@@ -66,8 +65,8 @@ namespace CultOfQoL
             BulkInspireAndExtort = Config.Bind("Game Mechanics", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
             EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
             DisableGameOver = Config.Bind("Game Mechanics", "No More Game-Over", false, "Disables the game over function when you have 0 followers for consecutive days.");
-            ThriceMultiplyTarotCardLuck = Config.Bind("Game Mechanics", "3x Tarot Luck", false, "Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards. ");
-            
+            ThriceMultiplyTarotCardLuck = Config.Bind("Game Mechanics", "3x Tarot Luck", true, "Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards.");
+
             //Lumber/mining
             LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse. Takes 1st priority.");
             DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", false, "Doubles the life span of lumber/mining stations. Takes 2nd priority.");

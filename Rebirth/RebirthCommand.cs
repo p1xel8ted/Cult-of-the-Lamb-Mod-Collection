@@ -75,11 +75,11 @@ namespace Rebirth
         {
             return Random.Range(0f, 1f) <= 0.2f;
         }
-
-
+        
         private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
         {
-            yield return DieRoutine(old);
+           yield return DieRoutine(old);
+
             yield return new WaitForSeconds(3f);
             BiomeBaseManager.Instance.SpawnExistingRecruits = false;
             yield return new WaitForEndOfFrame();
@@ -129,6 +129,7 @@ namespace Rebirth
 
         private static IEnumerator ShowMessages(string name, bool halfXp)
         {
+            yield return new WaitForSeconds(3f);
             NotificationCentreScreen.Play($"{name} died to be reborn! All hail {name}!");
             yield return new WaitForSeconds(5f);
             if (!halfXp) yield break;

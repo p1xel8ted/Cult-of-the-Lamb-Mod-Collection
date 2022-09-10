@@ -5,6 +5,7 @@ using System.IO;
 using BepInEx.Configuration;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.CustomInventory;
+using UnityEngine;
 
 namespace Rebirth
 {
@@ -31,13 +32,14 @@ namespace Rebirth
             Log = Logger;
             Log.LogInfo($"Loaded {PluginName}!");
 
-            PluginPath = Path.GetDirectoryName(Info.Location);
-            // Assets = AssetBundle.LoadFromFile(Path.Combine(PluginPath!, "assets", "rebirth", "rebirth"));
-           // Assets.Unload(false);
+            PluginPath = Path.GetDirectoryName(Info.Location); 
+           // Assets = AssetBundle.LoadFromFile(Path.Combine(PluginPath!, "assets", "rebirth", "rebirth"));
+            //Assets.Unload(false);
             
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
             CustomFollowerCommandManager.Add(new RebirthSubCommand());
             RebirthItem = CustomItemManager.Add(new RebirthItem());
+            
         }
 
         private void OnEnable()

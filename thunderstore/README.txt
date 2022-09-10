@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.7.0 - 10/09/2022
+
+* Added option to multiply your tarot card draw luck by 3. This doesnt mean every draw will be a rare+, you just have a higher chance of drawing one (goes from around 20% to 60%).
+* Added option to disable the game over mechanic (user request).
+* Added option to increase lifespan of lumber/mines by 50%, as 100% felt way too long.
+* After being inspired with inspire all, any remaining glowy eyed followers should now level as well.
+
 ### 1.6.0 - 05/09/2022
 
 * Added 0 to the speed choices, halts everything and becomes 2d photo mode effectively.

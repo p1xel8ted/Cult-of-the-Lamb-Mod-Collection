@@ -1,30 +1,19 @@
-using System.Linq;
 using HarmonyLib;
-using Sirenix.Utilities;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Rebirth;
 
 [HarmonyPatch]
 public static class Patches
 {
-    [HarmonyPatch(typeof(Lamb.UI.InventoryMenu), nameof(Lamb.UI.InventoryMenu.OnShowStarted))]
-    public static class InventoryMenuPatches
-    {
-        [HarmonyPrefix]
-        public static void Prefix(ref Lamb.UI.InventoryMenu __instance)
-        {
-            __instance._currencyFilter.Add(Plugin.RebirthItem);
-        }
-    }
-
     [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
-    public static void Postfix(Health Victim)
+    public static void Postfix(DropLootOnDeath __instance, Health Victim)
     {
-        if (Victim.team != Health.Team.Team2) return; //Team2 = stuff that want's to kill the player
-        if (Random.Range(0f, 1f) <= 0.1f) //10% chance to drop between 1 and 3 items on death of any enemy (not a critter/bone pile/grass etc)
+        if (Victim.team != Health.Team.Team2) return;
+        if (Random.Range(0f, 1f) <= 0.2f * DataManager.Instance.GetLuckMultiplier())
         {
-            Inventory.AddItem(Plugin.RebirthItem, Random.Range(1, 4), true);
+            var qty = Random.Range(1, 4);
+            Inventory.AddItem(Plugin.RebirthItem, qty);
         }
     }
 }
