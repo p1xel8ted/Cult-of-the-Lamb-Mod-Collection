@@ -1,5 +1,6 @@
 using System.Globalization;
 using HarmonyLib;
+using Map;
 using Random = UnityEngine.Random;
 
 namespace Rebirth;
@@ -13,8 +14,9 @@ public static class Patches
     {
         return Random.Range(0f, 1f) <= Chance * DataManager.Instance.GetLuckMultiplier();
     }
-
+    
     [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
+    [HarmonyPostfix]
     public static void Postfix(DropLootOnDeath __instance, Health Victim)
     {
        

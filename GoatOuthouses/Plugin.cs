@@ -32,7 +32,7 @@ namespace GoatOuthouses
 
         private void OnEnable()
         {
-           Harmony.PatchAll();
+         //  Harmony.PatchAll();
             Log.LogInfo($"Loaded {PluginName}!");
         }
 

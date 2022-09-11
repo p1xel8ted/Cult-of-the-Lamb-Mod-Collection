@@ -1,61 +1,14 @@
-![QoL Logo](https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/blob/e197c9e251b87b5f2602deec890eacbcad7a4c53/thunderstore/icon.png?raw=true)
-
-# Cult of QoL - A Collection
-
-* Removes intros.
-* Cheese the fishing mini-game. (No need to press anything apart from the initial cast).
-* Remove extra buttons from menus (Discord, bug report, Twitch etc.)
-* Collect tithes/inspire all at once (unless they're in prison, sleeping, using the bathroom or dissenting.)
-* Reverse the damage change to the golden fleece introduced in 1.0.13.
-* Double the rate the damage increases with the golden fleece.
-* Halves (where possible) the cost of refining goods. Gets rounded up. i.e. something that costs 3 originally ends up being 2. Something that costs 10, becomes 5.
-* Cure illness/exhaustion when a follower gains loyalty (the floaty white eyes thing).
-* Unlock pre-order DLC and Twitch items (Plushie building, drops)
-* You can now collect tithe from the oldies again. Brutal.
-* Increase silo/fertilizer capacity to 32.
-* Increase collection speed from certain structures (shrines, beds, chest near main portal, windmill(?))
-* Turn off propaganda speakers of a night. Despite the flame being on, they don't use fuel. Working on the flame part.
-* Make the days longer. The default is 2x, and that already feels long.
-* Manipulate game speed, or halt it. Not to be confused with day length, this makes EVERYTHING faster.). Left/Right arrow keys to change, default speed is the up key.
-* Disable game over mechanic.
-* Multiple tarot rare draw chance multiplier by 3 (goes from around 20% to 60%).
-* Lumber/stone mines life span can be increased by 50%, 100% or unlimited.
-
-Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
-
-## Installation
-
-* Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)
-* Place the plugin DLL (CultOfTheLambMods.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
-
-## Configuration
-
-The configuration file is generated when you first run the game with the mod enabled. It can be found in the "...\Cult of the Lamb\BepInEx\config" folder.
-
-## Issues, questions, etc.
-
-Feel free to reach out to me on the channel below.
-
-* [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
-
-## Contributors
-
-* p1xel8ted
-* Matthew-X
-
-## Known Issues
-
-* Speeding up time can break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
-* Doubling shrine capacitiy isnt working on main shrines.
-
 ## Changelog
 
-### 1.8.0 - 11/09/2022
+### 1.8.0 - 11/09/2022 - Some options have moved categories, I suggest a clean config file.
 
-* Lumberjack stations now have their loot speed increased when collecting from the chest. Its not totally 0, because it makes the animations look like junk.
-* Added option for chests to make them no longer require the button to be held down.
-* Added option for chests to enable them to automatically give you the loot when you're nearby.
-
+* Lumberjack stations now have their loot speed delay lowered when collecting from the chest. Its not totally 0 (its 0.01), because it makes the animations look like junk.
+* Added option for chests to enable them to automatically give you the loot when you're nearby. 
+* Added option to double the distance required before the loot is sent your way.
+* Added option to set a trigger limit before loot is automatically retreived.
+* Added the ability to "heal" exhausted followers in the healing bays.
+* Added option to recieve a notification when one of the scarecrows catches a bird.
+* Fixed the passive and main shrines from not having their capacity doubled.
 
 ### 1.7.0 - 10/09/2022
 
@@ -72,8 +25,9 @@ Feel free to reach out to me on the channel below.
 * Added checks to ensure we're not inspiring/extorting when sleeping/dissenting/bathroom/prison.
 * Inspire All "should" be fixed now.
 * Added option to double lumber/mine stations age instead of only lasting forever.
+* Added option to turn off propaganda speakers of a night. The fuel animation still runs for now but doesn't consume fuel.
 
-* Removed anything outhouse related as they're being put into a seperate outhouse specific mod.
+* Removed anything outhouse related as they're being put into a separate outhouse-specific mod.
 
 * WIP - Option to double the storage capacity of shrines (not quite done, the main one ignores it for some reason).
 

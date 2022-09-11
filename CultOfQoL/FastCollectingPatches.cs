@@ -48,7 +48,7 @@ public static class FastCollectingPatches
             ___Delay = 0.0f;
         }
     }
-    
+
     [HarmonyPatch]
     public static class LootDelayTranspilers
     {
@@ -57,7 +57,6 @@ public static class FastCollectingPatches
         [HarmonyPatch(typeof(Interaction_CollectedResources), "GiveResourcesRoutine", MethodType.Enumerator)]
         public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
         {
-           
             var codes = new List<CodeInstruction>(instructions);
             if (!Plugin.FastCollecting.Value) return codes.AsEnumerable();
             var editIndex = -1;
@@ -111,57 +110,36 @@ public static class FastCollectingPatches
             return codes.AsEnumerable();
         }
         
-        [HarmonyPatch(typeof(FarmStation), "Update")]
-        [HarmonyPrefix]
-        public static void FarmStationPrefix(ref Interaction_CollectResourceChest __instance)
-        {
-            if (Plugin.EnableAutoInteract.Value)
-            {
-                __instance.HoldToInteract = false;
-                __instance.ContinuouslyHold = false;
-                __instance.AutomaticallyInteract = true;
-            }
-        }
-
+        
         [HarmonyPatch(typeof(Interaction_CollectResourceChest), "Update")]
         [HarmonyPrefix]
         public static void InteractionCollectResourceChestPrefix(ref Interaction_CollectResourceChest __instance)
         {
-            if (Plugin.EnableAutoInteract.Value)
+            var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Plugin.TriggerAmount.Value);
+            __instance.AutomaticallyInteract = false;
+            if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
             {
-                __instance.HoldToInteract = false;
-                __instance.ContinuouslyHold = false;
+                __instance.Activating = true;
+                __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
                 __instance.AutomaticallyInteract = true;
-                
             }
         }
         
-        [HarmonyPatch(typeof(Interaction_CollectedResources), "Update")]
-        [HarmonyPrefix]
-        public static void InteractionCollectdResourcePrefix(ref Interaction_CollectedResources __instance)
-        {
-            if (Plugin.EnableAutoInteract.Value)
-            {
-                __instance.HoldToInteract = false;
-                __instance.ContinuouslyHold = false;
-                __instance.AutomaticallyInteract = true;
-                
-            }
-        }
         
         [HarmonyPatch(typeof(LumberjackStation), "Update")]
         [HarmonyPrefix]
         public static void LumberjackStationPrefix(ref LumberjackStation __instance)
         {
-            if (Plugin.EnableAutoInteract.Value)
+            var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Plugin.TriggerAmount.Value);
+            __instance.AutomaticallyInteract = false;
+            if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
             {
-                __instance.HoldToInteract = false;
-                __instance.ContinuouslyHold = false;
+                __instance.Activating = true;
+                __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
                 __instance.AutomaticallyInteract = true;
-                
             }
         }
-        
+
         //collection speed for Interaction_CollectResourceChest - default speed is 0.1f
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
@@ -182,6 +160,7 @@ public static class FastCollectingPatches
                     {
                         newValue = 0.025f;
                     }
+
                     codes[editIndex].operand = newValue;
 
                     break;

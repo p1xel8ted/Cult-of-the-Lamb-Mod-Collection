@@ -10,7 +10,7 @@ namespace CultOfQoL
     {
         private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
         private const string PluginName = "Cult of QoL Collection";
-        private const string PluginVer = "1.7";
+        private const string PluginVer = "1.8";
 
         internal static ManualLogSource Log;
         private static readonly Harmony Harmony = new(PluginGuid);
@@ -44,6 +44,11 @@ namespace CultOfQoL
         internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead;
         
         internal static ConfigEntry<bool> EnableAutoInteract;
+        internal static ConfigEntry<int> TriggerAmount;
+        internal static ConfigEntry<bool> IncreaseRange;
+        
+        internal static ConfigEntry<bool> AddExhaustedToHealingBay;
+        internal static ConfigEntry<bool> NotifyOfScarecrowTraps;
 
         private void Awake()
         {
@@ -56,10 +61,10 @@ namespace CultOfQoL
             SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
             RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
             RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
+            UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
             
             //Game Mechanics
             CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("Game Mechanics", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");
-            UnlockTwitchStuff = Config.Bind("Game Mechanics", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
             CollectTitheFromOldFollowers = Config.Bind("Game Mechanics", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
             ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
             IncreaseGoldenFleeceDamageRate = Config.Bind("Game Mechanics", "Increase Golden Fleece Rate", true, "Doubles the damage increase.");
@@ -68,7 +73,8 @@ namespace CultOfQoL
             EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
             DisableGameOver = Config.Bind("Game Mechanics", "No More Game-Over", false, "Disables the game over function when you have 0 followers for consecutive days.");
             ThriceMultiplyTarotCardLuck = Config.Bind("Game Mechanics", "3x Tarot Luck", true, "Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards.");
-
+            AddExhaustedToHealingBay = Config.Bind("Game Mechanics", "Add Exhausted To Healing Bay", true, "Allows you to select exhausted followers for rest and relaxation in the healing bays.");
+            
             //Lumber/mining
             LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse. Takes 1st priority.");
             DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", false, "Doubles the life span of lumber/mining stations. Takes 2nd priority.");
@@ -81,14 +87,20 @@ namespace CultOfQoL
             EnableGameSpeedManipulation = Config.Bind("Speed", "Enable Game Speed Manipulation", true, "Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.");
             ShortenGameSpeedIncrements = Config.Bind("Speed", "Shorten Game Speed Increments", false, "Increments in steps of 1, instead of 0.25.");
             FastCollecting = Config.Bind("Speed", "Speed Up Collection", true, "Increases the rate you can collect from the shrines, and other structures.");
-            SlowDownTime = Config.Bind("Speed", "Slow Down Time", true, "Enables the ability to slow down time. This is different to the increase speed implementation. This will make the days longer, but not slow down animations.");
+            SlowDownTime = Config.Bind("Speed", "Slow Down Time", false, "Enables the ability to slow down time. This is different to the increase speed implementation. This will make the days longer, but not slow down animations.");
             SlowDownTimeMultiplier = Config.Bind("Speed", "Slow Down Time Multiplier", 2f, "The multiplier to use for slow down time. For example, the default value of 2 is making the day twice as long.");
-            EnableAutoInteract = Config.Bind("Speed", "Enable Auto Interact (Chests)", false, "Makes chests automatically send you the resources when you're nearby.");
-
+            
+            //Chest Auto-Interact
+            EnableAutoInteract = Config.Bind("Chest Auto-Interact", "Enable Auto Interact", true, "Makes chests automatically send you the resources when you're nearby.");
+            TriggerAmount = Config.Bind("Chest Auto-Interact", "Resource Trigger Amount", 5, "How many items you want in the chest before triggering auto collect.");
+            IncreaseRange = Config.Bind("Chest Auto-Interact", "Activation Range", true, "The default range is 5. This will increase it to 10.");
+            
             //Capacity
             JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
             DoubleSoulCapacity = Config.Bind("Capacity", "Double Soul Capacity", true, "Doubles the soul capacity of applicable structures.");
-
+            
+            //Misc
+            NotifyOfScarecrowTraps = Config.Bind("Misc", "Notify of Scarecrow Traps", true, "Display a notification when the farm scarecrows have caught a trap!");
         }
         
         private void OnEnable()

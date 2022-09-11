@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using HarmonyLib;
+using Lamb.UI.FollowerSelect;
+using MonoMod.Utils;
 using UnityEngine;
 
 namespace CultOfQoL
@@ -15,9 +20,9 @@ namespace CultOfQoL
             {
                 if (Plugin.LumberAndMiningStationsDontAge.Value) return;
                 var old = __result;
-                var newSpan = 0; 
+                var newSpan = 0;
                 __result = newSpan;
-                
+
                 if (Plugin.DoubleLifespanInstead.Value)
                 {
                     newSpan = old * 2;
@@ -25,14 +30,13 @@ namespace CultOfQoL
                     Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
                     return;
                 }
+
                 if (Plugin.FiftyPercentIncreaseToLifespanInstead.Value)
                 {
                     newSpan = (int) (old * 1.5f);
                     __result = newSpan;
                     Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
-                  
                 }
-                
             }
         }
 
@@ -95,23 +99,53 @@ namespace CultOfQoL
                 __instance.SoulMax *= 2;
             }
         }
-        //TODO: Fix these ShrineMaxes, some dont work.
 
-    
-        [HarmonyPatch(typeof(Structures_Shrine), nameof(Structures_Shrine.SoulMax), MethodType.Getter)]
-        [HarmonyPatch(typeof(Structures_Shrine_Misfit), nameof(Structures_Shrine_Misfit.SoulMax), MethodType.Getter)]
-        [HarmonyPatch(typeof(Structures_Shrine_Passive), nameof(Structures_Shrine_Passive.SoulMax), MethodType.Getter)]
-        [HarmonyPatch(typeof(Structures_Shrine_Ratau), nameof(Structures_Shrine_Ratau.SoulMax), MethodType.Getter)]
+        [HarmonyPatch(typeof(Structures_Shrine), "SoulMax", MethodType.Getter)]
         public static class StructuresShrinesSoulMax
         {
             [HarmonyPostfix]
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            public static void Postfix(ref int __result)
+            public static void Postfix(ref Structures_Shrine __instance, ref int __result)
             {
                 if (!Plugin.DoubleSoulCapacity.Value) return;
                 __result *= 2;
             }
         }
+
+        [HarmonyPatch(typeof(Structures_Shrine_Misfit), "SoulMax", MethodType.Getter)]
+        public static class StructuresShrineMisfitSoulMax
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_Shrine_Misfit __instance, ref int __result)
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
+        }
+
+
+        [HarmonyPatch(typeof(Structures_Shrine_Ratau), "SoulMax", MethodType.Getter)]
+        public static class StructuresShrineRatauSoulMax
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_Shrine_Ratau __instance, ref int __result)
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
+        }
+
+
+        [HarmonyPatch(typeof(Structures_Shrine_Passive), "SoulMax", MethodType.Getter)]
+        public static class StructuresShrinePassiveSoulMax
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref Structures_Shrine_Passive __instance, ref int __result)
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
+        }
+
 
         //original author is Matthew-X, I just refactored.
         [HarmonyPatch(typeof(Structures_SiloFertiliser), MethodType.Constructor)]
@@ -150,5 +184,7 @@ namespace CultOfQoL
                 }
             }
         }
+
+       
     }
 }
