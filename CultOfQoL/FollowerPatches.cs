@@ -58,18 +58,19 @@ public static class FollowerPatches
     private static IEnumerator GiveRewards(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType)
     {
         yield return DanceRoutine(follower, instance, previousTaskType);
-      //  yield return new WaitForSeconds(5f);
+        //  yield return new WaitForSeconds(5f);
+        if (follower == instance.follower) yield break;
         if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
         {
             Plugin.L($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
             follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, delegate
             {
-	            follower.Brain.Stats.Adoration = 0f;
-	            var info = follower.Brain.Info;
-	            var xplevel = info.XPLevel;
-	            info.XPLevel = xplevel + 1;
-	            var speedUpSequenceMultiplier = 0.75f;
-	            follower.AdorationUI.BarController.ShrinkBarToEmpty(2f * speedUpSequenceMultiplier);
+                follower.Brain.Stats.Adoration = 0f;
+                var info = follower.Brain.Info;
+                var xplevel = info.XPLevel;
+                info.XPLevel = xplevel + 1;
+                var speedUpSequenceMultiplier = 0.75f;
+                follower.AdorationUI.BarController.ShrinkBarToEmpty(2f * speedUpSequenceMultiplier);
                 follower.Dropped();
                 follower.ResetStateAnimations();
                 follower.Brain.ContinueToNextTask();
@@ -77,7 +78,6 @@ public static class FollowerPatches
         }
     }
 
-    
 
     [HarmonyPatch(typeof(interaction_FollowerInteraction))]
     [HarmonyWrapSafe]
@@ -91,7 +91,8 @@ public static class FollowerPatches
 
             if (followerCommands[0] == FollowerCommands.ExtortMoney)
             {
-                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
+                var instance = __instance;
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes && follower != instance.follower))
                 {
                     if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
@@ -105,13 +106,13 @@ public static class FollowerPatches
 
             if (followerCommands[0] == FollowerCommands.Dance)
             {
-                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
+                var instance = __instance;
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired && follower != instance.follower))
                 {
                     if (follower.Brain.CurrentTask is FollowerTask_Bathroom) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Imprisoned) continue;
-                     //__instance.StartCoroutine(DanceRoutine(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
                     __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
                 }
             }
@@ -154,6 +155,4 @@ public static class FollowerPatches
             }
         }
     }
-    
-    
 }

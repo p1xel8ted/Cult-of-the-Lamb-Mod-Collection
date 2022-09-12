@@ -10,7 +10,8 @@ namespace CultOfQoL;
 public static class HealingBay
 {
     private static FollowerBrainInfo _fi;
-    private static bool _run = Plugin.AddExhaustedToHealingBay.Value;
+    private static readonly bool Run = Plugin.AddExhaustedToHealingBay.Value;
+    private static bool _isHealingBay;
 
     [HarmonyPatch(typeof(UIFollowerSelectMenuController), nameof(UIFollowerSelectMenuController.Show),
         typeof(List<FollowerInfo>),
@@ -26,19 +27,40 @@ public static class HealingBay
         [HarmonyPrefix]
         public static void Prefix(ref List<FollowerInfo> blackList)
         {
-            if (!_run) return;
+            if (!Run) return;
+            Plugin.L($"IsHealingBay: {_isHealingBay}");
+            if (!_isHealingBay) return;
             blackList.RemoveAll(follower => follower.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
-                                            follower.Exhaustion >= 5f);
+                                            follower.Exhaustion > 0);
         }
     }
 
+    
+    [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.OnInteract))]
+    public static class InteractionHealingBayOnInteractPatches
+    {
+        [HarmonyPrefix]
+        public static void Prefix()
+        {
+            if (!Run) return;
+            _isHealingBay = true;
+        }
+        
+        [HarmonyPostfix]
+        public static void Postfix()
+        {
+            if (!Run) return;
+            _isHealingBay = false;
+        }
+    }
+    
     [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.HealingRoutine))]
     public static class InteractionHealingBayHealingRoutinePatches
     {
         [HarmonyPrefix]
         public static void Prefix(ref Follower follower)
         {
-            if (!_run) return;
+            if (!Run) return;
             if (follower.Brain._directInfoAccess.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
                 follower.Brain._directInfoAccess.Exhaustion > 0f)
             {
@@ -49,7 +71,7 @@ public static class HealingBay
 
     private static IEnumerator StartHeal(FollowerBrainInfo followerBrain)
     {
-        if (!_run) yield break;
+        if (!Run) yield break;
         followerBrain._info.Exhaustion = 0f;
         followerBrain._brain.Stats.Exhaustion = 0f;
         var onExhaustionStateChanged2 = FollowerBrainStats.OnExhaustionStateChanged;
@@ -66,7 +88,7 @@ public static class HealingBay
         [HarmonyPrefix]
         public static bool Prefix(ref NotificationCentre.NotificationType type, ref FollowerBrainInfo info, ref bool __state)
         {
-            if (!_run) return true;
+            if (!Run) return true;
             Plugin.L($"{type.ToString()} : {info.Name}");
             if (type == NotificationCentre.NotificationType.NoLongerIll && info == _fi)
             {
@@ -83,7 +105,7 @@ public static class HealingBay
         [HarmonyPostfix]
         public static void Postfix(ref FollowerBrainInfo info, ref bool __state)
         {
-            if (!_run) return;
+            if (!Run) return;
             if (!__state) return;
             Plugin.L($"Running postfix");
 

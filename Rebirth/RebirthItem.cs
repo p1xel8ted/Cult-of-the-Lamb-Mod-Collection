@@ -21,7 +21,7 @@ public sealed class RebirthItem: CustomInventoryItem
     public override string LocalizedLore() => "Said to be dropped by Death herself.";
     
     //assets must be stored in a bundle, can't be loose prefabs
-    //public GameObject GameObject { get; } = Plugin.Assets.LoadAsset<GameObject>("Rebirth");
+    public GameObject GameObject { get; } = Plugin.Assets.LoadAsset<GameObject>("Rebirth");
     
     public override InventoryItem.ITEM_CATEGORIES ItemCategory => InventoryItem.ITEM_CATEGORIES.COINS;
     public override bool IsCurrency  => true;

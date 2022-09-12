@@ -28,7 +28,7 @@ namespace Rebirth
 
         private static ConfigEntry<bool> _modEnabled;
 
-        //public static AssetBundle Assets { get; private set; }
+        public static AssetBundle Assets { get; private set; }
         public static InventoryItem.ITEM_TYPE RebirthItem { get; private set; }
         private static bool _objectiveAdded = false;
 
@@ -40,7 +40,7 @@ namespace Rebirth
             Log.LogInfo($"Loaded {PluginName}!");
 
             PluginPath = Path.GetDirectoryName(Info.Location);
-            // Assets = AssetBundle.LoadFromFile(Path.Combine(PluginPath!, "assets", "rebirth", "rebirth"));
+             Assets = AssetBundle.LoadFromFile(Path.Combine(PluginPath!, "assets", "rebirth", "rebirth"));
             //Assets.Unload(false);
 
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
@@ -67,22 +67,22 @@ namespace Rebirth
             Log.LogInfo($"Unloaded {PluginName}!");
         }
 
-        private void Update()
-        {
-            if (GameManager.GetInstance() == null) return;
-            if (_objectiveAdded) return;
-            _objectiveAdded = true;
-            var followerLocations = (FollowerLocation[]) Enum.GetValues(typeof(FollowerLocation));
-            foreach (var location in followerLocations.Where(a => a.ToString().Contains("Dungeon") && a.ToString().Length == 10)) //restricts to DungeonX_X
-            {
-                var customObjective = new Objectives_CollectItem("Objectives/GroupTitles/Quest", RebirthItem, Random.Range(15, 26), false, location, 4800f)
-                {
-                    TargetFollowerAllowOldAge = false,
-                };
-                Quests.QuestsAll.Add(customObjective);
-                DataManager.Instance.Objectives.Add(customObjective);
-                Log.LogWarning($"Added Rebirth Objective to Quests - Amount: {customObjective.Target}, Location: {customObjective.TargetLocation}");
-            }
-        }
+        // private void Update()
+        // {
+        //     if (GameManager.GetInstance() == null) return;
+        //     if (_objectiveAdded) return;
+        //     _objectiveAdded = true;
+        //     var followerLocations = (FollowerLocation[]) Enum.GetValues(typeof(FollowerLocation));
+        //     foreach (var location in followerLocations.Where(a => a.ToString().Contains("Dungeon") && a.ToString().Length == 10)) //restricts to DungeonX_X
+        //     {
+        //         var customObjective = new Objectives_CollectItem("Objectives/GroupTitles/Quest", RebirthItem, Random.Range(15, 26), false, location, 4800f)
+        //         {
+        //             TargetFollowerAllowOldAge = false,
+        //         };
+        //         Quests.QuestsAll.Add(customObjective);
+        //         DataManager.Instance.Objectives.Add(customObjective);
+        //         Log.LogWarning($"Added Rebirth Objective to Quests - Amount: {customObjective.Target}, Location: {customObjective.TargetLocation}");
+        //     }
+        // }
     }
 }

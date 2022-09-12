@@ -1,4 +1,4 @@
-![QoL Logo](https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/blob/e197c9e251b87b5f2602deec890eacbcad7a4c53/thunderstore/qol/icon.png?raw=true)
+![QoL Logo](https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/blob/fbebe80a7ff41c6d88df421b1ea31e5c34454084/thunderstore/qol/icon.png?raw=true)
 
 # Cult of QoL - A Collection
 
@@ -20,6 +20,9 @@
 * Disable game over mechanic.
 * Multiple tarot rare draw chance multiplier by 3 (goes from around 20% to 60%).
 * Lumber/stone mines life span can be increased by 50%, 100% or unlimited.
+* Recieve a notification when one of the scarecrows catches a bird.
+* "Heal" exhausted followers in the healing bays.
+* Make lumber/mine/farm/refinery chests auto loot when nearby (like the chest near the main portal).
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
