@@ -8,7 +8,7 @@ namespace Rebirth;
 public sealed class RebirthItem: CustomInventoryItem
 {
     public override Sprite InventoryIcon { get; } = TextureHelper.CreateSpriteFromPath(Path.Combine(Plugin.PluginPath, "assets", "rebirth_item.png"));
-  
+
     public override string LocalizedDescription()
     {
         return "A special token obtained while on crusades that are used as currency to Rebirth followers.";

@@ -13,20 +13,20 @@
         <FileVersion>1.8.1</FileVersion>
         <BaseOutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins</BaseOutputPath>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DebugType>full</DebugType>
+    </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
-
-    <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-*" />
-    </ItemGroup>
 
     <ItemGroup>
       <None Update="icon.png">
         <Pack>True</Pack>
       </None>
     </ItemGroup>
+    
 
-    <ItemGroup>
-      <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
-    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="&quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\bin\mono&quot; &quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\CultOfQol.dll&quot;" />
+    </Target>
 </Project>

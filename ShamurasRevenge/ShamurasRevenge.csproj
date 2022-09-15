@@ -2,7 +2,6 @@
     <PropertyGroup>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <ReleaseVersion>1.0.0</ReleaseVersion>
-        <Description></Description>
         <Authors>p1xel8ted</Authors>
         <PackageId>ShamurasRevenge</PackageId>
         <Title>ShamurasRevenge</Title>
@@ -10,8 +9,5 @@
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
-
-    <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.12-r.1" />
-    </ItemGroup>
+    
 </Project>

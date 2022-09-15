@@ -52,6 +52,10 @@ Feel free to reach out to me on the channel below.
 
 ## Changelog
 
+## 1.8.1 - 13/09/2022
+
+* Fixed the follower menu breaking in some instances with the healing bay mod on.
+
 ### 1.8.0 - 11/09/2022 - Some options have moved categories, I suggest a clean config file.
 
 * Lumberjack stations now have their loot speed delay lowered when collecting from the chest. Its not totally 0 (its 0.01), because it makes the animations look like junk.

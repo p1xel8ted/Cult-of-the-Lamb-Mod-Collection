@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 
 namespace CultOfQoL;
@@ -33,7 +32,7 @@ public static class FollowerPatches
             Plugin.Log.LogInfo($"Adding Adoration thoughts to {follower.name}");
             follower.Brain.AddThought(Thought.DancedWithLeader, forced: true);
             instance.eventListener.PlayFollowerVO(instance.bowVO);
-            CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, Array.Empty<string>());
+            CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, null);
             if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
             {
                 instance.follower = follower;
@@ -91,8 +90,7 @@ public static class FollowerPatches
 
             if (followerCommands[0] == FollowerCommands.ExtortMoney)
             {
-                var instance = __instance;
-                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes && follower != instance.follower))
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
                 {
                     if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
@@ -106,8 +104,7 @@ public static class FollowerPatches
 
             if (followerCommands[0] == FollowerCommands.Dance)
             {
-                var instance = __instance;
-                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired && follower != instance.follower))
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
                 {
                     if (follower.Brain.CurrentTask is FollowerTask_Bathroom) continue;
                     if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;

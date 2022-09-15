@@ -16,6 +16,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{8AEFB8DA-7C1C-4AC4-B891-85596BAA198D}"
 	ProjectSection(SolutionItems) = preProject
 		lib\Assembly-CSharp-nstrip.dll = lib\Assembly-CSharp-nstrip.dll
+		lib\Assembly-CSharp-firstpass-nstrip.dll = lib\Assembly-CSharp-firstpass-nstrip.dll
+		lib\spine-unity-nstrip.dll = lib\spine-unity-nstrip.dll
+		lib\Unity.TextMeshPro-nstrip.dll = lib\Unity.TextMeshPro-nstrip.dll
+		lib\UnityEngine.UI-nstrip.dll = lib\UnityEngine.UI-nstrip.dll
 	EndProjectSection
 EndProject
 Global

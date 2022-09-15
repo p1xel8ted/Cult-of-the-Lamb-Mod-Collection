@@ -66,23 +66,35 @@ namespace Rebirth
             Harmony.UnpatchSelf();
             Log.LogInfo($"Unloaded {PluginName}!");
         }
-
+        //
         // private void Update()
         // {
         //     if (GameManager.GetInstance() == null) return;
         //     if (_objectiveAdded) return;
         //     _objectiveAdded = true;
-        //     var followerLocations = (FollowerLocation[]) Enum.GetValues(typeof(FollowerLocation));
-        //     foreach (var location in followerLocations.Where(a => a.ToString().Contains("Dungeon") && a.ToString().Length == 10)) //restricts to DungeonX_X
+        //     // var followerLocations = (FollowerLocation[]) Enum.GetValues(typeof(FollowerLocation));
+        //     // foreach (var location in followerLocations.Where(a => a.ToString().Contains("Dungeon") && a.ToString().Length == 10)) //restricts to DungeonX_X
+        //     // {
+        //     //     var customObjective = new Objectives_CollectItem("Objectives/GroupTitles/Quest", RebirthItem, Random.Range(15, 26), false, location, 4800f)
+        //     //     {
+        //     //         TargetFollowerAllowOldAge = false,
+        //     //     };
+        //     //     Quests.QuestsAll.Add(customObjective);
+        //     //     DataManager.Instance.Objectives.Add(customObjective);
+        //     //     Log.LogWarning($"Added Rebirth Objective to Quests - Amount: {customObjective.Target}, Location: {customObjective.TargetLocation}");
+        //     // }
+        //
+        //     Quests.QuestsAll.RemoveAll(a =>
         //     {
-        //         var customObjective = new Objectives_CollectItem("Objectives/GroupTitles/Quest", RebirthItem, Random.Range(15, 26), false, location, 4800f)
-        //         {
-        //             TargetFollowerAllowOldAge = false,
-        //         };
-        //         Quests.QuestsAll.Add(customObjective);
-        //         DataManager.Instance.Objectives.Add(customObjective);
-        //         Log.LogWarning($"Added Rebirth Objective to Quests - Amount: {customObjective.Target}, Location: {customObjective.TargetLocation}");
-        //     }
+        //         var q = (Objectives_CollectItem) a;
+        //         return q.ItemType == RebirthItem;
+        //     });
+        //     DataManager.Instance.Objectives.RemoveAll(a =>
+        //     {
+        //         var q = (Objectives_CollectItem) a;
+        //         return q.ItemType == RebirthItem;
+        //     });
+        //
         // }
     }
 }

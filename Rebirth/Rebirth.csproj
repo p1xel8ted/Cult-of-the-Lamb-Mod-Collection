@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyVersion>0.1.1</AssemblyVersion>
-        <ReleaseVersion>0.1</ReleaseVersion>
-        <Description></Description>
+        <ReleaseVersion>0.1.1</ReleaseVersion>
         <Authors>p1xel8ted</Authors>
         <PackageId>Rebirth</PackageId>
         <Title>Rebirth</Title>
@@ -10,11 +9,17 @@
         <FileVersion>0.1.1</FileVersion>
         <PackageVersion>0.1.1</PackageVersion>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DebugType>full</DebugType>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
+    </ItemGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
 
-    <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-r.*" />
-        <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" Private="false" />
-    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="&quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\bin\mono&quot; &quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\Rebirth.dll&quot;" />
+    </Target>
 </Project>
