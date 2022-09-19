@@ -16,18 +16,6 @@ public static class Revenge
     public static Vector3 RandomPointInCollider { get; set; }
     public static CritterSpawner CritterSpawner { get; set; }
     
-    
-    public static void OnNewPhaseStarted()
-    {
-        if (CritterSpawner is null) return;
-        if (TimeManager.CurrentPhase != DayPhase.Night) return;
-        var min = -1;
-        const int max = 100;
-        while (++min < max)
-        {
-            SpiderPrefab.Spawn(SpawnParent, RandomPointInCollider, Quaternion.identity);
-        }
-    }
 
     [HarmonyPatch(typeof(CritterSpawner),nameof(CritterSpawner.OnNewPhaseStarted))]
     public static class CritterSpawnerOnNewPhaseStartedHook
@@ -47,7 +35,7 @@ public static class Revenge
             const int max = 100;
             while (++min < max)
             {
-                RandomPointInCollider = (Vector3) AccessTools.Method(typeof(CritterSpawner), "RandomPointInCollider").Invoke(__instance,null);
+                RandomPointInCollider = __instance.RandomPointInCollider();
                 SpiderPrefab.Spawn(SpawnParent, RandomPointInCollider, Quaternion.identity);
             }
             Plugin.Log.LogWarning($"Spawned: { SpiderPrefab.CountSpawned()}");

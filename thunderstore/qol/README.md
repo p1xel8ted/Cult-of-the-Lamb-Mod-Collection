@@ -20,9 +20,11 @@
 * Disable game over mechanic.
 * Multiple tarot rare draw chance multiplier by 3 (goes from around 20% to 60%).
 * Lumber/stone mines life span can be increased by 50%, 100% or unlimited.
-* Recieve a notification when one of the scarecrows catches a bird.
+* Receive a notification when one of the scarecrows catches a bird.
 * "Heal" exhausted followers in the healing bays.
 * Make lumber/mine/farm/refinery chests auto loot when nearby (like the chest near the main portal).
+* Swap out follower necklaces.
+* Receive notification when structures that use fuel run out.
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -46,11 +48,24 @@ Feel free to reach out to me on the channel below.
 * p1xel8ted
 * Matthew-X
 
+## Work in Progress
+
+* Add remaining follower commands to all at once.
+
 ## Known Issues
 
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 
 ## Changelog
+
+## 1.9.0 - 19/09/2022
+
+* Updated for game version 1.0.16. They removed the Debug button from the main menu, so I've removed the code that removes it.
+* When the propaganda speakers turn off of at night, their fire animation will now also turn off.
+* Implemented a potential fix for speakers not turning back on.
+* Added ability to replaced follower necklaces. The one they're wearing will drop to the ground.
+* Added ability to receive notifications when items that use fuel run out.
+* Followers who can level after Inspire All should now level. Will be added to others when I implement them.
 
 ## 1.8.1 - 13/09/2022
 
@@ -61,9 +76,9 @@ Feel free to reach out to me on the channel below.
 * Lumberjack stations now have their loot speed delay lowered when collecting from the chest. Its not totally 0 (its 0.01), because it makes the animations look like junk.
 * Added option for chests to enable them to automatically give you the loot when you're nearby. 
 * Added option to double the distance required before the loot is sent your way.
-* Added option to set a trigger limit before loot is automatically retreived.
+* Added option to set a trigger limit before loot is automatically retrieved.
 * Added the ability to "heal" exhausted followers in the healing bays.
-* Added option to recieve a notification when one of the scarecrows catches a bird.
+* Added option to receive a notification when one of the scarecrows catches a bird.
 * Fixed the passive and main shrines from not having their capacity doubled.
 
 ### 1.7.0 - 10/09/2022
@@ -81,9 +96,7 @@ Feel free to reach out to me on the channel below.
 * Added checks to ensure we're not inspiring/extorting when sleeping/dissenting/bathroom/prison.
 * Inspire All "should" be fixed now.
 * Added option to double lumber/mine stations age instead of only lasting forever.
-
-* Removed anything outhouse related as they're being put into a seperate outhouse specific mod.
-
+* Removed anything outhouse related as they're being put into a separate outhouse specific mod.
 * WIP - Option to double the storage capacity of shrines (not quite done, the main one ignores it for some reason).
 
 ### 1.5.0 - 02/09/2022

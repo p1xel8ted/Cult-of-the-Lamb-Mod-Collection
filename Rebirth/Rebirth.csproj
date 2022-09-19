@@ -10,7 +10,7 @@
         <PackageVersion>0.1.1</PackageVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DebugType>full</DebugType>
+      <DebugType>portable</DebugType>
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />

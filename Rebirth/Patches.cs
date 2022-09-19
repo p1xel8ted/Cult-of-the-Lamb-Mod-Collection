@@ -1,10 +1,5 @@
-using System;
 using System.Globalization;
-using System.Reflection;
 using HarmonyLib;
-using MMBiomeGeneration;
-using MMRoomGeneration;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Rebirth;
@@ -13,12 +8,14 @@ namespace Rebirth;
 [HarmonyWrapSafe]
 public static class Patches
 {
-    private const float Chance = 0.25f;
+    private const float Chance = 1f;
 
     private static bool DropLoot()
     {
-        return true;
-        //return Random.Range(0f, 1f) <= Chance * DataManager.Instance.GetLuckMultiplier();
+        var roll = Random.Range(0f, 1f);
+        var chance = Chance * DataManager.Instance.GetLuckMultiplier();
+        Plugin.Log.LogWarning($"Rebirth Coin Chance: {roll} / {chance}: {roll <= chance}");
+        return roll <= chance;
     }
 
     [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
@@ -32,7 +29,8 @@ public static class Patches
             if (DropLoot())
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                SpawnTokens(1, PlayerFarming.Instance.transform.position);
+                // SpawnLoot(Random.Range(1, 3), __instance.transform.position);
+                InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
             }
         }
 
@@ -42,49 +40,22 @@ public static class Patches
             if (DropLoot())
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                SpawnTokens(1, PlayerFarming.Instance.transform.position);
+                //SpawnLoot(Random.Range(1, 3), __instance.transform.position);
+                InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
             }
         }
     }
 
-    private static void SpawnTokens(int quantity, Vector3 position)
+    [HarmonyPatch(typeof(Structures_OfferingShrine), nameof(Structures_OfferingShrine.Complete))]
+    public static class StructuresOfferingShrineCompletePatches
     {
-        var gameObject = GameObject.FindGameObjectWithTag("Unit Layer");
-        var transform = gameObject != null ? gameObject.transform : null;
-        while (--quantity >= 0)
+        [HarmonyPrefix]
+        public static void Prefix(ref Structures_OfferingShrine __instance)
         {
-            var instance = BiomeGenerator.Instance;
-            if (((instance != null) ? instance.CurrentRoom : null) != null)
-            {
-                transform = BiomeGenerator.Instance.CurrentRoom.GameObject.transform;
-            }
-
-            if (transform == null && GenerateRoom.Instance != null)
-            {
-                transform = GenerateRoom.Instance.transform;
-            }
-
-            if (transform == null)
-            {
-                break;
-            }
-
-
-            var mySprite = new RebirthItem().GameObject.GetComponent<SpriteRenderer>().sprite;
-
-            var copyObj = Resources.Load("Prefabs/Resources/BlackGold") as GameObject;
-
-            copyObj!.GetComponentInChildren<SpriteRenderer>().sprite = mySprite;
-
-            copyObj.GetComponent<PickUp>().type = Plugin.RebirthItem;
-
-            copyObj.transform.localScale = new Vector3(0.65f, 0.65f, 0.65f);
-            
-            ObjectPool.Spawn(copyObj, transform, position, Quaternion.identity);
-            
+            __instance.Offerings.Add(Plugin.RebirthItem);
         }
     }
-
+    
     [HarmonyPatch(typeof(Interaction_Chest))]
     public static class DungeonChestPatches
     {
@@ -97,7 +68,8 @@ public static class Patches
             if (__instance.MyState == Interaction_Chest.State.Open && DropLoot())
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                Inventory.AddItem(Plugin.RebirthItem, Random.Range(2, 5));
+                //SpawnLoot(Random.Range(2, 5), __instance.transform.position);
+                InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(2, 5), __instance.transform.position);
             }
         }
 
@@ -110,7 +82,8 @@ public static class Patches
             if (__instance.MyState == Interaction_Chest.State.Open && DropLoot())
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                Inventory.AddItem(Plugin.RebirthItem, Random.Range(3, 6));
+                //SpawnLoot(Random.Range(3, 6), __instance.transform.position);
+                InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(3, 6), __instance.transform.position);
             }
         }
     }

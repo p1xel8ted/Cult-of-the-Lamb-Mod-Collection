@@ -31,6 +31,11 @@ namespace Rebirth
 
         public override string GetLockedDescription(Follower follower)
         {
+            if (DataManager.Instance.Followers_Recruit.Count > 0)
+            {
+                return "You already have a follower awaiting indoctrination!";
+            }
+            
             Helper.TooOld = Helper.IsOld(follower);
             if (Helper.TooOld)
             {
@@ -47,6 +52,10 @@ namespace Rebirth
 
         public override bool IsAvailable(Follower follower)
         {
+            if (DataManager.Instance.Followers_Recruit.Count > 0)
+            {
+                return false;
+            }
             
             Helper.TooOld = Helper.IsOld(follower);
             if (Helper.TooOld)

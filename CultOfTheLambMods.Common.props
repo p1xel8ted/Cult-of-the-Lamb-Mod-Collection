@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-     
+     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 
         <OutputPath>C:\\Program Files (x86)\\Steam\\steamapps\\common\\Cult of the Lamb\\BepInEx\\plugins</OutputPath>
     
@@ -11,14 +12,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="false"/>
         <PackageReference Include="BepInEx.Core" Version="5.4.21"/>
-        <PackageReference Include="UnityEngine.Modules" Version="2019.4.40" IncludeAssets="compile"/>
-          <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-*" />
+        <PackageReference Include="UnityEngine.Modules" Version="2019.4.40"/>
+          <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-*"/>
     </ItemGroup>
     
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="false"/>
+    
     </ItemGroup>
 </Project>

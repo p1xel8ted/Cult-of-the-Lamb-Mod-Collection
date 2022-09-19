@@ -1,15 +1,17 @@
-﻿using HarmonyLib;
-using Lamb.UI.FollowerInteractionWheel;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
+using Lamb.UI.FollowerInteractionWheel;
 using UnityEngine;
 
 namespace CultOfQoL;
 
 public static class FollowerPatches
 {
+    private static Follower _follower;
+
     private static IEnumerator DanceRoutine(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType)
     {
         Plugin.Log.LogInfo($"Follower: {follower.name}, Instance follower: {instance.follower.name}");
@@ -29,7 +31,7 @@ public static class FollowerPatches
         follower.Brain.Stats.Inspired = true;
         follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Inspire, delegate
         {
-            Plugin.Log.LogInfo($"Adding Adoration thoughts to {follower.name}");
+            Plugin.L($"Adding Adoration thoughts to {follower.name}");
             follower.Brain.AddThought(Thought.DancedWithLeader, forced: true);
             instance.eventListener.PlayFollowerVO(instance.bowVO);
             CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, null);
@@ -82,6 +84,7 @@ public static class FollowerPatches
     [HarmonyWrapSafe]
     public static class InteractionFollowerInteraction
     {
+
         [HarmonyPatch("OnFollowerCommandFinalized")]
         [HarmonyPostfix]
         public static void Postfix(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
@@ -89,28 +92,39 @@ public static class FollowerPatches
             if (!Plugin.BulkInspireAndExtort.Value) return;
 
             if (followerCommands[0] == FollowerCommands.ExtortMoney)
-            {
                 foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
                 {
-                    if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
-                    if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
-                    if (follower.Brain.CurrentTask is FollowerTask_Imprisoned) continue;
-                    if (follower.Brain.CurrentTask is FollowerTask_Bathroom) continue;
-
-
-                    follower.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
+                    switch (follower.Brain.CurrentTask)
+                    {
+                        case FollowerTask_Sleep:
+                        case FollowerTask_Dissent:
+                        case FollowerTask_Imprisoned:
+                        case FollowerTask_Bathroom:
+                        case FollowerTask_OnMissionary:
+                            continue;
+                        default:
+                            follower.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
+                            break;
+                    }
                 }
-            }
+
 
             if (followerCommands[0] == FollowerCommands.Dance)
             {
                 foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
                 {
-                    if (follower.Brain.CurrentTask is FollowerTask_Bathroom) continue;
-                    if (follower.Brain.CurrentTask is FollowerTask_Sleep) continue;
-                    if (follower.Brain.CurrentTask is FollowerTask_Dissent) continue;
-                    if (follower.Brain.CurrentTask is FollowerTask_Imprisoned) continue;
-                    __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                    switch (follower.Brain.CurrentTask)
+                    {
+                        case FollowerTask_Bathroom:
+                        case FollowerTask_Sleep:
+                        case FollowerTask_Dissent:
+                        case FollowerTask_Imprisoned:
+                        case FollowerTask_OnMissionary:
+                            continue;
+                        default:
+                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                            break;
+                    }
                 }
             }
         }
@@ -126,14 +140,20 @@ public static class FollowerPatches
             if (!Plugin.CleanseIllnessAndExhaustionOnLevelUp.Value) return;
             if (__instance.follower.Brain.Stats.Exhaustion > 0)
             {
-                __instance.follower.Brain.Stats.Exhaustion = 0;
-                Plugin.Log.LogMessage($"Resetting follower {__instance.follower.name} from exhaustion!");
+                __instance.follower.Brain._directInfoAccess.Exhaustion = 0f;
+                __instance.follower.Brain.Stats.Exhaustion = 0f;
+                var onExhaustionStateChanged = FollowerBrainStats.OnExhaustionStateChanged;
+                onExhaustionStateChanged?.Invoke(__instance.follower.Brain._directInfoAccess.ID, FollowerStatState.Off, FollowerStatState.On);
+                Plugin.L($"Resetting follower {__instance.follower.name} from exhaustion!");
             }
 
             if (__instance.follower.Brain.Stats.Illness > 0)
             {
+                __instance.follower.Brain._directInfoAccess.Illness = 0f;
                 __instance.follower.Brain.Stats.Illness = 0f;
-                Plugin.Log.LogMessage($"Resetting follower {__instance.follower.name} from illness!");
+                var onIllnessStateChanged = FollowerBrainStats.OnIllnessStateChanged;
+                onIllnessStateChanged.Invoke(__instance.follower.Brain._directInfoAccess.ID, FollowerStatState.Off, FollowerStatState.On);
+                Plugin.L($"Resetting follower {__instance.follower.name} from illness!");
             }
         }
     }
@@ -146,10 +166,7 @@ public static class FollowerPatches
         public static void Postfix(ref List<CommandItem> __result)
         {
             if (!Plugin.CollectTitheFromOldFollowers.Value) return;
-            if (DoctrineUpgradeSystem.GetUnlocked(DoctrineUpgradeSystem.DoctrineType.Possessions_ExtortTithes))
-            {
-                __result.Add(FollowerCommandItems.Extort());
-            }
+            if (DoctrineUpgradeSystem.GetUnlocked(DoctrineUpgradeSystem.DoctrineType.Possessions_ExtortTithes)) __result.Add(FollowerCommandItems.Extort());
         }
     }
 }

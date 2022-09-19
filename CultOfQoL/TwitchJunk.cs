@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using HarmonyLib;
 
 namespace CultOfQoL;
 
@@ -25,50 +25,35 @@ internal static class TwitchJunk
                 StructureBrain.TYPES.DECORATION_TWITCH_WOODEN_GUARDIAN
             };
 
-            var twitchSkins = new List<string>(5) { "TwitchCat", "TwitchMouse", "TwitchPoggers", "TwitchDog", "TwitchDogAlt"};
+            var twitchSkins = new List<string>(5) {"TwitchCat", "TwitchMouse", "TwitchPoggers", "TwitchDog", "TwitchDogAlt"};
 
             if (Plugin.UnlockTwitchStuff.Value)
             {
-                if (DataManager.TwitchTotemRewardAvailable())
-                {
-                    foreach (var availableTwitchTotemDecoration in availableTwitchTotemDecorations)
-                        StructuresData.CompleteResearch(availableTwitchTotemDecoration);
-                    foreach (var availableTwitchTotemDecoration in availableTwitchTotemDecorations)
-                        StructuresData.SetRevealed(availableTwitchTotemDecoration);
-                    foreach (var availableTwitchTotemSkin in availableTwitchTotemSkins)
-                        DataManager.SetFollowerSkinUnlocked(availableTwitchTotemSkin);
-                }
+                if (!DataManager.TwitchTotemRewardAvailable()) return;
+                foreach (var availableTwitchTotemDecoration in availableTwitchTotemDecorations)
+                    StructuresData.CompleteResearch(availableTwitchTotemDecoration);
+                foreach (var availableTwitchTotemDecoration in availableTwitchTotemDecorations)
+                    StructuresData.SetRevealed(availableTwitchTotemDecoration);
+                foreach (var availableTwitchTotemSkin in availableTwitchTotemSkins)
+                    DataManager.SetFollowerSkinUnlocked(availableTwitchTotemSkin);
             }
             else
             {
                 foreach (var type in totemDecorations)
                 {
-                    if (StructuresData.GetUnlocked(type))
-                    {
-                        DataManager.Instance.UnlockedStructures.Remove(type);
-                    }
+                    if (StructuresData.GetUnlocked(type)) DataManager.Instance.UnlockedStructures.Remove(type);
 
-                    if (DataManager.Instance.RevealedStructures.Contains(type))
-                    {
-                        DataManager.Instance.RevealedStructures.Remove(type);
-                    }
+                    if (DataManager.Instance.RevealedStructures.Contains(type)) DataManager.Instance.RevealedStructures.Remove(type);
                 }
 
                 foreach (var skin in twitchSkins)
                 {
-                    if (DataManager.Instance.FollowerSkinsUnlocked.Contains(skin))
-                    {
-                        DataManager.Instance.FollowerSkinsUnlocked.Remove(skin);
-                    }
+                    if (DataManager.Instance.FollowerSkinsUnlocked.Contains(skin)) DataManager.Instance.FollowerSkinsUnlocked.Remove(skin);
 
-                    if (DataManager.Instance.NewFollowerSkins.Contains(skin))
-                    {
-                        DataManager.Instance.NewFollowerSkins.Remove(skin);
-                    }
+                    if (DataManager.Instance.NewFollowerSkins.Contains(skin)) DataManager.Instance.NewFollowerSkins.Remove(skin);
                 }
             }
         }
-
     }
 
     [HarmonyPatch(typeof(GameManager))]
@@ -82,10 +67,7 @@ internal static class TwitchJunk
         [HarmonyPatch(nameof(GameManager.AuthenticateTwitchDrop3))]
         public static void Postfix(ref bool __result)
         {
-            if (Plugin.UnlockTwitchStuff.Value)
-            {
-                __result = true;
-            }
+            if (Plugin.UnlockTwitchStuff.Value) __result = true;
         }
     }
 }

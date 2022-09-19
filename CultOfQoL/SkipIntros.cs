@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using MMTools;
 
-
 namespace CultOfQoL;
 
 public static class SkipIntros
@@ -17,13 +16,13 @@ public static class SkipIntros
             [HarmonyPrefix]
             public static bool Prefix(ref bool __state)
             {
-                if(AlreadyRun) return true;
+                if (AlreadyRun) return true;
                 if (Plugin.SkipIntros.Value)
                 {
                     __state = true;
                     return false;
-                    
                 }
+
                 __state = false;
                 return true;
             }

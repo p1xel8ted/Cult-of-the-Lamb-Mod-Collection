@@ -1,5 +1,6 @@
 <Project>
- <PropertyGroup>
-   <Deterministic>true</Deterministic>
- </PropertyGroup>
+    <PropertyGroup>
+        <Deterministic>true</Deterministic>
+
+    </PropertyGroup>
 </Project>

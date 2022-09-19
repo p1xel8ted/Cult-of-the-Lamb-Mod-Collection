@@ -5,7 +5,6 @@ namespace CultOfQoL;
 [HarmonyPatch]
 public static class GameOverPatches
 {
-    
     [HarmonyPatch(typeof(PlayerController), "Update")]
     public static class PlayerControllerUpdatePatch
     {
@@ -17,10 +16,9 @@ public static class GameOverPatches
             DataManager.Instance.GameOver = false;
             DataManager.Instance.InGameOver = false;
             DataManager.Instance.DisplayGameOverWarning = false;
-
         }
-    } 
-    
+    }
+
     [HarmonyPatch(typeof(TimeManager), "StartNewPhase", typeof(DayPhase))]
     public static class TimeManagerStartNewPhasePatch
     {
@@ -32,8 +30,6 @@ public static class GameOverPatches
             DataManager.Instance.GameOver = false;
             DataManager.Instance.InGameOver = false;
             DataManager.Instance.DisplayGameOverWarning = false;
-
         }
-    }   
-    
+    }
 }

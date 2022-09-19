@@ -1,5 +1,14 @@
 ## Changelog
 
+## 1.9.0 - 19/09/2022
+
+* Updated for game version 1.0.16. They removed the Debug button from the main menu, so I've removed the code that removes it.
+* When the propaganda speakers turn off of at night, their fire animation will now also turn off.
+* Implemented a potential fix for speakers not turning back on.
+* Added ability to replaced follower necklaces. The one they're wearing will drop to the ground.
+* Added ability to receive notifications when items that use fuel run out.
+* Followers who can level after Inspire All should now level. Will be added to others when I implement them.
+
 ## 1.8.1 - 13/09/2022
 
 * Fixed the follower menu breaking in some instances with the healing bay mod on.
