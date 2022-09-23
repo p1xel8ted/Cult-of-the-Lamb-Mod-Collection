@@ -1,5 +1,9 @@
+using System.Collections;
 using System.Globalization;
+using COTL_API.CustomInventory;
+using COTL_API.CustomObjectives;
 using HarmonyLib;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Rebirth;
@@ -8,28 +12,18 @@ namespace Rebirth;
 [HarmonyWrapSafe]
 public static class Patches
 {
-    private const float Chance = 1f;
-
-    private static bool DropLoot()
-    {
-        var roll = Random.Range(0f, 1f);
-        var chance = Chance * DataManager.Instance.GetLuckMultiplier();
-        Plugin.Log.LogWarning($"Rebirth Coin Chance: {roll} / {chance}: {roll <= chance}");
-        return roll <= chance;
-    }
+    private static readonly RebirthItem RebirthItem = new();
 
     [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
-    [HarmonyWrapSafe]
     [HarmonyPrefix]
     public static void Prefix(DropLootOnDeath __instance, Health Victim)
     {
         if (Victim.team == Health.Team.Team2)
         {
             Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
-            if (DropLoot())
+            if (CustomItemManager.DropLoot(RebirthItem))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                // SpawnLoot(Random.Range(1, 3), __instance.transform.position);
                 InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
             }
         }
@@ -37,53 +31,52 @@ public static class Patches
         if (Victim.name.ToLower(CultureInfo.InvariantCulture).Contains("breakable body pile"))
         {
             Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
-            if (DropLoot())
+            if (CustomItemManager.DropLoot(RebirthItem))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                //SpawnLoot(Random.Range(1, 3), __instance.transform.position);
                 InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
             }
         }
     }
 
-    [HarmonyPatch(typeof(Structures_OfferingShrine), nameof(Structures_OfferingShrine.Complete))]
-    public static class StructuresOfferingShrineCompletePatches
+    private static IEnumerator GiveLoot(Vector3 position)
     {
-        [HarmonyPrefix]
-        public static void Prefix(ref Structures_OfferingShrine __instance)
+        yield return new WaitForSeconds(2f);
+        for (var i = 0; i < 25; i++)
         {
-            __instance.Offerings.Add(Plugin.RebirthItem);
+            ResourceCustomTarget.Create(PlayerFarming.Instance.gameObject, position, Plugin.RebirthItem, null);
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        Inventory.AddItem(Plugin.RebirthItem, 25);
+    }
+
+    [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnInteract), typeof(StateMachine))]
+    [HarmonyPostfix]
+    public static void Postfix(interaction_FollowerInteraction __instance)
+    {
+        var questInstance = Quests.QuestsAll.Find(a => a.ID == Plugin.RebirthSacrificeFollowerQuest.ObjectiveData.ID);
+
+        if (questInstance is {IsComplete: true})
+        {
+            __instance.StartCoroutine(GiveLoot(__instance.follower.transform.position));
         }
     }
-    
-    [HarmonyPatch(typeof(Interaction_Chest))]
-    public static class DungeonChestPatches
+
+
+    [HarmonyPatch(typeof(Quests), nameof(Quests.GetRandomBaseQuest))]
+    public static class QuestsPatches
     {
-        [HarmonyPatch(nameof(Interaction_Chest.Reveal))]
         [HarmonyPostfix]
-        public static void RevealPostfix(Interaction_Chest __instance)
+        public static void QuestsGetRandomBaseQuest(ref ObjectivesData __result)
         {
-            Plugin.Log.LogWarning($"Regular Room Chest: {__instance.name}, Location: {PlayerFarming.Location.ToString()}");
-
-            if (__instance.MyState == Interaction_Chest.State.Open && DropLoot())
+            if (__result != null && !Quests.ObjectiveAlreadyActive(Plugin.RebirthSacrificeFollowerQuest.ObjectiveData))
             {
-                Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                //SpawnLoot(Random.Range(2, 5), __instance.transform.position);
-                InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(2, 5), __instance.transform.position);
-            }
-        }
-
-        [HarmonyPatch(nameof(Interaction_Chest.RevealBossReward))]
-        [HarmonyPostfix]
-        public static void RevealBossRewardPostfix(Interaction_Chest __instance)
-        {
-            Plugin.Log.LogWarning($"Boss Room Chest: {__instance.name}, Location: {PlayerFarming.Location.ToString()}");
-
-            if (__instance.MyState == Interaction_Chest.State.Open && DropLoot())
-            {
-                Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
-                //SpawnLoot(Random.Range(3, 6), __instance.transform.position);
-                InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(3, 6), __instance.transform.position);
+                Plugin.Log.LogWarning($"Overriding Quest: {__result.Type.ToString()}");
+                //TODO: Check Quest ID's arent matching
+                Plugin.RebirthSacrificeFollowerQuest.ObjectiveData.ResetInitialisation();
+                Plugin.RebirthSacrificeFollowerQuest.ObjectiveData.Follower = __result.Follower;
+                __result = Plugin.RebirthSacrificeFollowerQuest.ObjectiveData;
             }
         }
     }

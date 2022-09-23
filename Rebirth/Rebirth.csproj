@@ -15,11 +15,11 @@
     <ItemGroup>
       <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Reference Include="COTL_API">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
-
-
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="&quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\bin\mono&quot; &quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\Rebirth.dll&quot;" />
-    </Target>
 </Project>
