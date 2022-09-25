@@ -1,7 +1,13 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections;
+using System.Globalization;
+using System.IO;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace CultOfQoL;
 
@@ -14,6 +20,7 @@ public class Plugin : BaseUnityPlugin
 
     internal static ManualLogSource Log;
     private static readonly Harmony Harmony = new(PluginGuid);
+
 
     internal static ConfigEntry<bool> SkipIntros;
     internal static ConfigEntry<bool> EasyFishing;
@@ -128,6 +135,7 @@ public class Plugin : BaseUnityPlugin
         Harmony.UnpatchSelf();
         L($"Unloaded {PluginName}!");
     }
+
 
     public static void L(string message)
     {

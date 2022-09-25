@@ -47,6 +47,11 @@ internal static class StructurePatches
                 __instance.gameObject.SetActive(true);
                 __instance.OnEnable();
                 __instance.OnEnableInteraction();
+                
+                AudioManager.Instance.PlayLoop(__instance.loopedInstance);
+                __instance.VOPlaying = true;
+                var fireOn = __instance.onFireOn;
+                fireOn?.Invoke();
             }
 
             if (!TimeManager.IsNight) return;
@@ -57,7 +62,6 @@ internal static class StructurePatches
 
             AudioManager.Instance.StopLoop(__instance.loopedInstance);
             __instance.VOPlaying = false;
-            // Plugin.L($"Night time! Turning speakers off! Sleep well, little followers!");
             __instance.OnDisable();
         }
     }
@@ -71,6 +75,30 @@ internal static class StructurePatches
         {
             if (!Plugin.TurnOffSpeakersAtNight.Value) return true;
             return !TimeManager.IsNight;
+        }
+    }
+    
+    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewDay))]
+    public static class TimeManagerOnNewPhaseStarted
+    {
+        [HarmonyPostfix]
+        public static void Postfix()
+        {
+            if (!Plugin.TurnOffSpeakersAtNight.Value) return;
+            if (TimeManager.IsNight) return;
+            
+            var structures = Object.FindObjectsOfType<PropagandaSpeaker>();
+            foreach (var structure in structures)
+            {
+                // if (!structure.enabled || !structure.gameObject.activeSelf)
+                // {
+                    Plugin.L($"Found sleepy propaganda speaker! {structure.name}. Turning it on!");
+                    structure.enabled = true;
+                    structure.gameObject.SetActive(true);
+                    structure.structure.enabled = true;
+                    structure.structure.OnEnable();
+                // }
+            }
         }
     }
 

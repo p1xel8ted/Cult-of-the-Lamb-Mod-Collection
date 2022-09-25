@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using COTL_API.Saves;
 
 namespace Rebirth;

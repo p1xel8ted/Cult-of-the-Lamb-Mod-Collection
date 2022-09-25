@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
 using UnityEngine;

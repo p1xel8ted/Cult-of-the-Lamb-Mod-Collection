@@ -1,20 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>0.1.1</AssemblyVersion>
+        <AssemblyVersion>0.1.3</AssemblyVersion>
         <ReleaseVersion>0.1.1</ReleaseVersion>
         <Authors>p1xel8ted</Authors>
         <PackageId>Rebirth</PackageId>
         <Title>Rebirth</Title>
         <PackageIcon>rebirth_command.png</PackageIcon>
-        <FileVersion>0.1.1</FileVersion>
-        <PackageVersion>0.1.1</PackageVersion>
+        <FileVersion>0.1.3</FileVersion>
+        <PackageVersion>0.1.3</PackageVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <DebugType>portable</DebugType>
     </PropertyGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\lib\COTL_API\COTL_API\COTL_API.csproj" />
-    </ItemGroup>
     <ItemGroup>
       <Reference Include="COTL_API">
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
