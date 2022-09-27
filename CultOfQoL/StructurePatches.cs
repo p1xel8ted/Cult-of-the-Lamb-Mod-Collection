@@ -86,7 +86,7 @@ internal static class StructurePatches
         {
             if (!Plugin.TurnOffSpeakersAtNight.Value) return;
             if (TimeManager.IsNight) return;
-            
+
             var structures = Object.FindObjectsOfType<PropagandaSpeaker>();
             foreach (var structure in structures)
             {
