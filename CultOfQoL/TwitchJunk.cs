@@ -29,28 +29,21 @@ internal static class TwitchJunk
 
             if (Plugin.UnlockTwitchStuff.Value)
             {
-                if (!DataManager.TwitchTotemRewardAvailable()) return;
+               // if (!DataManager.TwitchTotemRewardAvailable()) return;
                 foreach (var availableTwitchTotemDecoration in availableTwitchTotemDecorations)
-                    StructuresData.CompleteResearch(availableTwitchTotemDecoration);
-                foreach (var availableTwitchTotemDecoration in availableTwitchTotemDecorations)
-                    StructuresData.SetRevealed(availableTwitchTotemDecoration);
-                foreach (var availableTwitchTotemSkin in availableTwitchTotemSkins)
-                    DataManager.SetFollowerSkinUnlocked(availableTwitchTotemSkin);
-            }
-            else
-            {
-                foreach (var type in totemDecorations)
                 {
-                    if (StructuresData.GetUnlocked(type)) DataManager.Instance.UnlockedStructures.Remove(type);
-
-                    if (DataManager.Instance.RevealedStructures.Contains(type)) DataManager.Instance.RevealedStructures.Remove(type);
+                    StructuresData.CompleteResearch(availableTwitchTotemDecoration);
+                    StructuresData.SetRevealed(availableTwitchTotemDecoration);
                 }
 
                 foreach (var skin in twitchSkins)
                 {
-                    if (DataManager.Instance.FollowerSkinsUnlocked.Contains(skin)) DataManager.Instance.FollowerSkinsUnlocked.Remove(skin);
+                    DataManager.SetFollowerSkinUnlocked(skin);   
+                }
 
-                    if (DataManager.Instance.NewFollowerSkins.Contains(skin)) DataManager.Instance.NewFollowerSkins.Remove(skin);
+                foreach (var availableTwitchTotemSkin in availableTwitchTotemSkins)
+                {
+                    DataManager.SetFollowerSkinUnlocked(availableTwitchTotemSkin);
                 }
             }
         }

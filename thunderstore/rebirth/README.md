@@ -10,6 +10,10 @@
 * Their old body stays; compost it, eat it. Up to you.
 * Each time you start the game it will add a quest to go collect a random amount of tokens (between 15 and 25) from one of the dungeons you have completed.
 
+## Donate
+
+[![KoFiLogo](https://raw.githubusercontent.com/p1xel8ted/GYK-Mods-QMod/main/kofi-nexus-smaller.png)](https://ko-fi.com/p1xel8ted)
+
 ## Installation
 
 * Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)

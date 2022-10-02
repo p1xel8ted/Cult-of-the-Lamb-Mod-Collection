@@ -1,5 +1,11 @@
 ## Changelog
 
+## 1.9.1 - 2/10/2022
+
+* Updated for game version 1.0.17.
+* Unlocked Twitch skins will no longer be removed if you disable the option to unlock them.
+* Another attempt at fixing propoganda speakers being turned off during the day for a whole phase.
+
 ## 1.9.0 - 19/09/2022
 
 * Updated for game version 1.0.16. They removed the Debug button from the main menu, so I've removed the code that removes it.

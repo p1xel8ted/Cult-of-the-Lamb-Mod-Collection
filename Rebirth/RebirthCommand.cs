@@ -10,7 +10,8 @@ namespace Rebirth
     {
         public override string InternalName => "REBIRTH_COMMAND";
 
-        public override Sprite CommandIcon { get; } = TextureHelper.CreateSpriteFromPath(Path.Combine(Plugin.PluginPath, "assets", "rebirth_command.png"));
+        public override Sprite CommandIcon { get; } =
+            TextureHelper.CreateSpriteFromPath(Path.Combine(Plugin.PluginPath, "assets", "rebirth_command.png"));
 
         public override string GetTitle(Follower follower)
         {
@@ -34,7 +35,7 @@ namespace Rebirth
                 return "You already have a follower awaiting indoctrination!";
             }
 
-            
+
             Helper.TooOld = Helper.IsOld(follower);
             if (Helper.TooOld)
             {
@@ -44,7 +45,6 @@ namespace Rebirth
             return "Yeah, you shouldn't be seeing this...";
         }
 
-       
 
         public override bool IsAvailable(Follower follower)
         {
@@ -52,7 +52,7 @@ namespace Rebirth
             {
                 return false;
             }
-            
+
             Helper.TooOld = Helper.IsOld(follower);
             if (Helper.TooOld)
             {
@@ -76,11 +76,10 @@ namespace Rebirth
 
         private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
 
- 
-        
+
         private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
         {
-           yield return DieRoutine(old);
+            yield return DieRoutine(old);
 
             yield return new WaitForSeconds(3f);
             BiomeBaseManager.Instance.SpawnExistingRecruits = false;
@@ -101,7 +100,9 @@ namespace Rebirth
             NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
-            var newXp = Mathf.CeilToInt(follower.Brain.Info.XPLevel / 2f);
+            var oldLevel = follower.Brain._directInfoAccess.FollowerLevel;
+            var oldXp = follower.Brain.Info.XPLevel;
+            var newXp = Mathf.CeilToInt(oldXp / 2f);
             var halfXp = Helper.DoHalfStats();
 
             var fi = FollowerInfo.NewCharacter(FollowerLocation.Base);
@@ -112,9 +113,16 @@ namespace Rebirth
                 Plugin.Log.LogWarning($"New follower: {fi.Name}");
                 var bornAgainFollower = new SaveData.BornAgainFollowerData(fi, true);
                 SaveData.SetBornAgainFollowerData(bornAgainFollower);
+                fi.FollowerLevel = oldLevel;
+                fi.XPLevel = oldXp;
 
                 if (halfXp)
                 {
+                    if (fi.FollowerLevel >= 2)
+                    {
+                        fi.FollowerLevel -= 1;
+                    }
+
                     fi.XPLevel = newXp;
                 }
             }
@@ -137,7 +145,6 @@ namespace Rebirth
             if (!halfXp) yield break;
             NotificationCentre.Instance.PlayGenericNotification($"Oh no! {name} lost half of their XP during Rebirth!");
             yield return new WaitForSeconds(3f);
-
         }
 
         //this is stop being able to resurrect the old dead body of a born-again follower
@@ -168,10 +175,8 @@ namespace Rebirth
 
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
-            
             if (finalCommand == FollowerCommands.AreYouSureYes)
             {
-                
                 SpawnRecruit(interaction.follower);
             }
         }

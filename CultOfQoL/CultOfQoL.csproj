@@ -2,16 +2,16 @@
 
     <PropertyGroup>
         <AssemblyName>CultOfQoL</AssemblyName>
-        <AssemblyVersion>1.9.0</AssemblyVersion>
+        <AssemblyVersion>1.9.1</AssemblyVersion>
         <ReleaseVersion>1.8.1</ReleaseVersion>
         <Description>General QoL Tweaks</Description>
         <Authors>p1xel8ted</Authors>
-        <PackageVersion>1.9.0</PackageVersion>
+        <PackageVersion>1.9.1</PackageVersion>
         <Title>Cult of QoL Collection</Title>
         <PackageProjectUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</RepositoryUrl>
-        <FileVersion>1.9.0</FileVersion>
+        <FileVersion>1.9.1</FileVersion>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -31,7 +31,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.4.21" />
         <PackageReference Include="UnityEngine.Modules" Version="2019.4.40" IncludeAssets="compile">
         </PackageReference>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-*" IncludeAssets="compile">
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.17-*" IncludeAssets="compile">
         </PackageReference>
     </ItemGroup>
 

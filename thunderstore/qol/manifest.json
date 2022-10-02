@@ -1,9 +1,9 @@
 {
     "name": "Cult_of_QoL_Collection",
-    "version_number": "1.9.0",
+    "version_number": "1.9.1",
     "website_url": "https://www.nexusmods.com/cultofthelamb/mods/1?tab=description",
     "description": "Collect tithe/inspire all at once, game speed manipulation, skip intros, speed up collections, cheese fishing mini-game....and more.",
     "dependencies": [
-        "BepInEx-BepInExPack_CultOfTheLamb-5.4.21"
+        "BepInEx-BepInExPack_CultOfTheLamb-5.4.2101"
     ]
 }

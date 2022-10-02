@@ -31,7 +31,6 @@ namespace Rebirth
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable/disable this mod.");
 
             Log = Logger;
-            Log.LogInfo($"Loaded {PluginName}!");
 
             PluginPath = Path.GetDirectoryName(Info.Location);
 
@@ -40,7 +39,7 @@ namespace Rebirth
             RebirthItem = CustomItemManager.Add(new RebirthItem());
 
             RebirthCollectItemQuest = CustomObjectiveManager.CollectItem(RebirthItem, UnityEngine.Random.Range(15, 26), false, FollowerLocation.Dungeon1_1, 4800f);
-            RebirthCollectItemQuest.InitialQuestText = "Please Leader, please! I'm weary of this existence and seek to be reborn! I will do anything for you! Can you please help me?";
+            RebirthCollectItemQuest.InitialQuestText = $"Please Leader, please! I'm {"weary of this existence".Wave()} and seek to be reborn! I will do anything for you! Can you please help me?";
         }
 
         private void OnEnable()

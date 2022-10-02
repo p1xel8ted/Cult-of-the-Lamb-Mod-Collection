@@ -28,6 +28,10 @@
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
+## Donate
+
+[![KoFiLogo](https://raw.githubusercontent.com/p1xel8ted/GYK-Mods-QMod/main/kofi-nexus-smaller.png)](https://ko-fi.com/p1xel8ted)
+
 ## Installation
 
 * Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)
@@ -57,6 +61,12 @@ Feel free to reach out to me on the channel below.
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 
 ## Changelog
+
+## 1.9.1 - 2/10/2022
+
+* Updated for game version 1.0.17.
+* Unlocked Twitch skins will no longer be removed if you disable the option to unlock them.
+* Another attempt at fixing propoganda speakers being turned off during the day for a whole phase.
 
 ## 1.9.0 - 19/09/2022
 
