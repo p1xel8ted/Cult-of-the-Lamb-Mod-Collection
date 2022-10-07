@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HarmonyLib;
+using Socket.Newtonsoft.Json.Utilities.LinqBridge;
 using UnityEngine;
 
 namespace CultOfQoL;
@@ -26,7 +27,7 @@ internal static class StructurePatches
             }
 
             if (!Plugin.FiftyPercentIncreaseToLifespanInstead.Value) return;
-            
+
             newSpan = (int) (old * 1.5f);
             __result = newSpan;
             Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
@@ -37,32 +38,11 @@ internal static class StructurePatches
     [HarmonyPatch(typeof(PropagandaSpeaker), nameof(PropagandaSpeaker.Update))]
     public static class PropagandaSpeakerUpdate
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref PropagandaSpeaker __instance)
+        [HarmonyPrefix]
+        public static bool Prefix()
         {
-            if (!Plugin.TurnOffSpeakersAtNight.Value) return;
-            if (!__instance.gameObject.activeSelf)
-            {
-                Plugin.L("Turning speakers on!");
-                __instance.gameObject.SetActive(true);
-                __instance.OnEnable();
-                __instance.OnEnableInteraction();
-                
-                AudioManager.Instance.PlayLoop(__instance.loopedInstance);
-                __instance.VOPlaying = true;
-                var fireOn = __instance.onFireOn;
-                fireOn?.Invoke();
-            }
-
-            if (!TimeManager.IsNight) return;
-
-            __instance.Spine.AnimationState.SetAnimation(0, "off", true);
-            var fireOff = __instance.onFireOff;
-            fireOff?.Invoke();
-
-            AudioManager.Instance.StopLoop(__instance.loopedInstance);
-            __instance.VOPlaying = false;
-            __instance.OnDisable();
+            if (!Plugin.TurnOffSpeakersAtNight.Value) return true;
+            return !TimeManager.IsNight;
         }
     }
 
@@ -77,27 +57,26 @@ internal static class StructurePatches
             return !TimeManager.IsNight;
         }
     }
-    
-    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewDay))]
+
+    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase))]
     public static class TimeManagerOnNewPhaseStarted
     {
         [HarmonyPostfix]
-        public static void Postfix()
+        public static void Postfix(DayPhase phase)
         {
             if (!Plugin.TurnOffSpeakersAtNight.Value) return;
-            if (TimeManager.IsNight) return;
+
+            if (phase != DayPhase.Night) return;
 
             var structures = Object.FindObjectsOfType<PropagandaSpeaker>();
             foreach (var structure in structures)
             {
-                // if (!structure.enabled || !structure.gameObject.activeSelf)
-                // {
-                    Plugin.L($"Found sleepy propaganda speaker! {structure.name}. Turning it on!");
-                    structure.enabled = true;
-                    structure.gameObject.SetActive(true);
-                    structure.structure.enabled = true;
-                    structure.structure.OnEnable();
-                // }
+                structure.StopAllCoroutines();
+                structure.Spine.AnimationState.SetAnimation(0, "off", true);
+                var fireOff = structure.onFireOff;
+                fireOff?.Invoke();
+                AudioManager.Instance.StopLoop(structure.loopedInstance);
+                structure.VOPlaying = false;
             }
         }
     }

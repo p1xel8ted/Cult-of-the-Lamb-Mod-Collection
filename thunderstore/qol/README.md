@@ -25,6 +25,7 @@
 * Make lumber/mine/farm/refinery chests auto loot when nearby (like the chest near the main portal).
 * Swap out follower necklaces.
 * Receive notification when structures that use fuel run out.
+* Slightly more "dynamic" weather.
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -59,8 +60,22 @@ Feel free to reach out to me on the channel below.
 ## Known Issues
 
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
+* When exiting a building, the weather is actually changed twice by the game, so you might see two notifications.
 
 ## Changelog
+
+## 2.0.0 - 8/10/2022
+
+* Weather is a little more dynamic. Don't get excited, there ain't any snow.
+* Four config options for weather. Low range and high range for both rain and wind. Low range = light rain/wind, high range = heavy rain/wind. When the game changes weather, it basically rolls 0-100. Default config is:
+- Low range rain = 0-15, meaning the roll has to fall between those numbers for it to rain lightly.
+- High range rain = 85-100, meaning the roll has to fall between those numbers for it to rain heavily.
+- Low range wind = 0-25, meaning the roll has to fall between those numbers for it to be light winds.
+- High range wind = 75-100, meaning the roll has to fall between those numbers for it to be high winds.
+* Notifications (on/off) for when the days phase changes, i.e. morning, noon, evening, night, etc.
+* Notifications (on/off) for when the weather changes, i.e. light rain, heavy rain, wind, etc.
+* Hopefully fixed a bug where buildings could vanish from the map when uing propaganda speaker mods.
+* By default, the game changes weather when you exit a building or start a new day. You can now set it to change weather when the time of day changes, i.e. morning, noon, evening, night, etc.
 
 ## 1.9.1 - 2/10/2022
 

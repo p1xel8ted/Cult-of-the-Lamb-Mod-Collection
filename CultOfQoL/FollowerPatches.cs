@@ -9,8 +9,6 @@ namespace CultOfQoL;
 
 public static class FollowerPatches
 {
-    private static Follower _follower;
-
     private static IEnumerator DanceRoutine(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType)
     {
         Plugin.Log.LogInfo($"Follower: {follower.name}, Instance follower: {instance.follower.name}");

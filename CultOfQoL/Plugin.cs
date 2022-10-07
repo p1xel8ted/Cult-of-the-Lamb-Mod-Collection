@@ -16,7 +16,7 @@ public class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "1.9.1";
+    private const string PluginVer = "2.0.0";
 
     internal static ManualLogSource Log;
     private static readonly Harmony Harmony = new(PluginGuid);
@@ -59,6 +59,14 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<bool> NotifyOfNoFuel;
 
     internal static ConfigEntry<bool> GiveFollowersNewNecklaces;
+    
+    internal static ConfigEntry<int> RainLowerChance;
+    internal static ConfigEntry<int> RainUpperChance;
+    internal static ConfigEntry<int> WindLowerChance;
+    internal static ConfigEntry<int> WindUpperChance;
+    internal static ConfigEntry<bool> ChangeWeatherOnPhaseChange;
+    internal static ConfigEntry<bool> ShowPhaseNotifications;
+    internal static ConfigEntry<bool> ShowWeatherChangeNotifications;
 
     private void Awake()
     {
@@ -72,7 +80,16 @@ public class Plugin : BaseUnityPlugin
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
-
+        
+        //Weather
+        RainLowerChance = Config.Bind("Weather", "Light Rain Range", 15, "The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.");
+        RainUpperChance = Config.Bind("Weather", "Heavy Rain Range", 85, "The game basically uses a 100 sided dice to determine the weather. This is the higher end of the range of the dice roll. If it rolls higher than this number, heavy rain.");
+        WindLowerChance = Config.Bind("Weather", "Light Wind Range", 25, "The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light wind.");
+        WindUpperChance = Config.Bind("Weather", "Heavy Wind Range", 75, "The game basically uses a 100 sided dice to determine the weather. This is the higher end of the range of the dice roll. If it rolls higher than this number, heavy wind.");
+        ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather During The Day", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
+        ShowPhaseNotifications = Config.Bind("Weather", "Phase Notifications", true, "Show a notification when the time of day changes.");
+        ShowWeatherChangeNotifications = Config.Bind("Weather", "Weather Notifications", true, "Show a notification when the weather changes.   ");
+        
         //Game Mechanics
         ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
         IncreaseGoldenFleeceDamageRate = Config.Bind("Game Mechanics", "Increase Golden Fleece Rate", true, "Doubles the damage increase.");

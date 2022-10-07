@@ -2,16 +2,16 @@
 
     <PropertyGroup>
         <AssemblyName>CultOfQoL</AssemblyName>
-        <AssemblyVersion>1.9.1</AssemblyVersion>
-        <ReleaseVersion>1.9.1</ReleaseVersion>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <ReleaseVersion>2.0.0</ReleaseVersion>
         <Description>General QoL Tweaks</Description>
         <Authors>p1xel8ted</Authors>
-        <PackageVersion>1.9.1</PackageVersion>
+        <PackageVersion>2.0.0</PackageVersion>
         <Title>Cult of QoL Collection</Title>
         <PackageProjectUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</RepositoryUrl>
-        <FileVersion>1.9.1</FileVersion>
+        <FileVersion>2.0.0</FileVersion>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -34,7 +34,10 @@
         <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.17-*" IncludeAssets="compile">
         </PackageReference>
     </ItemGroup>
-
+    <PropertyGroup>
+        <!-- First one is "Forced Access" warning, second one is "Missing XML" comment -->
+        <NoWarn>Publicizer001,CS1591</NoWarn>
+    </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" />
