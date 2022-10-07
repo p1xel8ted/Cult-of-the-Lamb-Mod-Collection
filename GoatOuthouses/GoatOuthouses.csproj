@@ -1,20 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <ReleaseVersion>1.0.0</ReleaseVersion>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <ReleaseVersion>0.1.0</ReleaseVersion>
         <Authors>p1xel8ted</Authors>
         <PackageId>GoatOuthouses</PackageId>
         <Title>GoatOuthouses</Title>
-        <FileVersion>1.0.0</FileVersion>
+        <FileVersion>0.1.0</FileVersion>
         <AssemblyName>GoatOuthouses</AssemblyName>
         <RootNamespace>GoatOuthouses</RootNamespace>
         <Product>GoatOuthouses</Product>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
-
-    <ItemGroup>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.15-*" />
-    </ItemGroup>
     
 </Project>

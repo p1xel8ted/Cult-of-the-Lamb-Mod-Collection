@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>CultOfQoL</AssemblyName>
         <AssemblyVersion>1.9.1</AssemblyVersion>
-        <ReleaseVersion>1.8.1</ReleaseVersion>
+        <ReleaseVersion>1.9.1</ReleaseVersion>
         <Description>General QoL Tweaks</Description>
         <Authors>p1xel8ted</Authors>
         <PackageVersion>1.9.1</PackageVersion>

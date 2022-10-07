@@ -16,7 +16,7 @@ namespace Rebirth
     {
         internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
-        private const string PluginVer = "0.1.3";
+        private const string PluginVer = "0.1.4";
 
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);
