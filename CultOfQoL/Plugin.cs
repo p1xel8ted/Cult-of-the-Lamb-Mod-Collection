@@ -27,7 +27,7 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<bool> FastCollecting;
     internal static ConfigEntry<bool> RemoveMenuClutter;
     internal static ConfigEntry<bool> RemoveTwitchButton;
-    internal static ConfigEntry<bool> BulkInspireAndExtort;
+    internal static ConfigEntry<bool> BulkFollowerCommands;
     internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
     internal static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate;
     internal static ConfigEntry<bool> AdjustRefineryRequirements;
@@ -53,13 +53,15 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<bool> EnableAutoInteract;
     internal static ConfigEntry<int> TriggerAmount;
     internal static ConfigEntry<bool> IncreaseRange;
+    internal static ConfigEntry<bool> UseCustomRange;
+    internal static ConfigEntry<int> CustomRange;
 
     internal static ConfigEntry<bool> AddExhaustedToHealingBay;
     internal static ConfigEntry<bool> NotifyOfScarecrowTraps;
     internal static ConfigEntry<bool> NotifyOfNoFuel;
 
     internal static ConfigEntry<bool> GiveFollowersNewNecklaces;
-    
+
     internal static ConfigEntry<int> RainLowerChance;
     internal static ConfigEntry<int> RainUpperChance;
     internal static ConfigEntry<int> WindLowerChance;
@@ -67,6 +69,11 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<bool> ChangeWeatherOnPhaseChange;
     internal static ConfigEntry<bool> ShowPhaseNotifications;
     internal static ConfigEntry<bool> ShowWeatherChangeNotifications;
+
+    internal static ConfigEntry<int> CustomSoulCapacity;
+    internal static ConfigEntry<int> CustomSiloCapacity;
+    internal static ConfigEntry<bool> UseCustomSoulCapacity;
+    internal static ConfigEntry<bool> UseCustomSiloCapacity;
 
     private void Awake()
     {
@@ -80,7 +87,7 @@ public class Plugin : BaseUnityPlugin
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
-        
+
         //Weather
         RainLowerChance = Config.Bind("Weather", "Light Rain Range", 15, "The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.");
         RainUpperChance = Config.Bind("Weather", "Heavy Rain Range", 85, "The game basically uses a 100 sided dice to determine the weather. This is the higher end of the range of the dice roll. If it rolls higher than this number, heavy rain.");
@@ -89,7 +96,7 @@ public class Plugin : BaseUnityPlugin
         ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather During The Day", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
         ShowPhaseNotifications = Config.Bind("Weather", "Phase Notifications", true, "Show a notification when the time of day changes.");
         ShowWeatherChangeNotifications = Config.Bind("Weather", "Weather Notifications", true, "Show a notification when the weather changes.   ");
-        
+
         //Game Mechanics
         ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
         IncreaseGoldenFleeceDamageRate = Config.Bind("Game Mechanics", "Increase Golden Fleece Rate", true, "Doubles the damage increase.");
@@ -116,11 +123,17 @@ public class Plugin : BaseUnityPlugin
         //Chest Auto-Interact
         EnableAutoInteract = Config.Bind("Chest Auto-Interact", "Enable Auto Interact", true, "Makes chests automatically send you the resources when you're nearby.");
         TriggerAmount = Config.Bind("Chest Auto-Interact", "Resource Trigger Amount", 5, "How many items you want in the chest before triggering auto collect.");
-        IncreaseRange = Config.Bind("Chest Auto-Interact", "Activation Range", true, "The default range is 5. This will increase it to 10.");
+        IncreaseRange = Config.Bind("Chest Auto-Interact", "Double Activation Range", true, "The default range is 5. This will increase it to 10.");
+        UseCustomRange = Config.Bind("Chest Auto-Interact", "Use Custom Range", false, "Use a custom range instead of the default or increased range.");
+        CustomRange = Config.Bind("Chest Auto-Interact", "Custom Range", 10, "Enter a custom range to use instead of the default or increased range.");
 
         //Capacity
         JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
+        UseCustomSiloCapacity = Config.Bind("Capacity", "Use Custom Silo Capacity", false, "Use a custom silo capacity instead of the default or increased capacity.");
+        CustomSiloCapacity = Config.Bind("Capacity", "Custom Silo Capacity", 32, "Enter a custom silo capacity to use instead of the default or increased capacity.");
         DoubleSoulCapacity = Config.Bind("Capacity", "Double Soul Capacity", true, "Doubles the soul capacity of applicable structures.");
+        UseCustomSoulCapacity = Config.Bind("Capacity", "Use Custom Soul Capacity", false, "Use a custom soul capacity instead of the default or doubled capacity.");
+        CustomSoulCapacity = Config.Bind("Capacity", "Custom Soul Capacity", 100, "Enter a custom soul capacity to use instead of the default or doubled capacity.");
 
         //Notifications
         NotifyOfScarecrowTraps = Config.Bind("Notifications", "Notify of Scarecrow Traps", true, "Display a notification when the farm scarecrows have caught a trap!");
@@ -131,8 +144,9 @@ public class Plugin : BaseUnityPlugin
         CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("Followers", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");
         CollectTitheFromOldFollowers = Config.Bind("Followers", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
         AddExhaustedToHealingBay = Config.Bind("Followers", "Add Exhausted To Healing Bay", true, "Allows you to select exhausted followers for rest and relaxation in the healing bays.");
-        BulkInspireAndExtort = Config.Bind("Followers", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
+        BulkFollowerCommands = Config.Bind("Followers", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
     }
+
 
     private void OnEnable()
     {
@@ -152,7 +166,6 @@ public class Plugin : BaseUnityPlugin
         Harmony.UnpatchSelf();
         L($"Unloaded {PluginName}!");
     }
-
 
     public static void L(string message)
     {

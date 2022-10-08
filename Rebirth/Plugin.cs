@@ -24,7 +24,8 @@ namespace Rebirth
 
         private static ConfigEntry<bool> _modEnabled;
         public static InventoryItem.ITEM_TYPE RebirthItem { get; private set; }
-        public CustomObjective RebirthCollectItemQuest { get; private set; }
+        private CustomObjective RebirthCollectItemQuest { get; set; }
+        internal static RebirthItem RebirthItemInstance { get; private set; }
 
         private void Awake()
         {
@@ -37,6 +38,7 @@ namespace Rebirth
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
             CustomFollowerCommandManager.Add(new RebirthSubCommand());
             RebirthItem = CustomItemManager.Add(new RebirthItem());
+            RebirthItemInstance = new RebirthItem();
 
             RebirthCollectItemQuest = CustomObjectiveManager.CollectItem(RebirthItem, UnityEngine.Random.Range(15, 26), false, FollowerLocation.Dungeon1_1, 4800f);
             RebirthCollectItemQuest.InitialQuestText = $"Please Leader, please! I'm {"weary of this existence".Wave()} and seek to be reborn! I will do anything for you! Can you please help me?";

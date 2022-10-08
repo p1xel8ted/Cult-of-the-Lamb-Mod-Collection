@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using HarmonyLib;
-using Socket.Newtonsoft.Json.Utilities.LinqBridge;
 using UnityEngine;
 
 namespace CultOfQoL;
@@ -33,7 +32,7 @@ internal static class StructurePatches
             Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
         }
     }
-
+    
 
     [HarmonyPatch(typeof(PropagandaSpeaker), nameof(PropagandaSpeaker.Update))]
     public static class PropagandaSpeakerUpdate
@@ -101,8 +100,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_Bed __instance)
         {
-            if (!Plugin.DoubleSoulCapacity.Value) return;
-            __instance.SoulMax *= 2;
+            if (Plugin.UseCustomSoulCapacity.Value)
+            {
+                __instance.SoulMax = Plugin.CustomSoulCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __instance.SoulMax *= 2;
+            }
         }
     }
 
@@ -112,8 +118,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_Shrine __instance, ref int __result)
         {
-            if (!Plugin.DoubleSoulCapacity.Value) return;
-            __result *= 2;
+            if (Plugin.UseCustomSoulCapacity.Value)
+            {
+                __result = Plugin.CustomSoulCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
         }
     }
 
@@ -123,8 +136,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_Shrine_Misfit __instance, ref int __result)
         {
-            if (!Plugin.DoubleSoulCapacity.Value) return;
-            __result *= 2;
+            if (Plugin.UseCustomSoulCapacity.Value)
+            {
+                __result = Plugin.CustomSoulCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
         }
     }
 
@@ -135,8 +155,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_Shrine_Ratau __instance, ref int __result)
         {
-            if (!Plugin.DoubleSoulCapacity.Value) return;
-            __result *= 2;
+            if (Plugin.UseCustomSoulCapacity.Value)
+            {
+                __result = Plugin.CustomSoulCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
         }
     }
 
@@ -147,8 +174,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_Shrine_Passive __instance, ref int __result)
         {
-            if (!Plugin.DoubleSoulCapacity.Value) return;
-            __result *= 2;
+            if (Plugin.UseCustomSoulCapacity.Value)
+            {
+                __result = Plugin.CustomSoulCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.DoubleSoulCapacity.Value) return;
+                __result *= 2;
+            }
         }
     }
 
@@ -160,8 +194,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_SiloFertiliser __instance)
         {
-            if (!Plugin.JustRightSiloCapacity.Value) return;
-            __instance.Capacity = 32f;
+            if (Plugin.UseCustomSiloCapacity.Value)
+            {
+                __instance.Capacity = Plugin.CustomSiloCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.JustRightSiloCapacity.Value) return;
+                __instance.Capacity = 32f;
+            }
         }
     }
 
@@ -172,8 +213,15 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(ref Structures_SiloSeed __instance)
         {
-            if (!Plugin.JustRightSiloCapacity.Value) return;
-            __instance.Capacity = 32f;
+            if (Plugin.UseCustomSiloCapacity.Value)
+            {
+                __instance.Capacity = Plugin.CustomSiloCapacity.Value;
+            }
+            else
+            {
+                if (!Plugin.JustRightSiloCapacity.Value) return;
+                __instance.Capacity = 32f;
+            }
         }
     }
 

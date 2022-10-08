@@ -9,8 +9,6 @@ namespace Rebirth;
 [HarmonyWrapSafe]
 public static class Patches
 {
-    private static readonly RebirthItem RebirthItem = new();
-
     [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
     [HarmonyPrefix]
     public static void Prefix(DropLootOnDeath __instance, Health Victim)
@@ -18,7 +16,7 @@ public static class Patches
         if (Victim.team == Health.Team.Team2)
         {
             Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
-            if (CustomItemManager.DropLoot(RebirthItem))
+            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
                 InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
@@ -28,7 +26,7 @@ public static class Patches
         if (Victim.name.ToLower(CultureInfo.InvariantCulture).Contains("breakable body pile"))
         {
             Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
-            if (CustomItemManager.DropLoot(RebirthItem))
+            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
                 InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);

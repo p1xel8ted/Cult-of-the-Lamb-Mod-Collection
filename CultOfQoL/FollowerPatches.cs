@@ -9,54 +9,37 @@ namespace CultOfQoL;
 
 public static class FollowerPatches
 {
-    private static IEnumerator DanceRoutine(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType)
+    private enum CommandType
     {
-        Plugin.Log.LogInfo($"Follower: {follower.name}, Instance follower: {instance.follower.name}");
-        var position = PlayerFarming.Instance.transform.position;
-        follower.FacePosition(position);
-        PlayerFarming.Instance.state.CURRENT_STATE = StateMachine.State.CustomAnimation;
-        follower.State.CURRENT_STATE = StateMachine.State.Dancing;
-        yield return null;
-        PlayerFarming.Instance.Spine.AnimationState.SetAnimation(0, "dance", true);
-        follower.SetBodyAnimation("dance", true);
-        AudioManager.Instance.PlayOneShot("event:/player/speak_to_follower", position);
-        AudioManager.Instance.SetFollowersDance(1f);
-        yield return new WaitForSeconds(1.5f);
-        AudioManager.Instance.SetFollowersDance(0f);
-        AudioManager.Instance.PlayOneShot("event:/followers/gain_loyalty", instance.follower.transform.position);
-        ObjectiveManager.CompleteCustomObjective(Objectives.CustomQuestTypes.BlessAFollower);
-        follower.Brain.Stats.Inspired = true;
-        follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Inspire, delegate
+        Dance,
+        ExtortMoney,
+        Intimidate,
+        Bless,
+        Bribe
+    }
+
+    private static IEnumerator GiveRewards(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType, CommandType type)
+    {
+        switch (type)
         {
-            Plugin.L($"Adding Adoration thoughts to {follower.name}");
-            follower.Brain.AddThought(Thought.DancedWithLeader, forced: true);
-            instance.eventListener.PlayFollowerVO(instance.bowVO);
-            CultFaithManager.AddThought(Thought.Cult_Inspire, follower.Brain.Info.ID, 1f, null);
-            if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
-            {
-                instance.follower = follower;
-                follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
-            }
-        });
-        Plugin.L($"Resetting {follower.name} and sending to next task.");
-        follower.Dropped();
-        follower.ResetStateAnimations();
-        follower.Brain.ContinueToNextTask();
-    }
+            case CommandType.ExtortMoney:
+                yield return Extort.ExtortMoneyRoutine(follower, instance);
+                break;
+            case CommandType.Bless:
+                yield return Bless.BlessRoutine(follower, instance, previousTaskType);
+                break;
+            case CommandType.Dance:
+                yield return Dance.DanceRoutine(follower, instance, previousTaskType);
+                break;
+            case CommandType.Intimidate:
+                yield return Intimidate.IntimidateRoutine(follower, instance, previousTaskType);
+                break;
+            case CommandType.Bribe:
+                yield return Bribe.BribeRoutine(follower, instance, previousTaskType);
+                break;
+        }
 
-    private static IEnumerator ExtortMoneyRoutine(Follower follower, Interaction instance)
-    {
-        follower.Brain.Stats.PaidTithes = true;
-        var position = follower.transform.position;
-        ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
-        yield return new WaitForSeconds(0.2f);
-        ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
-    }
-
-    private static IEnumerator GiveRewards(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType)
-    {
-        yield return DanceRoutine(follower, instance, previousTaskType);
-        //  yield return new WaitForSeconds(5f);
+        // yield return new WaitForSeconds(5f);
         if (follower == instance.follower) yield break;
         if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
         {
@@ -81,12 +64,11 @@ public static class FollowerPatches
     [HarmonyWrapSafe]
     public static class InteractionFollowerInteraction
     {
-
         [HarmonyPatch("OnFollowerCommandFinalized")]
         [HarmonyPostfix]
         public static void Postfix(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
         {
-            if (!Plugin.BulkInspireAndExtort.Value) return;
+            if (!Plugin.BulkFollowerCommands.Value) return;
 
             if (followerCommands[0] == FollowerCommands.ExtortMoney)
                 foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
@@ -100,7 +82,7 @@ public static class FollowerPatches
                         case FollowerTask_OnMissionary:
                             continue;
                         default:
-                            follower.StartCoroutine(ExtortMoneyRoutine(follower, __instance));
+                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.ExtortMoney));
                             break;
                     }
                 }
@@ -119,7 +101,64 @@ public static class FollowerPatches
                         case FollowerTask_OnMissionary:
                             continue;
                         default:
-                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type));
+                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Dance));
+                            break;
+                    }
+                }
+            }
+
+            if (followerCommands[0] == FollowerCommands.Intimidate)
+            {
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Intimidated))
+                {
+                    switch (follower.Brain.CurrentTask)
+                    {
+                        case FollowerTask_Bathroom:
+                        case FollowerTask_Sleep:
+                        case FollowerTask_Dissent:
+                        case FollowerTask_Imprisoned:
+                        case FollowerTask_OnMissionary:
+                            continue;
+                        default:
+                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Intimidate));
+                            break;
+                    }
+                }
+            }
+
+            if (followerCommands[0] == FollowerCommands.Bless)
+            {
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.BlessedToday))
+                {
+                    switch (follower.Brain.CurrentTask)
+                    {
+                        case FollowerTask_Bathroom:
+                        case FollowerTask_Sleep:
+                        case FollowerTask_Dissent:
+                        case FollowerTask_Imprisoned:
+                        case FollowerTask_OnMissionary:
+                            continue;
+                        default:
+                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Bless));
+                            break;
+                    }
+                }
+            }
+
+            if (followerCommands[0] == FollowerCommands.Bribe)
+            {
+                foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Bribed))
+                {
+                    switch (follower.Brain.CurrentTask)
+                    {
+                        case FollowerTask_Bathroom:
+                        case FollowerTask_Sleep:
+                        case FollowerTask_Dissent:
+                        case FollowerTask_Imprisoned:
+                        case FollowerTask_OnMissionary:
+                            continue;
+                        default:
+                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Bribe));
                             break;
                     }
                 }

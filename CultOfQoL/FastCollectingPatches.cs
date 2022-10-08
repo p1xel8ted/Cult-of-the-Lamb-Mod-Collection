@@ -19,7 +19,14 @@ public static class FastCollectingPatches
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
         {
             __instance.Activating = true;
-            __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
+            if(Plugin.UseCustomRange.Value)
+            {
+                __instance.DistanceToTriggerDeposits = Plugin.CustomRange.Value;
+            }
+            else
+            {
+                __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
+            }
             __instance.AutomaticallyInteract = true;
         }
     }
@@ -34,7 +41,14 @@ public static class FastCollectingPatches
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
         {
             __instance.Activating = true;
-            __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
+            if(Plugin.UseCustomRange.Value)
+            {
+                __instance.DistanceToTriggerDeposits = Plugin.CustomRange.Value;
+            }
+            else
+            {
+                __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
+            }
             __instance.AutomaticallyInteract = true;
         }
     }

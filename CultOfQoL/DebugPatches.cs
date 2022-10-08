@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using HarmonyLib;
-using Lamb.UI.FollowerSelect;
 
 namespace CultOfQoL;
 
