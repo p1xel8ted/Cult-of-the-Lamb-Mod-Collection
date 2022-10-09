@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CultOfQoL;
 
+[HarmonyPatch]
 internal static class StructurePatches
 {
     [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.LifeSpawn), MethodType.Getter)]
@@ -32,7 +33,7 @@ internal static class StructurePatches
             Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
         }
     }
-    
+
 
     [HarmonyPatch(typeof(PropagandaSpeaker), nameof(PropagandaSpeaker.Update))]
     public static class PropagandaSpeakerUpdate
@@ -102,13 +103,12 @@ internal static class StructurePatches
         {
             if (Plugin.UseCustomSoulCapacity.Value)
             {
-                __instance.SoulMax = Plugin.CustomSoulCapacity.Value;
+                __instance.SoulMax = Mathf.CeilToInt(__instance.SoulMax * Plugin.CustomSoulCapacityMulti.Value);
+                return;
             }
-            else
-            {
-                if (!Plugin.DoubleSoulCapacity.Value) return;
-                __instance.SoulMax *= 2;
-            }
+
+            if (!Plugin.DoubleSoulCapacity.Value) return;
+            __instance.SoulMax *= 2;
         }
     }
 
@@ -116,123 +116,115 @@ internal static class StructurePatches
     public static class StructuresShrinesSoulMax
     {
         [HarmonyPostfix]
-        public static void Postfix(ref Structures_Shrine __instance, ref int __result)
+        public static void Postfix(ref int __result)
         {
             if (Plugin.UseCustomSoulCapacity.Value)
             {
-                __result = Plugin.CustomSoulCapacity.Value;
+                __result = Mathf.CeilToInt(__result * Plugin.CustomSoulCapacityMulti.Value);
+                return;
             }
-            else
-            {
-                if (!Plugin.DoubleSoulCapacity.Value) return;
-                __result *= 2;
-            }
+
+            if (!Plugin.DoubleSoulCapacity.Value) return;
+
+            __result *= 2;
         }
     }
+
 
     [HarmonyPatch(typeof(Structures_Shrine_Misfit), "SoulMax", MethodType.Getter)]
     public static class StructuresShrineMisfitSoulMax
     {
         [HarmonyPostfix]
-        public static void Postfix(ref Structures_Shrine_Misfit __instance, ref int __result)
+        public static void Postfix(ref int __result)
         {
             if (Plugin.UseCustomSoulCapacity.Value)
             {
-                __result = Plugin.CustomSoulCapacity.Value;
+                __result = Mathf.CeilToInt(__result * Plugin.CustomSoulCapacityMulti.Value);
+                return;
             }
-            else
-            {
-                if (!Plugin.DoubleSoulCapacity.Value) return;
-                __result *= 2;
-            }
+
+            if (!Plugin.DoubleSoulCapacity.Value) return;
+
+            __result *= 2;
         }
     }
-
 
     [HarmonyPatch(typeof(Structures_Shrine_Ratau), "SoulMax", MethodType.Getter)]
     public static class StructuresShrineRatauSoulMax
     {
         [HarmonyPostfix]
-        public static void Postfix(ref Structures_Shrine_Ratau __instance, ref int __result)
+        public static void Postfix(ref int __result)
         {
             if (Plugin.UseCustomSoulCapacity.Value)
             {
-                __result = Plugin.CustomSoulCapacity.Value;
+                __result = Mathf.CeilToInt(__result * Plugin.CustomSoulCapacityMulti.Value);
+                return;
             }
-            else
-            {
-                if (!Plugin.DoubleSoulCapacity.Value) return;
-                __result *= 2;
-            }
+
+
+            if (!Plugin.DoubleSoulCapacity.Value) return;
+            __result *= 2;
         }
     }
-
 
     [HarmonyPatch(typeof(Structures_Shrine_Passive), "SoulMax", MethodType.Getter)]
     public static class StructuresShrinePassiveSoulMax
     {
         [HarmonyPostfix]
-        public static void Postfix(ref Structures_Shrine_Passive __instance, ref int __result)
+        public static void Postfix(ref int __result)
         {
             if (Plugin.UseCustomSoulCapacity.Value)
             {
-                __result = Plugin.CustomSoulCapacity.Value;
+                __result = Mathf.CeilToInt(__result * Plugin.CustomSoulCapacityMulti.Value);
+                return;
             }
-            else
-            {
-                if (!Plugin.DoubleSoulCapacity.Value) return;
-                __result *= 2;
-            }
+
+            if (!Plugin.DoubleSoulCapacity.Value) return;
+            __result *= 2;
         }
     }
 
-
-    //original author is Matthew-X, I just refactored.
-    [HarmonyPatch(typeof(Structures_SiloFertiliser), MethodType.Constructor)]
-    public static class StructuresSiloFertiliserBrain
+    [HarmonyPatch(typeof(Interaction_SiloFertilizer), nameof(Interaction_SiloFertilizer.OnInteract))]
+    [HarmonyPatch(typeof(Interaction_SiloFertilizer), nameof(Interaction_SiloFertilizer.UpdateCapacityIndicators))]
+    [HarmonyPrefix]
+    public static void Interaction_SiloFertilizer_DepositItem(ref Interaction_SiloFertilizer __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref Structures_SiloFertiliser __instance)
+        if (Plugin.UseCustomSiloCapacity.Value)
         {
-            if (Plugin.UseCustomSiloCapacity.Value)
-            {
-                __instance.Capacity = Plugin.CustomSiloCapacity.Value;
-            }
-            else
-            {
-                if (!Plugin.JustRightSiloCapacity.Value) return;
-                __instance.Capacity = 32f;
-            }
+            __instance.StructureBrain.Capacity = Mathf.Ceil(15 * Plugin.CustomSiloCapacityMulti.Value);
+            return;
+        }
+
+        if (Plugin.JustRightSiloCapacity.Value)
+        {
+            __instance.StructureBrain.Capacity = 32f;
         }
     }
 
-    //original author is Matthew-X, I just refactored.
-    [HarmonyPatch(typeof(Structures_SiloSeed), MethodType.Constructor)]
-    public static class StructureBrainCreateBrainPatches
+
+    [HarmonyPatch(typeof(Interaction_SiloSeeder), nameof(Interaction_SiloSeeder.OnInteract))]
+    [HarmonyPatch(typeof(Interaction_SiloSeeder), nameof(Interaction_SiloSeeder.UpdateCapacityIndicators))]
+    [HarmonyPrefix]
+    public static void Interaction_SiloSeeder_DepositItem(ref Interaction_SiloSeeder __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref Structures_SiloSeed __instance)
+        if (Plugin.UseCustomSiloCapacity.Value)
         {
-            if (Plugin.UseCustomSiloCapacity.Value)
-            {
-                __instance.Capacity = Plugin.CustomSiloCapacity.Value;
-            }
-            else
-            {
-                if (!Plugin.JustRightSiloCapacity.Value) return;
-                __instance.Capacity = 32f;
-            }
+            __instance.StructureBrain.Capacity = Mathf.Ceil(15 * Plugin.CustomSiloCapacityMulti.Value);
+            return;
+        }
+
+        if (Plugin.JustRightSiloCapacity.Value)
+        {
+            __instance.StructureBrain.Capacity = 32f;
         }
     }
+
 
     [HarmonyPatch(typeof(Structures_Refinery), nameof(Structures_Refinery.GetCost), typeof(InventoryItem.ITEM_TYPE))]
-    public static class RefineryItemCheckCanAffordPatches
+    [HarmonyPostfix]
+    public static void Structures_Refinery_GetCost(ref List<StructuresData.ItemCost> __result)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref List<StructuresData.ItemCost> __result)
-        {
-            if (!Plugin.AdjustRefineryRequirements.Value) return;
-            foreach (var item in __result) item.CostValue = Mathf.CeilToInt(item.CostValue / 2f);
-        }
+        if (!Plugin.AdjustRefineryRequirements.Value) return;
+        foreach (var item in __result) item.CostValue = Mathf.CeilToInt(item.CostValue / 2f);
     }
 }

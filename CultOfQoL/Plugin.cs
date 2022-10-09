@@ -54,7 +54,7 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<int> TriggerAmount;
     internal static ConfigEntry<bool> IncreaseRange;
     internal static ConfigEntry<bool> UseCustomRange;
-    internal static ConfigEntry<int> CustomRange;
+    internal static ConfigEntry<float> CustomRangeMulti;
 
     internal static ConfigEntry<bool> AddExhaustedToHealingBay;
     internal static ConfigEntry<bool> NotifyOfScarecrowTraps;
@@ -70,10 +70,20 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<bool> ShowPhaseNotifications;
     internal static ConfigEntry<bool> ShowWeatherChangeNotifications;
 
-    internal static ConfigEntry<int> CustomSoulCapacity;
-    internal static ConfigEntry<int> CustomSiloCapacity;
+    internal static ConfigEntry<float> CustomSoulCapacityMulti;
+    internal static ConfigEntry<float> CustomSiloCapacityMulti;
     internal static ConfigEntry<bool> UseCustomSoulCapacity;
     internal static ConfigEntry<bool> UseCustomSiloCapacity;
+
+    public static ConfigEntry<float> CustomDamageMulti;
+
+    public static ConfigEntry<bool> UseCustomDamageValue;
+
+    public static ConfigEntry<float> CustomLuckMultiplier;
+
+    public static ConfigEntry<bool> UseCustomLuckMultiplier;
+    public static WriteOnce<float> LumberFastCollect { get; } = new();
+    public static WriteOnce<float> OtherFastCollect { get; } = new();
 
     private void Awake()
     {
@@ -100,10 +110,15 @@ public class Plugin : BaseUnityPlugin
         //Game Mechanics
         ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
         IncreaseGoldenFleeceDamageRate = Config.Bind("Game Mechanics", "Increase Golden Fleece Rate", true, "Doubles the damage increase.");
+        UseCustomDamageValue = Config.Bind("Game Mechanics", "Use Custom Damage Value", false, "Use a custom damage value instead of the default 10%.");
+        CustomDamageMulti = Config.Bind("Game Mechanics", "Custom Damage Multiplier", 2.0f, "The custom damage multiplier to use. Based off the games default 5%.");
+
         AdjustRefineryRequirements = Config.Bind("Game Mechanics", "Adjust Refinery Requirements", true, "Where possible, halves the materials needed to convert items in the refinery. Rounds up.");
         EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
         DisableGameOver = Config.Bind("Game Mechanics", "No More Game-Over", false, "Disables the game over function when you have 0 followers for consecutive days.");
         ThriceMultiplyTarotCardLuck = Config.Bind("Game Mechanics", "3x Tarot Luck", true, "Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards.");
+        UseCustomLuckMultiplier = Config.Bind("Game Mechanics", "Use Custom Luck Multiplier", false, "Use a custom luck multiplier instead of the default 3x.");
+        CustomLuckMultiplier = Config.Bind("Game Mechanics", "Custom Luck Multiplier", 3.0f, "The custom luck multiplier to use.");
 
         //Lumber/mining
         LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse. Takes 1st priority.");
@@ -125,15 +140,15 @@ public class Plugin : BaseUnityPlugin
         TriggerAmount = Config.Bind("Chest Auto-Interact", "Resource Trigger Amount", 5, "How many items you want in the chest before triggering auto collect.");
         IncreaseRange = Config.Bind("Chest Auto-Interact", "Double Activation Range", true, "The default range is 5. This will increase it to 10.");
         UseCustomRange = Config.Bind("Chest Auto-Interact", "Use Custom Range", false, "Use a custom range instead of the default or increased range.");
-        CustomRange = Config.Bind("Chest Auto-Interact", "Custom Range", 10, "Enter a custom range to use instead of the default or increased range.");
+        CustomRangeMulti = Config.Bind("Chest Auto-Interact", "Custom Range Multiplier", 2.0f, "Enter a multiplier to use for auto-collect range when using custom range.");
 
         //Capacity
         JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
         UseCustomSiloCapacity = Config.Bind("Capacity", "Use Custom Silo Capacity", false, "Use a custom silo capacity instead of the default or increased capacity.");
-        CustomSiloCapacity = Config.Bind("Capacity", "Custom Silo Capacity", 32, "Enter a custom silo capacity to use instead of the default or increased capacity.");
+        CustomSiloCapacityMulti = Config.Bind("Capacity", "Custom Silo Capacity Multiplier", 2.0f, "Enter a multiplier to use for silo capacity when using custom capacity.");
         DoubleSoulCapacity = Config.Bind("Capacity", "Double Soul Capacity", true, "Doubles the soul capacity of applicable structures.");
         UseCustomSoulCapacity = Config.Bind("Capacity", "Use Custom Soul Capacity", false, "Use a custom soul capacity instead of the default or doubled capacity.");
-        CustomSoulCapacity = Config.Bind("Capacity", "Custom Soul Capacity", 100, "Enter a custom soul capacity to use instead of the default or doubled capacity.");
+        CustomSoulCapacityMulti = Config.Bind("Capacity", "Custom Soul Capacity Multiplier", 2.0f, "Enter a multiplier to use for soul capacity when using custom capacity.");
 
         //Notifications
         NotifyOfScarecrowTraps = Config.Bind("Notifications", "Notify of Scarecrow Traps", true, "Display a notification when the farm scarecrows have caught a trap!");

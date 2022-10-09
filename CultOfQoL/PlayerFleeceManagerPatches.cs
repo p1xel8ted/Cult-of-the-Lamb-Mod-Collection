@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace CultOfQoL;
 
@@ -10,7 +11,7 @@ public static class PlayerFleeceManagerPatches
         [HarmonyPrefix]
         public static bool Prefix()
         {
-            if (Plugin.ReverseGoldenFleeceDamageChange.Value || Plugin.IncreaseGoldenFleeceDamageRate.Value) return false;
+            if (Plugin.ReverseGoldenFleeceDamageChange.Value || Plugin.IncreaseGoldenFleeceDamageRate.Value || Plugin.UseCustomDamageValue.Value) return false;
             return true;
         }
 
@@ -21,10 +22,17 @@ public static class PlayerFleeceManagerPatches
             var playerFleece = DataManager.Instance.PlayerFleece;
             if (playerFleece == 1)
             {
-                if (Plugin.ReverseGoldenFleeceDamageChange.Value)
-                    ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
+                if (Plugin.UseCustomDamageValue.Value)
+                {
+                    ___damageMultiplier += Mathf.Ceil(0.05f * Plugin.CustomDamageMulti.Value);
+                }
                 else
-                    ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.1f : 0.05f;
+                {
+                    if (Plugin.ReverseGoldenFleeceDamageChange.Value)
+                        ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
+                    else
+                        ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.1f : 0.05f;
+                }
             }
 
             ___OnDamageMultiplierModified?.Invoke(___damageMultiplier);

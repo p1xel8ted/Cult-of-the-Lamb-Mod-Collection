@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -14,19 +15,26 @@ public static class FastCollectingPatches
     [HarmonyPrefix]
     public static void InteractionCollectResourceChestPrefix(ref Interaction_CollectResourceChest __instance)
     {
+        // Plugin.L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
+
+
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Plugin.TriggerAmount.Value);
         __instance.AutomaticallyInteract = false;
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
         {
             __instance.Activating = true;
-            if(Plugin.UseCustomRange.Value)
+            if (Plugin.UseCustomRange.Value)
             {
-                __instance.DistanceToTriggerDeposits = Plugin.CustomRange.Value;
+                Plugin.OtherFastCollect.Value = __instance.DistanceToTriggerDeposits;
+
+
+                __instance.DistanceToTriggerDeposits = Plugin.OtherFastCollect.Value * Plugin.CustomRangeMulti.Value;
             }
             else
             {
                 __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
             }
+
             __instance.AutomaticallyInteract = true;
         }
     }
@@ -36,19 +44,25 @@ public static class FastCollectingPatches
     [HarmonyPrefix]
     public static void LumberjackStationPrefix(ref LumberjackStation __instance)
     {
+        // Plugin.L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
+
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Plugin.TriggerAmount.Value);
         __instance.AutomaticallyInteract = false;
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
         {
             __instance.Activating = true;
-            if(Plugin.UseCustomRange.Value)
+            if (Plugin.UseCustomRange.Value)
             {
-                __instance.DistanceToTriggerDeposits = Plugin.CustomRange.Value;
+                Plugin.LumberFastCollect.Value = __instance.DistanceToTriggerDeposits;
+
+
+                __instance.DistanceToTriggerDeposits = Plugin.LumberFastCollect.Value * Plugin.CustomRangeMulti.Value;
             }
             else
             {
                 __instance.DistanceToTriggerDeposits = Plugin.IncreaseRange.Value ? 10f : 5f;
             }
+
             __instance.AutomaticallyInteract = true;
         }
     }
@@ -101,7 +115,7 @@ public static class FastCollectingPatches
         public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
         {
             if (!Plugin.FastCollecting.Value) return instructions;
-    
+
             return new CodeMatcher(instructions)
                 .MatchForward(false,
                     new CodeMatch(OpCodes.Ldc_R4),
@@ -109,7 +123,7 @@ public static class FastCollectingPatches
                 .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f)
                 .InstructionEnumeration();
         }
-    
+
         //collection speed for Interaction_CollectResourceChest - default speed is 0.1f
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
@@ -125,8 +139,8 @@ public static class FastCollectingPatches
                 .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f)
                 .InstructionEnumeration();
         }
-    
-    
+
+
         //collection speed for Interaction_EntranceShrine (dungeon shrines) - default speed is 0.1f
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Interaction_RatauShrine), nameof(Interaction_RatauShrine.Update))]

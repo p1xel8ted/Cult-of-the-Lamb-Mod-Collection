@@ -11,16 +11,23 @@ public static class TarotCardPatches
         [HarmonyPostfix]
         public static void Postfix(ref TarotCards.TarotCard __result)
         {
-            if (!Plugin.ThriceMultiplyTarotCardLuck.Value) return;
-            //Plugin.L($"TarotCardDraw: Original upgrade index (rarity): {__result.UpgradeIndex}. Original random limit: {0.275f * DataManager.Instance.GetLuckMultiplier()}");
-            var num = 0;
+            if (Plugin.ThriceMultiplyTarotCardLuck.Value || Plugin.UseCustomLuckMultiplier.Value)
+            {
+                var newRangeCheck = 0.275f * (DataManager.Instance.GetLuckMultiplier() * (Plugin.UseCustomLuckMultiplier.Value ? Plugin.CustomLuckMultiplier.Value : 3f));
+                if (newRangeCheck > 1)
+                {
+                    newRangeCheck = 1;
+                }
 
-            while (Random.Range(0f, 1f) < 0.275f * (DataManager.Instance.GetLuckMultiplier() * 3f)) num++;
+                Plugin.L($"Original rangeCheck: {0.275f * DataManager.Instance.GetLuckMultiplier()}, New rangeCheck: {newRangeCheck}");
+                var num = 0;
 
-            num = Mathf.Min(num, TarotCards.GetMaxTarotCardLevel(__result.CardType));
-       
-            __result.UpgradeIndex = num;
-           // Plugin.L($"TarotCardDraw: New upgrade index (rarity): {__result.UpgradeIndex}. New random limit: {0.275f * (DataManager.Instance.GetLuckMultiplier() * 3f)}");
+                while (Random.Range(0f, 1f) < newRangeCheck) num++;
+
+                num = Mathf.Min(num, TarotCards.GetMaxTarotCardLevel(__result.CardType));
+
+                __result.UpgradeIndex = num;
+            }
         }
     }
 }
