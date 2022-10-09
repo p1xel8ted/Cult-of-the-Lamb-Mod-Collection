@@ -78,10 +78,6 @@ public class Plugin : BaseUnityPlugin
     public static ConfigEntry<float> CustomDamageMulti;
 
     public static ConfigEntry<bool> UseCustomDamageValue;
-
-    public static ConfigEntry<float> CustomLuckMultiplier;
-
-    public static ConfigEntry<bool> UseCustomLuckMultiplier;
     public static WriteOnce<float> LumberFastCollect { get; } = new();
     public static WriteOnce<float> OtherFastCollect { get; } = new();
 
@@ -117,8 +113,6 @@ public class Plugin : BaseUnityPlugin
         EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
         DisableGameOver = Config.Bind("Game Mechanics", "No More Game-Over", false, "Disables the game over function when you have 0 followers for consecutive days.");
         ThriceMultiplyTarotCardLuck = Config.Bind("Game Mechanics", "3x Tarot Luck", true, "Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards.");
-        UseCustomLuckMultiplier = Config.Bind("Game Mechanics", "Use Custom Luck Multiplier", false, "Use a custom luck multiplier instead of the default 3x.");
-        CustomLuckMultiplier = Config.Bind("Game Mechanics", "Custom Luck Multiplier", 3.0f, "The custom luck multiplier to use.");
 
         //Lumber/mining
         LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse. Takes 1st priority.");

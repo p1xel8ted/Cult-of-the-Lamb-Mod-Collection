@@ -20,11 +20,12 @@ public class MiscPatches
                 {
                     Plugin.L($"ExtraText: {s}");
                 }
-
+                
+            }
+            else
+            {
                 __instance._extraText ??= Array.Empty<string>();
             }
-
-            __instance._extraText ??= Array.Empty<string>();
         }
     }
 }

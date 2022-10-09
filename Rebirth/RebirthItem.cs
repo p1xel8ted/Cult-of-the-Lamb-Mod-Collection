@@ -27,6 +27,12 @@ public sealed class RebirthItem : CustomInventoryItem
     public override CustomItemManager.ItemRarity Rarity => CustomItemManager.ItemRarity.COMMON;
     public override bool AddItemToOfferingShrine => true;
 
+    public override bool CanBeRefined => true;
+    public override InventoryItem.ITEM_TYPE RefineryInput => InventoryItem.ITEM_TYPE.BONE;
+    public override int RefineryOutput => 1;
+    
+    public override float CustomRefineryDuration => 256f;
+
     public override string LocalizedName() => "Rebirth Token";
 
     public override string LocalizedLore() => "Said to be dropped by Death herself.";

@@ -82,7 +82,7 @@ public static class FollowerPatches
                         case FollowerTask_OnMissionary:
                             continue;
                         default:
-                            __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.ExtortMoney));
+                            __instance.StartCoroutine(Extort.ExtortMoneyRoutine(follower, __instance));
                             break;
                     }
                 }
