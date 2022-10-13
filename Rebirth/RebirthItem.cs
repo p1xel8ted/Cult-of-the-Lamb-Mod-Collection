@@ -29,7 +29,7 @@ public sealed class RebirthItem : CustomInventoryItem
 
     public override bool CanBeRefined => true;
     public override InventoryItem.ITEM_TYPE RefineryInput => InventoryItem.ITEM_TYPE.BONE;
-    public override int RefineryOutput => 1;
+    public override int RefineryInputQty => 15;
     
     public override float CustomRefineryDuration => 256f;
 

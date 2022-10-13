@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using HarmonyLib;
 using Random = UnityEngine.Random;
 
@@ -21,11 +19,4 @@ public static class Helper
         return Random.Range(0f, 1f) <= 0.2f;
     }
     
-    [HarmonyPatch(typeof(Interaction), nameof(Interaction.OnInteract))]
-    [HarmonyReversePatch]
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void OnInteract(Interaction instance, StateMachine state)
-    {
-        Console.WriteLine($"Interaction.OnInteract Test({instance}, {state})");
-    }
 }

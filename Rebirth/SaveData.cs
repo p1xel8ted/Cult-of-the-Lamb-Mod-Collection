@@ -22,7 +22,7 @@ public static class SaveData
         var data = ModdedSaveManager.Data.GetValue<BornAgainFollowerData>(Plugin.PluginGuid, $"Rebirth.BornAgainFollowerData.{followerInfo.ID}");
         if (data == null)
         {
-            Plugin.Log.LogError($"Error loading follower data for {followerInfo.Name}. May not exist yet.");
+            //Plugin.Log.LogError($"Error loading follower data for {followerInfo.Name}. May not exist yet.");
             return new BornAgainFollowerData(followerInfo, false);
         }
         Plugin.Log.LogWarning($"Loaded follower data for {followerInfo.Name}");

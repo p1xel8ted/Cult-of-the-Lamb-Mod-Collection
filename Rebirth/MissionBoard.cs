@@ -1,72 +1,89 @@
+using System;
+using System.Collections.Generic;
 using HarmonyLib;
-using COTL_API.CustomInventory;
+using Lamb.UI;
+using Rewired.Data;
 using src.UI.Menus;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Rebirth;
 
 [HarmonyPatch]
 public static class MissionBoard
 {
-    private static bool _chanceTaken;
-    private static bool _unlockedThisPhase;
-
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase))]
-    public static void TimeManager_StartNewPhase(TimeManager __instance, ref DayPhase phase)
-    {
-        _chanceTaken = false;
-        _unlockedThisPhase = false;
-        Plugin.Log.LogWarning($"Resetting Rebirth Mission Chance & Unlock To False.");
-    }
+    private static readonly IntRange TokenRange = new(15, 25);
 
     [HarmonyPrefix]
-    [HarmonyPatch(typeof(MissionInfoCard), nameof(MissionInfoCard.Start))]
-    public static void MissionInfoCard_Start(ref MissionInfoCard __instance)
+    [HarmonyPatch(typeof(MissionaryManager), nameof(MissionaryManager.GetReward))]
+    public static bool GetReward(ref InventoryItem.ITEM_TYPE type, ref float chance, ref int followerID, ref InventoryItem[] __result)
     {
-        if (_unlockedThisPhase)
+        if (type != Plugin.RebirthItem) return true;
+        var num = Random.Range(0f, 1f);
+        foreach (var objective in DataManager.Instance.CompletedObjectives)
         {
-            Plugin.Log.LogWarning($"Token Mission Already Unlocked This Phase.");
-            AddMission(ref __instance);
+            if (objective.Follower != followerID) continue;
+            chance = float.MaxValue;
+            break;
         }
-        else
+
+        if (chance > num)
         {
-            if (_chanceTaken)
-            {
-                Plugin.Log.LogWarning($"Chance already taken this phase.");
-                return;
-            }
-            _chanceTaken = true;
-            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
-            {
-                AddMission(ref __instance);
-            }
+            __result = new[] {new InventoryItem(Plugin.RebirthItem, TokenRange.Random())};
         }
-    }
 
-    private static void AddMission(ref MissionInfoCard __instance)
-    {
-        var mission = __instance._missionButtons.RandomElement();
-        mission._type = Plugin.RebirthItem;
-        mission._titleText.text = "Rebirth Tokens";
-        _unlockedThisPhase = true;
+        return false;
     }
-
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MissionaryManager), nameof(MissionaryManager.GetRewardRange))]
-    public static void MissionInfoCard_Start(ref IntRange __result, InventoryItem.ITEM_TYPE type)
+    public static void MissionaryManager_GetRewardRange(ref IntRange __result, InventoryItem.ITEM_TYPE type)
     {
         if (type == Plugin.RebirthItem)
         {
-            __result = new IntRange(15, 25);
+            __result = TokenRange;
         }
     }
 
+    private static readonly Dictionary<int, MissionButton> MissionButtons = new();
 
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(MissionInfoCard), nameof(MissionInfoCard.Configure))]
+    public static void MissionInfoCard_Configure(ref MissionInfoCard __instance, ref FollowerInfo config)
+    {
+        if(MissionButtons.ContainsKey(__instance.GetInstanceID()))
+        {
+            MissionButtons[__instance.GetInstanceID()].Configure(config);
+            MissionButtons[__instance.GetInstanceID()].Start();
+            return;
+        }
+        var mission = __instance._missionButtons.RandomElement();
+        var newMission = Object.Instantiate(mission, __instance._missionButtons[0].transform.parent);
+        __instance._missionButtons.AddItem(newMission);
+        newMission.name = "Rebirth Mission";
+        newMission._type = Plugin.RebirthItem;
+        newMission.Configure(config);
+        newMission.Start();
+        var card = __instance;
+        newMission.OnMissionSelected += delegate(InventoryItem.ITEM_TYPE itemType)
+        {
+            var onMissionSelected = card.OnMissionSelected;
+            if (onMissionSelected == null)
+            {
+                return;
+            }
+            onMissionSelected(itemType);
+        };
+        MissionButtons.Add(__instance.GetInstanceID(), newMission);
+    }
+
+    
+    [HarmonyPostfix]
     [HarmonyPatch(typeof(MissionaryManager), nameof(MissionaryManager.GetChance))]
-    public static void MissionInfoCard_Start(ref float __result, InventoryItem.ITEM_TYPE type, FollowerInfo followerInfo, StructureBrain.TYPES missionaryType)
+    public static void MissionaryManager_GetChance(ref float __result, InventoryItem.ITEM_TYPE type, FollowerInfo followerInfo, StructureBrain.TYPES missionaryType)
     {
         var baseChanceMultiplier = MissionaryManager.GetBaseChanceMultiplier(type, followerInfo);
         var random = new System.Random((int) (followerInfo.ID + type));
