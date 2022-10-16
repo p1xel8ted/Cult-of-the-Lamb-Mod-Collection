@@ -3,6 +3,7 @@ using MMTools;
 
 namespace CultOfQoL;
 
+[HarmonyPatch]
 public static class SkipIntros
 {
     private static bool AlreadyRun { get; set; }
@@ -10,7 +11,7 @@ public static class SkipIntros
     [HarmonyPatch]
     public static class SkipIntrosPatch
     {
-        [HarmonyPatch(typeof(LoadMainMenu), "Start")]
+        [HarmonyPatch(typeof(LoadMainMenu), nameof(LoadMainMenu.Start))]
         public static class LoadMainMenuStart
         {
             [HarmonyPrefix]

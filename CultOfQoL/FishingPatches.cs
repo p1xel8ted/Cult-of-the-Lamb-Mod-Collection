@@ -2,6 +2,7 @@
 
 namespace CultOfQoL;
 
+[HarmonyPatch]
 public static class FishingPatches
 {
     [HarmonyPatch(typeof(UIFishing), nameof(UIFishing.IsNeedleWithinSection))]

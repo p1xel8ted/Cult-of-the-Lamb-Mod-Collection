@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
+using UnityEngine;
 
 namespace CultOfQoL;
 
@@ -32,7 +33,7 @@ public static class Weather
     [HarmonyTranspiler]
     [HarmonyPatch(typeof(BiomeBaseManager), nameof(BiomeBaseManager.ActivateRoom))]
     [HarmonyPatch(typeof(RoomSwapManager), nameof(RoomSwapManager.ActivateRoom))]
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> ActivateRoom_Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var instructionList = instructions.ToList();
         if (!Plugin.MoreDynamicWeather.Value) return instructionList.AsEnumerable();
@@ -61,7 +62,7 @@ public static class Weather
         }
 
         [HarmonyTranspiler]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> CheckWeather_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionList = instructions.ToList();
             if (!Plugin.MoreDynamicWeather.Value) return instructionList.AsEnumerable();
@@ -79,8 +80,8 @@ public static class Weather
                             countSixteen++;
                             instructionList[i].operand = countSixteen switch
                             {
-                                1 => Plugin.RainLowerChance.Value,
-                                2 => Plugin.WindLowerChance.Value,
+                                1 => Mathf.Abs(Plugin.RainLowerChance.Value),
+                                2 => Mathf.Abs(Plugin.WindLowerChance.Value),
                                 _ => instructionList[i].operand
                             };
                             instructionList[i + 1].opcode = OpCodes.Bgt_S;
@@ -89,8 +90,8 @@ public static class Weather
                             countSeventeen++;
                             instructionList[i].operand = countSeventeen switch
                             {
-                                1 => Plugin.RainUpperChance.Value,
-                                2 => Plugin.WindUpperChance.Value,
+                                1 => Mathf.Abs(Plugin.RainUpperChance.Value),
+                                2 => Mathf.Abs(Plugin.WindUpperChance.Value),
                                 _ => instructionList[i].operand
                             };
                             instructionList[i + 1].opcode = OpCodes.Blt_S;

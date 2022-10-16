@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -11,16 +10,14 @@ namespace CultOfQoL;
 [HarmonyPatch]
 public static class FastCollectingPatches
 {
-    [HarmonyPatch(typeof(Interaction_CollectResourceChest), "Update")]
+    [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
     [HarmonyPrefix]
-    public static void InteractionCollectResourceChestPrefix(ref Interaction_CollectResourceChest __instance)
+    public static void Interaction_CollectResourceChest_Update(ref Interaction_CollectResourceChest __instance)
     {
         // Plugin.L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
-
-
-        var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Plugin.TriggerAmount.Value);
+        var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;
-        if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
+        if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Mathf.Abs(Plugin.TriggerAmount.Value) || triggerExists))
         {
             __instance.Activating = true;
             if (Plugin.UseCustomRange.Value)
@@ -28,7 +25,7 @@ public static class FastCollectingPatches
                 Plugin.OtherFastCollect.Value = __instance.DistanceToTriggerDeposits;
 
 
-                __instance.DistanceToTriggerDeposits = Plugin.OtherFastCollect.Value * Plugin.CustomRangeMulti.Value;
+                __instance.DistanceToTriggerDeposits = Plugin.OtherFastCollect.Value * Mathf.Abs(Plugin.CustomRangeMulti.Value);
             }
             else
             {
@@ -40,15 +37,15 @@ public static class FastCollectingPatches
     }
 
 
-    [HarmonyPatch(typeof(LumberjackStation), "Update")]
+    [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
     [HarmonyPrefix]
-    public static void LumberjackStationPrefix(ref LumberjackStation __instance)
+    public static void LumberjackStation_Update(ref LumberjackStation __instance)
     {
         // Plugin.L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
 
-        var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Plugin.TriggerAmount.Value);
+        var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;
-        if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Plugin.TriggerAmount.Value || triggerExists))
+        if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Mathf.Abs(Plugin.TriggerAmount.Value) || triggerExists))
         {
             __instance.Activating = true;
             if (Plugin.UseCustomRange.Value)
@@ -56,7 +53,7 @@ public static class FastCollectingPatches
                 Plugin.LumberFastCollect.Value = __instance.DistanceToTriggerDeposits;
 
 
-                __instance.DistanceToTriggerDeposits = Plugin.LumberFastCollect.Value * Plugin.CustomRangeMulti.Value;
+                __instance.DistanceToTriggerDeposits = Plugin.LumberFastCollect.Value * Mathf.Abs(Plugin.CustomRangeMulti.Value);
             }
             else
             {
@@ -68,43 +65,25 @@ public static class FastCollectingPatches
     }
 
     [HarmonyPatch(typeof(BuildingShrine), nameof(BuildingShrine.Update))]
-    public static class BuildingShrineOnInteractPatches
+    [HarmonyPrefix]
+    [HarmonyPostfix]
+    public static void BuildingShrine_Update(ref float ___ReduceDelay, ref float ___Delay)
     {
-        [HarmonyPrefix]
-        public static void Prefix(ref float ___ReduceDelay, ref float ___Delay)
-        {
-            if (!Plugin.FastCollecting.Value) return;
-            ___ReduceDelay = 0.0f;
-            ___Delay = 0.0f;
-        }
-
-        [HarmonyPostfix]
-        public static void Postfix(ref float ___ReduceDelay, ref float ___Delay)
-        {
-            if (!Plugin.FastCollecting.Value) return;
-            ___ReduceDelay = 0.0f;
-            ___Delay = 0.0f;
-        }
+        if (!Plugin.FastCollecting.Value) return;
+        ___ReduceDelay = 0.0f;
+        ___Delay = 0.0f;
     }
 
 
     [HarmonyPatch(typeof(BuildingShrinePassive), nameof(BuildingShrinePassive.Update))]
-    public static class BuildingShrinePassiveOnInteractPatches
+    [HarmonyPrefix]
+    [HarmonyPostfix]
+    public static void BuildingShrinePassive_Update(ref float ___Delay)
     {
-        [HarmonyPrefix]
-        public static void Prefix(ref float ___Delay)
-        {
-            if (!Plugin.FastCollecting.Value) return;
-            ___Delay = 0.0f;
-        }
-
-        [HarmonyPostfix]
-        public static void Postfix(ref float ___Delay)
-        {
-            if (!Plugin.FastCollecting.Value) return;
-            ___Delay = 0.0f;
-        }
+        if (!Plugin.FastCollecting.Value) return;
+        ___Delay = 0.0f;
     }
+
 
     [HarmonyPatch]
     public static class LootDelayTranspilers

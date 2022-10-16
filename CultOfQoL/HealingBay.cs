@@ -34,17 +34,14 @@ public static class HealingBay
         typeof(bool),
         typeof(bool)
     )]
-    public static class UIFollowerSelectMenuControllerPatches
+    [HarmonyPrefix]
+    public static void UIFollowerSelectMenuController_Show(ref List<FollowerInfo> blackList)
     {
-        [HarmonyPrefix]
-        public static void Prefix(ref List<FollowerInfo> blackList)
-        {
-            if (!Run) return;
-            Plugin.L($"IsHealingBay: {_isHealingBay}");
-            if (!_isHealingBay) return;
-            blackList.RemoveAll(follower => follower.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
-                                            follower.Exhaustion > 0);
-        }
+        if (!Run) return;
+        Plugin.L($"IsHealingBay: {_isHealingBay}");
+        if (!_isHealingBay) return;
+        blackList.RemoveAll(follower => follower.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
+                                        follower.Exhaustion > 0);
     }
 
 
@@ -67,16 +64,13 @@ public static class HealingBay
     }
 
     [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.HealingRoutine))]
-    public static class InteractionHealingBayHealingRoutinePatches
+    [HarmonyPrefix]
+    public static void Interaction_HealingBay_HealingRoutine(ref Follower follower)
     {
-        [HarmonyPrefix]
-        public static void Prefix(ref Follower follower)
-        {
-            if (!Run) return;
-            if (follower.Brain._directInfoAccess.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
-                follower.Brain._directInfoAccess.Exhaustion > 0f)
-                _fi = follower.Brain.Info;
-        }
+        if (!Run) return;
+        if (follower.Brain._directInfoAccess.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
+            follower.Brain._directInfoAccess.Exhaustion > 0f)
+            _fi = follower.Brain.Info;
     }
 
 

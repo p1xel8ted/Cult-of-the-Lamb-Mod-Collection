@@ -2,16 +2,16 @@
 
     <PropertyGroup>
         <AssemblyName>CultOfQoL</AssemblyName>
-        <AssemblyVersion>2.0.1</AssemblyVersion>
-        <ReleaseVersion>2.0.1</ReleaseVersion>
+        <AssemblyVersion>2.0.2</AssemblyVersion>
+        <ReleaseVersion>2.0.2</ReleaseVersion>
         <Description>General QoL Tweaks</Description>
         <Authors>p1xel8ted</Authors>
-        <PackageVersion>2.0.1</PackageVersion>
+        <PackageVersion>2.0.2</PackageVersion>
         <Title>Cult of QoL Collection</Title>
         <PackageProjectUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</RepositoryUrl>
-        <FileVersion>2.0.1</FileVersion>
+        <FileVersion>2.0.2</FileVersion>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -23,6 +23,9 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DebugType>full</DebugType>
+        <OutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <OutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\</OutputPath>
     </PropertyGroup>
     

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CultOfQoL;
 
+[HarmonyPatch]
 public static class PlayerFleeceManagerPatches
 {
     [HarmonyPatch(typeof(PlayerFleeceManager), nameof(PlayerFleeceManager.IncrementDamageModifier))]
@@ -16,26 +17,25 @@ public static class PlayerFleeceManagerPatches
         }
 
         [HarmonyPostfix]
-        public static void Postfix(ref float ___damageMultiplier,
-            ref PlayerFleeceManager.DamageEvent ___OnDamageMultiplierModified)
+        public static void Postfix()
         {
             var playerFleece = DataManager.Instance.PlayerFleece;
             if (playerFleece == 1)
             {
                 if (Plugin.UseCustomDamageValue.Value)
                 {
-                    ___damageMultiplier += Mathf.Ceil(0.05f * Plugin.CustomDamageMulti.Value);
+                    PlayerFleeceManager.damageMultiplier += Mathf.Ceil(0.05f * Mathf.Abs(Plugin.CustomDamageMulti.Value));
                 }
                 else
                 {
                     if (Plugin.ReverseGoldenFleeceDamageChange.Value)
-                        ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
+                        PlayerFleeceManager.damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.2f : 0.1f;
                     else
-                        ___damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.1f : 0.05f;
+                        PlayerFleeceManager.damageMultiplier += Plugin.IncreaseGoldenFleeceDamageRate.Value ? 0.1f : 0.05f;
                 }
             }
 
-            ___OnDamageMultiplierModified?.Invoke(___damageMultiplier);
+            PlayerFleeceManager.OnDamageMultiplierModified?.Invoke(PlayerFleeceManager.damageMultiplier);
         }
     }
 }

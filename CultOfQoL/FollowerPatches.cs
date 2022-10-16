@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace CultOfQoL;
 
+[HarmonyPatch]
 public static class FollowerPatches
 {
     private enum CommandType

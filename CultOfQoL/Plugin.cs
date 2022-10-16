@@ -9,7 +9,7 @@ public class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.1";
+    private const string PluginVer = "2.0.2";
 
     internal static ManualLogSource Log;
     private static readonly Harmony Harmony = new(PluginGuid);
@@ -69,12 +69,25 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<float> CustomSiloCapacityMulti;
     internal static ConfigEntry<bool> UseCustomSoulCapacity;
     internal static ConfigEntry<bool> UseCustomSiloCapacity;
-
+    
+    internal static ConfigEntry<bool> EnableBaseDamageMultiplier;
+    internal static ConfigEntry<float> BaseDamageMultiplier;
+    
     public static ConfigEntry<float> CustomDamageMulti;
+    
+    public static ConfigEntry<bool> EnableRunSpeedMulti;
+    public static ConfigEntry<bool> EnableDodgeSpeedMulti;
+    public static ConfigEntry<bool> EnableLungeSpeedMulti;
+    public static ConfigEntry<float> RunSpeedMulti;
+    public static ConfigEntry<float> DodgeSpeedMulti;
+    public static ConfigEntry<float> LungeSpeedMulti;
 
     public static ConfigEntry<bool> UseCustomDamageValue;
     public static WriteOnce<float> LumberFastCollect { get; } = new();
     public static WriteOnce<float> OtherFastCollect { get; } = new();
+    
+    public static WriteOnce<float> RunSpeed { get; } = new();
+    public static WriteOnce<float> DodgeSpeed { get; } = new();
 
     private void Awake()
     {
@@ -83,6 +96,16 @@ public class Plugin : BaseUnityPlugin
 
         _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
 
+        //Player
+        EnableBaseDamageMultiplier = Config.Bind("Player", "Enable Base Damage Multiplier", false, "Enable/disable the base damage multiplier.");
+        BaseDamageMultiplier = Config.Bind("Player", "Base Damage Multiplier", 1.5f, "The base damage multiplier.");
+        EnableRunSpeedMulti = Config.Bind("Player", "Enable Run Speed Multiplier", true, "Enable/disable the run speed multiplier.");
+        EnableDodgeSpeedMulti = Config.Bind("Player", "Enable Dodge Speed Multiplier", true, "Enable/disable the dodge speed multiplier.");
+        EnableLungeSpeedMulti = Config.Bind("Player", "Enable Lunge Speed Multiplier", true, "Enable/disable the lunge speed multiplier.");
+        RunSpeedMulti = Config.Bind("Player", "Run Speed Multiplier", 1.5f, "How much faster the player runs.");
+        LungeSpeedMulti = Config.Bind("Player", "Lunge Speed Multiplier", 1.5f, "How much faster the player lunges.");
+        DodgeSpeedMulti = Config.Bind("Player", "Dodge Speed Multiplier", 1.5f, "How much faster the player dodges.");
+        
         //General
         SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");

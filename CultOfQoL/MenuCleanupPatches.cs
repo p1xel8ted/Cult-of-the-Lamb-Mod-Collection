@@ -1,66 +1,55 @@
 ﻿using HarmonyLib;
 using Lamb.UI.MainMenu;
 using Lamb.UI.PauseMenu;
-using UnityEngine.UI;
 
 namespace CultOfQoL;
 
+[HarmonyPatch]
 public static class MenuCleanupPatches
 {
     [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
-    public static class MainMenuStartPatches
+    [HarmonyPostfix]
+    public static void MainMenu_Start(ref MainMenu __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref Button ____creditsButton, ref Button ____roadmapButton)
-        {
-            if (!Plugin.RemoveMenuClutter.Value) return;
-            ____creditsButton.gameObject.SetActive(false);
-            ____roadmapButton.gameObject.SetActive(false);
-        }
+        if (!Plugin.RemoveMenuClutter.Value) return;
+        __instance._creditsButton.gameObject.SetActive(false);
+        __instance._roadmapButton.gameObject.SetActive(false);
     }
+
 
     [HarmonyPatch(typeof(UIMainMenuController), nameof(UIMainMenuController.Awake))]
-    public static class UiMainMenuControllerAwakePatches
+    [HarmonyPostfix]
+    public static void UIMainMenuController_Awake(ref UIMainMenuController __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref MMButton ____discordButton)
-        {
-            if (!Plugin.RemoveMenuClutter.Value) return;
-            ____discordButton.gameObject.SetActive(false);
-        }
+        if (!Plugin.RemoveMenuClutter.Value) return;
+        __instance._discordButton.gameObject.SetActive(false);
     }
 
-    [HarmonyPatch(typeof(UITwitchExtensionButton), "Awake")]
-    public static class UiTwitchExtensionButtonAwake
+
+    [HarmonyPatch(typeof(UITwitchExtensionButton), nameof(UITwitchExtensionButton.Awake))]
+    [HarmonyPostfix]
+    public static void UITwitchExtensionButton_Awake(ref UITwitchExtensionButton __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref UITwitchExtensionButton __instance)
-        {
-            if (!Plugin.RemoveTwitchButton.Value) return;
-            __instance.gameObject.SetActive(false);
-        }
+        if (!Plugin.RemoveTwitchButton.Value) return;
+        __instance.gameObject.SetActive(false);
     }
 
-    [HarmonyPatch(typeof(UITwitchButton), "Awake")]
-    public static class UiTwitchButtonAwake
+
+    [HarmonyPatch(typeof(UITwitchButton), nameof(UITwitchButton.Awake))]
+    [HarmonyPostfix]
+    public static void UITwitchButton_Awake(ref UITwitchButton __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref UITwitchButton __instance)
-        {
-            if (!Plugin.RemoveTwitchButton.Value) return;
-            __instance.gameObject.SetActive(false);
-        }
+        if (!Plugin.RemoveTwitchButton.Value) return;
+        __instance.gameObject.SetActive(false);
     }
 
-    [HarmonyPatch(typeof(UIPauseMenuController), "Start")]
-    public static class UiPauseMenuControllerStartPatches
+
+    [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.Start))]
+    [HarmonyPostfix]
+    public static void UIPauseMenuController_Start(ref UIPauseMenuController __instance)
     {
-        [HarmonyPostfix]
-        public static void Postfix(ref MMButton ____bugReportButton, ref MMButton ____discordButton)
-        {
-            if (!Plugin.RemoveMenuClutter.Value) return;
-            ____bugReportButton.gameObject.SetActive(false);
-            ____discordButton.gameObject.SetActive(false);
-        }
+        if (!Plugin.RemoveMenuClutter.Value) return;
+        __instance._bugReportButton.gameObject.SetActive(false);
+        __instance._discordButton.gameObject.SetActive(false);
     }
 }
