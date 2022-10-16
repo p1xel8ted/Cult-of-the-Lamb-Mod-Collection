@@ -5,6 +5,13 @@
 
 ## Changelog
 
+## 2.0.2 - 16/10/2022
+
+* Added ability to modify base dodge, lunge and run speed using a multiplier.
+* Added ability to modify base damage dealt using a multiplier.
+* Added additional protection against being able to use negative numbers as multipliers.
+* When cheesing the fishing mini game, the reel UI is now hidden (serves no purpose).
+
 ## 2.0.1 - 16/10/2022 - Config file changes, I suggest starting a fresh config.
 
 * Added Bless, Bribe and Intimidate. Bless still has some issues, but they're minor.
