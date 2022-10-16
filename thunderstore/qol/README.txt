@@ -5,6 +5,15 @@
 
 ## Changelog
 
+## 2.0.1 - 16/10/2022 - Config file changes, I suggest starting a fresh config.
+
+* Added Bless, Bribe and Intimidate. Bless still has some issues, but they're minor.
+* Added bed collapsing to notifications.
+* Moved weather/phase change notifications to Notification config category.
+* Added option to enable/disable the dynamic weather changes.
+* Fixed lumber/mine aging priority. Previously nothing would happen if the top option was false. Works as intended now.
+* Added ability to toggle and use custom values for most mods.
+
 ## 2.0.0 - 8/10/2022
 
 * Weather is a little more dynamic. Don't get excited, there ain't any snow.

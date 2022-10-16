@@ -53,16 +53,21 @@ Feel free to reach out to me on the channel below.
 * p1xel8ted
 * Matthew-X
 
-## Work in Progress
-
-* Add remaining follower commands to all at once.
-
 ## Known Issues
 
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 * When exiting a building, the weather is actually changed twice by the game, so you might see two notifications.
 
 ## Changelog
+
+## 2.0.1 - 16/10/2022 - Config file changes, I suggest starting a fresh config.
+
+* Added Bless, Bribe and Intimidate. Bless still has some issues, but they're minor.
+* Added bed collapsing to notifications.
+* Moved weather/phase change notifications to Notification config category.
+* Added option to enable/disable the dynamic weather changes.
+* Fixed lumber/mine aging priority. Previously nothing would happen if the top option was false. Works as intended now.
+* Added ability to toggle and use custom values for most mods.
 
 ## 2.0.0 - 8/10/2022
 

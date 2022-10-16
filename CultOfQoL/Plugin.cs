@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Globalization;
-using System.IO;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
-using UnityEngine;
-using UnityEngine.Networking;
-
 namespace CultOfQoL;
 
 [BepInPlugin(PluginGuid, PluginName, PluginVer)]
@@ -16,7 +9,7 @@ public class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.0";
+    private const string PluginVer = "2.0.1";
 
     internal static ManualLogSource Log;
     private static readonly Harmony Harmony = new(PluginGuid);
@@ -59,9 +52,11 @@ public class Plugin : BaseUnityPlugin
     internal static ConfigEntry<bool> AddExhaustedToHealingBay;
     internal static ConfigEntry<bool> NotifyOfScarecrowTraps;
     internal static ConfigEntry<bool> NotifyOfNoFuel;
+    internal static ConfigEntry<bool> NotifyOfBedCollapse;
 
     internal static ConfigEntry<bool> GiveFollowersNewNecklaces;
 
+    internal static ConfigEntry<bool> MoreDynamicWeather;
     internal static ConfigEntry<int> RainLowerChance;
     internal static ConfigEntry<int> RainUpperChance;
     internal static ConfigEntry<int> WindLowerChance;
@@ -95,13 +90,13 @@ public class Plugin : BaseUnityPlugin
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
 
         //Weather
+        MoreDynamicWeather = Config.Bind("Weather", "More Dynamic Weather", true, "Weather is more dynamic and changes more often.");
         RainLowerChance = Config.Bind("Weather", "Light Rain Range", 15, "The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.");
         RainUpperChance = Config.Bind("Weather", "Heavy Rain Range", 85, "The game basically uses a 100 sided dice to determine the weather. This is the higher end of the range of the dice roll. If it rolls higher than this number, heavy rain.");
         WindLowerChance = Config.Bind("Weather", "Light Wind Range", 25, "The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light wind.");
         WindUpperChance = Config.Bind("Weather", "Heavy Wind Range", 75, "The game basically uses a 100 sided dice to determine the weather. This is the higher end of the range of the dice roll. If it rolls higher than this number, heavy wind.");
         ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather During The Day", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
-        ShowPhaseNotifications = Config.Bind("Weather", "Phase Notifications", true, "Show a notification when the time of day changes.");
-        ShowWeatherChangeNotifications = Config.Bind("Weather", "Weather Notifications", true, "Show a notification when the weather changes.   ");
+
 
         //Game Mechanics
         ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
@@ -147,7 +142,9 @@ public class Plugin : BaseUnityPlugin
         //Notifications
         NotifyOfScarecrowTraps = Config.Bind("Notifications", "Notify of Scarecrow Traps", true, "Display a notification when the farm scarecrows have caught a trap!");
         NotifyOfNoFuel = Config.Bind("Notifications", "Notify of No Fuel", true, "Display a notification when a structure has run out of fuel.");
-
+        NotifyOfBedCollapse = Config.Bind("Notifications", "Notify of Bed Collapse", true, "Display a notification when a bed has collapsed.");
+        ShowPhaseNotifications = Config.Bind("Notifications", "Phase Notifications", true, "Show a notification when the time of day changes.");
+        ShowWeatherChangeNotifications = Config.Bind("Notifications", "Weather Notifications", true, "Show a notification when the weather changes.");
         //Followers
         GiveFollowersNewNecklaces = Config.Bind("Followers", "Give Followers New Necklaces", true, "Followers will be able to receive new necklaces, with the old one being returned to you.");
         CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("Followers", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");

@@ -13,16 +13,19 @@ internal static class StructurePatches
         [HarmonyPostfix]
         public static void Postfix(Structures_LumberjackStation __instance, ref int __result)
         {
-            if (Plugin.LumberAndMiningStationsDontAge.Value) return;
             var old = __result;
             var newSpan = 0;
-            __result = newSpan;
+            if (Plugin.LumberAndMiningStationsDontAge.Value)
+            {
+                __result = newSpan;
+                return;
+            }
 
             if (Plugin.DoubleLifespanInstead.Value)
             {
                 newSpan = old * 2;
-                __result *= 2;
-                Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
+                __result = newSpan;
+                Plugin.L($"DOUBLE: Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
                 return;
             }
 
@@ -30,7 +33,7 @@ internal static class StructurePatches
 
             newSpan = (int) (old * 1.5f);
             __result = newSpan;
-            Plugin.L($"Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
+            Plugin.L($"50%: Lumber/mining old lifespan {old}, new lifespan: {newSpan}. Current age: {__instance.Data.Age}.");
         }
     }
 

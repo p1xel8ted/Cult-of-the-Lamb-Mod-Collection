@@ -13,10 +13,13 @@ public static class Weather
     [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase))]
     public static void TimeManager_StartNewPhase(TimeManager __instance, ref DayPhase phase)
     {
-        if (Plugin.ChangeWeatherOnPhaseChange.Value)
+        if (Plugin.MoreDynamicWeather.Value)
         {
-            WeatherController.Instance.CheckWeather();
-            Plugin.L($"New phase: {phase.ToString()}, changing weather!");
+            if (Plugin.ChangeWeatherOnPhaseChange.Value)
+            {
+                WeatherController.Instance.CheckWeather();
+                Plugin.L($"New phase: {phase.ToString()}, changing weather!");
+            }
         }
 
         if (Plugin.ShowPhaseNotifications.Value && phase is not DayPhase.Count or DayPhase.None)
@@ -32,7 +35,7 @@ public static class Weather
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var instructionList = instructions.ToList();
-
+        if (!Plugin.MoreDynamicWeather.Value) return instructionList.AsEnumerable();
         for (var i = 0; i < instructionList.Count; i++)
         {
             if (instructionList[i].Calls(typeof(WeatherController).GetMethod(nameof(WeatherController.CheckWeather))))
@@ -51,6 +54,7 @@ public static class Weather
         [HarmonyPrefix]
         public static void Prefix(ref WeatherController __instance)
         {
+            if (!Plugin.MoreDynamicWeather.Value) return;
             __instance.chanceOfRain = 100;
             __instance.chanceOfWind = 100;
             WeatherController.InWeatherOverride = false;
@@ -60,6 +64,7 @@ public static class Weather
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionList = instructions.ToList();
+            if (!Plugin.MoreDynamicWeather.Value) return instructionList.AsEnumerable();
             var countSixteen = 0;
             var countSeventeen = 0;
 
