@@ -24,7 +24,7 @@ public sealed class RebirthItem : CustomInventoryItem
     public override int DungeonChestMaxAmount => 7;
     public override Vector3 LocalScale { get; } = new(0.6f, 0.6f, 0.6f);
     public override InventoryItem.ITEM_TYPE ItemPickUpToImitate => InventoryItem.ITEM_TYPE.BLACK_GOLD;
-    public override CustomItemManager.ItemRarity Rarity => CustomItemManager.ItemRarity.COMMON;
+    public override CustomItemManager.ItemRarity Rarity => CustomItemManager.ItemRarity.RARE;
     public override bool AddItemToOfferingShrine => true;
 
     public override bool CanBeRefined => true;
