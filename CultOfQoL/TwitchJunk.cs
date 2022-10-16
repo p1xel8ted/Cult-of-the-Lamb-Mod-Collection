@@ -7,7 +7,7 @@ namespace CultOfQoL;
 internal static class TwitchJunk
 {
     [HarmonyPostfix]
-    [HarmonyPatch(nameof(BuildingShrine.OnEnableInteraction))]
+    [HarmonyPatch(typeof(BuildingShrine), nameof(BuildingShrine.OnEnableInteraction))]
     public static void BuildingShrine_OnEnableInteraction()
     {
         if (!Plugin.UnlockTwitchStuff.Value) return;
@@ -53,11 +53,11 @@ internal static class TwitchJunk
 
 
     //[HarmonyPatch(nameof(GameManager.AuthenticateCultistDLC))] -- pay the $6
-    [HarmonyPatch(nameof(GameManager.AuthenticatePrePurchaseDLC))]
-    [HarmonyPatch(nameof(GameManager.AuthenticatePlushBonusDLC))]
-    [HarmonyPatch(nameof(GameManager.AuthenticateTwitchDrop1))]
-    [HarmonyPatch(nameof(GameManager.AuthenticateTwitchDrop2))]
-    [HarmonyPatch(nameof(GameManager.AuthenticateTwitchDrop3))]
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePrePurchaseDLC))]
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePlushBonusDLC))]
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop1))]
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop2))]
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop3))]
     public static void GameManager_Postfix(ref bool __result)
     {
         __result = Plugin.UnlockTwitchStuff.Value;
