@@ -1,4 +1,4 @@
-![Namify! Logo](https://raw.githubusercontent.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/dd8e32aed18a1d789ff8e24e59a21f786620bc94/thunderstore/rebirth/icon.png?raw=true)
+![Namify! Logo](https://raw.githubusercontent.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection/master/thunderstore/namify/icon.png?raw=true)
 
 # Namify!
 
