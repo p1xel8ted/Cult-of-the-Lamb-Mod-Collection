@@ -5,6 +5,10 @@
 
 ## Changelog
 
+## 2.0.3 - 17/10/2022
+
+* Apologies, fixed infinite lumber/mines being the exact opposite of infinite....
+
 ## 2.0.2 - 16/10/2022
 
 * Added ability to modify base dodge, lunge and run speed using a multiplier.

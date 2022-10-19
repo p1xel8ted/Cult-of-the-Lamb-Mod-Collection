@@ -4,11 +4,13 @@
 
 * Followers can be reborn, allowing you to change their names, looks etc.
 * First one is free; subsequent ones on the same follower require 25 Rebirth Tokens obtained from crusading. 
-* * Source of the tokens is from killing enemies, destroying old bone piles (not the ones from enemies), dungeon chests and offering shrines.
+* * Source of the tokens is from killing enemies, destroying old bone piles (not the ones from enemies), dungeon chests and offering shrines and more.
 * * The drop chance starts at 15% and scales with your dungeon luck modifier. 
-* The followers' XP carries over, but there is a 10% chance they lose half of their XP when reborn. There is a notification when this happens.
+* The followers' XP carries over, but there is a 10% chance they lose half of their XP and 1 level when reborn. There is a notification when this happens.
 * Their old body stays; compost it, eat it. Up to you.
-* Each time you start the game it will add a quest to go collect a random amount of tokens (between 15 and 25) from one of the dungeons you have completed.
+* Refine the tokens at your refineries for 15 bones!
+* Send your followers on a mission to get tokens!
+* Go on a quest yourself to get tokens!
 
 ## Donate
 
@@ -33,6 +35,14 @@ Feel free to reach out to me on the channel below.
 * [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
 
 ## Changelog
+
+### 1.0.0 - 17/10/2022 - You must upate COTL_API to 0.1.6!
+
+* Moved the token from the common to rare pool of the offering shrine.
+* Added token as a refinery item to the refinery. 15 bones for 1 token.
+* Added a token mission to the Missionary structure.
+* Re-activated the custom quest. Will be expanded a little (different zones) provided there is no further issues.
+* Fixed followers being reset to level 1 on Rebirth. They now keep their level and XP provided they're lucky enough to not trigger the 10% chance of losing half their XP and 1 level.
 
 ### 0.1.3 - 25/09/2022 - You must upate COTL_API to 0.1.4!
 

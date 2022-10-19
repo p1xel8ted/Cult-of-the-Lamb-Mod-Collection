@@ -10,13 +10,13 @@ using COTL_API.CustomObjectives;
 namespace Rebirth
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
-    [BepInDependency("io.github.xhayper.COTL_API", "0.1.5")]
+    [BepInDependency("io.github.xhayper.COTL_API", "0.1.6")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
         internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
-        private const string PluginVer = "0.1.4";
+        private const string PluginVer = "1.0.0";
 
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);

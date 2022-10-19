@@ -11,14 +11,15 @@ internal static class StructurePatches
     [HarmonyPostfix]
     public static void Structures_LumberjackStation_LifeSpawn(Structures_LumberjackStation __instance, ref int __result)
     {
-        var old = __result;
-        var newSpan = 0;
+       
         if (Plugin.LumberAndMiningStationsDontAge.Value)
         {
-            __result = newSpan;
             return;
         }
-
+        
+        var old = __result;
+        int newSpan;
+        
         if (Plugin.DoubleLifespanInstead.Value)
         {
             newSpan = old * 2;

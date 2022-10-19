@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <ReleaseVersion>0.1.0</ReleaseVersion>
+        <Authors>p1xel8ted</Authors>
+        <PackageId>Namify</PackageId>
+        <Title>Namify</Title>
+        <FileVersion>0.1.0</FileVersion>
+        <PackageVersion>0.1.0</PackageVersion>
+    </PropertyGroup>
+    <ItemGroup>
+      <Reference Include="COTL_API">
+        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <Import Project="..\CultOfTheLambMods.Common.props" />
+    
+</Project>

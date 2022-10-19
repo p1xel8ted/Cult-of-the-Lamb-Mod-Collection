@@ -22,7 +22,7 @@ public sealed class RebirthItem : CustomInventoryItem
     public override int DungeonChestSpawnChance => 15;
     public override int DungeonChestMinAmount => 4;
     public override int DungeonChestMaxAmount => 7;
-    public override Vector3 LocalScale { get; } = new(0.6f, 0.6f, 0.6f);
+    public override Vector3 LocalScale { get; } = new(0.7f, 0.7f, 1f);
     public override InventoryItem.ITEM_TYPE ItemPickUpToImitate => InventoryItem.ITEM_TYPE.BLACK_GOLD;
     public override CustomItemManager.ItemRarity Rarity => CustomItemManager.ItemRarity.RARE;
     public override bool AddItemToOfferingShrine => true;

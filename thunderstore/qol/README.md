@@ -3,7 +3,7 @@
 # Cult of QoL - A Collection
 
 * Removes intros.
-* Cheese the fishing mini-game. (No need to press anything apart from the initial cast).
+* Cheese the fishing mini-game. (No need to press anything apart from the initial cast). The reeling UI is also hidden.
 * Remove extra buttons from menus (Discord, bug report, Twitch etc.)
 * Collect tithes/inspire all at once (unless they're in prison, sleeping, using the bathroom or dissenting.)
 * Reverse the damage change to the golden fleece introduced in 1.0.13.
@@ -26,6 +26,9 @@
 * Swap out follower necklaces.
 * Receive notification when structures that use fuel run out.
 * Slightly more "dynamic" weather.
+* Modify run, dodge, and lunge speed.
+* Modify base damage dealt.
+* Receive notification when a bed has collapsed.
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -59,6 +62,10 @@ Feel free to reach out to me on the channel below.
 * When exiting a building, the weather is actually changed twice by the game, so you might see two notifications.
 
 ## Changelog
+
+## 2.0.3 - 17/10/2022
+
+* Apologies, fixed infinite lumber/mines being the exact opposite of infinite....
 
 ## 2.0.2 - 16/10/2022
 
