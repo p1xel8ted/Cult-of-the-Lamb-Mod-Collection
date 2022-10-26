@@ -5,7 +5,7 @@ using HarmonyLib;
 using MonoMod.Utils;
 using UnityEngine;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class FastCollectingPatches
@@ -14,7 +14,7 @@ public static class FastCollectingPatches
     [HarmonyPrefix]
     public static void Interaction_CollectResourceChest_Update(ref Interaction_CollectResourceChest __instance)
     {
-        // Plugin.L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
+        // L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Mathf.Abs(Plugin.TriggerAmount.Value) || triggerExists))
@@ -41,7 +41,7 @@ public static class FastCollectingPatches
     [HarmonyPrefix]
     public static void LumberjackStation_Update(ref LumberjackStation __instance)
     {
-        // Plugin.L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
+        // L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
 
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;

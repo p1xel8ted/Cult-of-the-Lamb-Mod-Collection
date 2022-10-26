@@ -4,7 +4,7 @@ using HarmonyLib;
 using Lamb.UI.FollowerSelect;
 using UnityEngine;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class HealingBay

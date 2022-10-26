@@ -2,16 +2,16 @@
 
     <PropertyGroup>
         <AssemblyName>CultOfQoL</AssemblyName>
-        <AssemblyVersion>2.0.3</AssemblyVersion>
+        <AssemblyVersion>2.0.4</AssemblyVersion>
         <ReleaseVersion>2.0.3</ReleaseVersion>
         <Description>General QoL Tweaks</Description>
         <Authors>p1xel8ted</Authors>
-        <PackageVersion>2.0.3</PackageVersion>
+        <PackageVersion>2.0.4</PackageVersion>
         <Title>Cult of QoL Collection</Title>
         <PackageProjectUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</RepositoryUrl>
-        <FileVersion>2.0.3</FileVersion>
+        <FileVersion>2.0.4</FileVersion>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

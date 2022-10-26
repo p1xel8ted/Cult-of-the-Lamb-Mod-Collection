@@ -1,3 +1,4 @@
+using System;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -6,6 +7,9 @@ using BepInEx.Configuration;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.CustomInventory;
 using COTL_API.CustomObjectives;
+using COTL_API.Helpers;
+using Socket.Newtonsoft.Json.Utilities.LinqBridge;
+using UnityEngine;
 
 namespace Rebirth
 {
@@ -27,6 +31,9 @@ namespace Rebirth
         private CustomObjective RebirthCollectItemQuest { get; set; }
         internal static RebirthItem RebirthItemInstance { get; private set; }
 
+        public static InventoryItem.ITEM_TYPE RebirthFoodItem { get; private set; }
+        internal static FoodItem RebirthFoodItemInstance { get; private set; }
+
         private void Awake()
         {
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable/disable this mod.");
@@ -39,6 +46,9 @@ namespace Rebirth
             CustomFollowerCommandManager.Add(new RebirthSubCommand());
             RebirthItem = CustomItemManager.Add(new RebirthItem());
             RebirthItemInstance = new RebirthItem();
+
+            RebirthFoodItem = CustomItemManager.Add(new FoodItem());
+            RebirthFoodItemInstance = new FoodItem();
 
             RebirthCollectItemQuest = CustomObjectiveManager.CollectItem(RebirthItem, UnityEngine.Random.Range(15, 26), false, FollowerLocation.Dungeon1_1, 4800f);
             RebirthCollectItemQuest.InitialQuestText = $"Please Leader, please! I'm {"weary of this existence".Wave()} and seek to be reborn! I will do anything for you! Can you please help me?";

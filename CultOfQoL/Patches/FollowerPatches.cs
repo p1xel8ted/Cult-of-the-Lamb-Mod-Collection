@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Lamb.UI.FollowerInteractionWheel;
-using UnityEngine;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class FollowerPatches

@@ -1,7 +1,7 @@
 using System;
 using HarmonyLib;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public class MiscPatches

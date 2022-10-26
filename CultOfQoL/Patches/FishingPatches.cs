@@ -3,12 +3,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class FishingPatches
 {
-    [HarmonyDebug]
     [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.SetState))]
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)

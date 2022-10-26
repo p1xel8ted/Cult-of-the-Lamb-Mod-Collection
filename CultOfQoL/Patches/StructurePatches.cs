@@ -2,7 +2,7 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 internal static class StructurePatches
@@ -11,15 +11,14 @@ internal static class StructurePatches
     [HarmonyPostfix]
     public static void Structures_LumberjackStation_LifeSpawn(Structures_LumberjackStation __instance, ref int __result)
     {
-       
         if (Plugin.LumberAndMiningStationsDontAge.Value)
         {
             return;
         }
-        
+
         var old = __result;
         int newSpan;
-        
+
         if (Plugin.DoubleLifespanInstead.Value)
         {
             newSpan = old * 2;
@@ -37,17 +36,27 @@ internal static class StructurePatches
 
 
     [HarmonyPatch(typeof(PropagandaSpeaker), nameof(PropagandaSpeaker.Update))]
-    [HarmonyPrefix]
-    public static bool PropagandaSpeaker_Update()
+    public static class PropagandaSpeakerPatches
     {
-        if (!Plugin.TurnOffSpeakersAtNight.Value) return true;
-        return !TimeManager.IsNight;
+        [HarmonyPrefix]
+        public static bool Prefix()
+        {
+            if (!Plugin.TurnOffSpeakersAtNight.Value) return true;
+            return !TimeManager.IsNight;
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(ref PropagandaSpeaker __instance)
+        {
+            if (!Plugin.DisablePropagandaSpeakerAudio.Value) return;
+            if (!__instance.VOPlaying) return;
+            AudioManager.Instance.StopLoop(__instance.loopedInstance);
+            __instance.VOPlaying = false;
+        }
     }
 
-
-    [HarmonyPatch(typeof(Structures_PropagandaSpeaker), nameof(Structures_PropagandaSpeaker.OnNewPhaseStarted))]
-
     //stop fuel being taken when speakers are off
+    [HarmonyPatch(typeof(Structures_PropagandaSpeaker), nameof(Structures_PropagandaSpeaker.OnNewPhaseStarted))]
     [HarmonyPrefix]
     public static bool Structures_PropagandaSpeaker_OnNewPhaseStarted()
     {

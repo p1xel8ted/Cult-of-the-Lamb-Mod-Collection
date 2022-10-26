@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace CultOfQoL;
+namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class GameOverPatches

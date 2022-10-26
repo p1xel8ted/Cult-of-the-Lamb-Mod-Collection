@@ -2,99 +2,26 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+
 namespace CultOfQoL;
 
 [BepInPlugin(PluginGuid, PluginName, PluginVer)]
-public class Plugin : BaseUnityPlugin
+public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.3";
+    private const string PluginVer = "2.0.4";
 
     internal static ManualLogSource Log;
     private static readonly Harmony Harmony = new(PluginGuid);
 
-
-    internal static ConfigEntry<bool> SkipIntros;
-    internal static ConfigEntry<bool> EasyFishing;
-    internal static ConfigEntry<bool> FastCollecting;
-    internal static ConfigEntry<bool> RemoveMenuClutter;
-    internal static ConfigEntry<bool> RemoveTwitchButton;
-    internal static ConfigEntry<bool> BulkFollowerCommands;
-    internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
-    internal static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate;
-    internal static ConfigEntry<bool> AdjustRefineryRequirements;
-
-    internal static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp;
-    internal static ConfigEntry<bool> UnlockTwitchStuff;
-    internal static ConfigEntry<bool> LumberAndMiningStationsDontAge;
-    internal static ConfigEntry<bool> CollectTitheFromOldFollowers;
-    internal static ConfigEntry<bool> EnableGameSpeedManipulation;
-    internal static ConfigEntry<bool> JustRightSiloCapacity;
-    internal static ConfigEntry<bool> DoubleSoulCapacity;
-    internal static ConfigEntry<bool> ShortenGameSpeedIncrements;
-    internal static ConfigEntry<bool> SlowDownTime;
-    internal static ConfigEntry<float> SlowDownTimeMultiplier;
-    internal static ConfigEntry<bool> DoubleLifespanInstead;
-    internal static ConfigEntry<bool> DisableGameOver;
-
-    private static ConfigEntry<bool> _modEnabled;
-    internal static ConfigEntry<bool> TurnOffSpeakersAtNight;
-    internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck;
-    internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead;
-
-    internal static ConfigEntry<bool> EnableAutoInteract;
-    internal static ConfigEntry<int> TriggerAmount;
-    internal static ConfigEntry<bool> IncreaseRange;
-    internal static ConfigEntry<bool> UseCustomRange;
-    internal static ConfigEntry<float> CustomRangeMulti;
-
-    internal static ConfigEntry<bool> AddExhaustedToHealingBay;
-    internal static ConfigEntry<bool> NotifyOfScarecrowTraps;
-    internal static ConfigEntry<bool> NotifyOfNoFuel;
-    internal static ConfigEntry<bool> NotifyOfBedCollapse;
-
-    internal static ConfigEntry<bool> GiveFollowersNewNecklaces;
-
-    internal static ConfigEntry<bool> MoreDynamicWeather;
-    internal static ConfigEntry<int> RainLowerChance;
-    internal static ConfigEntry<int> RainUpperChance;
-    internal static ConfigEntry<int> WindLowerChance;
-    internal static ConfigEntry<int> WindUpperChance;
-    internal static ConfigEntry<bool> ChangeWeatherOnPhaseChange;
-    internal static ConfigEntry<bool> ShowPhaseNotifications;
-    internal static ConfigEntry<bool> ShowWeatherChangeNotifications;
-
-    internal static ConfigEntry<float> CustomSoulCapacityMulti;
-    internal static ConfigEntry<float> CustomSiloCapacityMulti;
-    internal static ConfigEntry<bool> UseCustomSoulCapacity;
-    internal static ConfigEntry<bool> UseCustomSiloCapacity;
-    
-    internal static ConfigEntry<bool> EnableBaseDamageMultiplier;
-    internal static ConfigEntry<float> BaseDamageMultiplier;
-    
-    public static ConfigEntry<float> CustomDamageMulti;
-    
-    public static ConfigEntry<bool> EnableRunSpeedMulti;
-    public static ConfigEntry<bool> EnableDodgeSpeedMulti;
-    public static ConfigEntry<bool> EnableLungeSpeedMulti;
-    public static ConfigEntry<float> RunSpeedMulti;
-    public static ConfigEntry<float> DodgeSpeedMulti;
-    public static ConfigEntry<float> LungeSpeedMulti;
-
-    public static ConfigEntry<bool> UseCustomDamageValue;
-    public static WriteOnce<float> LumberFastCollect { get; } = new();
-    public static WriteOnce<float> OtherFastCollect { get; } = new();
-    
-    public static WriteOnce<float> RunSpeed { get; } = new();
-    public static WriteOnce<float> DodgeSpeed { get; } = new();
 
     private void Awake()
     {
         Log = new ManualLogSource("Cult-of-QoL-Collection");
         BepInEx.Logging.Logger.Sources.Add(Log);
 
-        _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
+        ModEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
 
         //Player
         EnableBaseDamageMultiplier = Config.Bind("Player", "Enable Base Damage Multiplier", false, "Enable/disable the base damage multiplier.");
@@ -105,12 +32,13 @@ public class Plugin : BaseUnityPlugin
         RunSpeedMulti = Config.Bind("Player", "Run Speed Multiplier", 1.5f, "How much faster the player runs.");
         LungeSpeedMulti = Config.Bind("Player", "Lunge Speed Multiplier", 1.5f, "How much faster the player lunges.");
         DodgeSpeedMulti = Config.Bind("Player", "Dodge Speed Multiplier", 1.5f, "How much faster the player dodges.");
-        
+
         //General
         SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
+        RemoveNewGameButton = Config.Bind("General", "Remove New Game Button", true, "Removes the new game button from the main menu (provided you have at least one save game.)");
 
         //Weather
         MoreDynamicWeather = Config.Bind("Weather", "More Dynamic Weather", true, "Weather is more dynamic and changes more often.");
@@ -139,7 +67,8 @@ public class Plugin : BaseUnityPlugin
 
         //Propaganda
         TurnOffSpeakersAtNight = Config.Bind("Propaganda Mods", "Turn Off Speakers At Night", true, "Turns the speakers off, and stops fuel consumption at night time.");
-
+        DisablePropagandaSpeakerAudio = Config.Bind("Propaganda Mods", "Disable Propaganda Speaker Audio", true, "Disables the audio from propaganda speakers.");
+        
         //Speed
         EnableGameSpeedManipulation = Config.Bind("Speed", "Enable Game Speed Manipulation", true, "Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.");
         ShortenGameSpeedIncrements = Config.Bind("Speed", "Shorten Game Speed Increments", false, "Increments in steps of 1, instead of 0.25.");
@@ -179,7 +108,7 @@ public class Plugin : BaseUnityPlugin
 
     private void OnEnable()
     {
-        if (_modEnabled.Value)
+        if (ModEnabled.Value)
         {
             Harmony.PatchAll();
             Log.LogInfo($"Loaded {PluginName}!");
