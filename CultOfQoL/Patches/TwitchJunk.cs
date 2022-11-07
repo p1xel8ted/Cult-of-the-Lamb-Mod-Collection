@@ -37,6 +37,7 @@ internal static class TwitchJunk
 
 
     //[HarmonyPatch(nameof(GameManager.AuthenticateCultistDLC))] -- pay the $6
+    [HarmonyPostfix]
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePrePurchaseDLC))]
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePlushBonusDLC))]
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop1))]

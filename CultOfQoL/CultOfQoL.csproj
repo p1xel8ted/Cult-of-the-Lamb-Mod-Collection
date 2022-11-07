@@ -30,11 +30,14 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" />
+        <PackageReference Include="BepInEx.Analyzers" Version="1.0.8">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="BepInEx.Core" Version="5.4.21" />
         <PackageReference Include="UnityEngine.Modules" Version="2019.4.40" IncludeAssets="compile">
         </PackageReference>
-        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.17-*" IncludeAssets="compile">
+        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.18-r.0" IncludeAssets="compile">
         </PackageReference>
     </ItemGroup>
     <PropertyGroup>
@@ -43,7 +46,10 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" />
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
     </ItemGroup>
 

@@ -13,4 +13,5 @@ public static class DebugPatches
         Plugin.L($"LocationManager_CheckExistingStructure: Found null structure. Skipping check.");
         return false;
     }
+
 }

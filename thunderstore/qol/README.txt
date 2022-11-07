@@ -5,6 +5,11 @@
 
 ## Changelog
 
+## 2.0.4 - 07/11/2022
+
+* Added option to skip the receive crown video.
+* Fixed skins unlocks not working.
+
 ## 2.0.3 - 17/10/2022
 
 * Apologies, fixed infinite lumber/mines being the exact opposite of infinite....

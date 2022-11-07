@@ -27,7 +27,7 @@ public sealed class FoodItem : CustomInventoryItem
     public override CustomItemManager.ItemRarity Rarity => CustomItemManager.ItemRarity.RARE;
     public override bool AddItemToOfferingShrine => false;
 
-    public override bool CanBeRefined => true;
+    public override bool CanBeRefined => false;
     public override InventoryItem.ITEM_TYPE RefineryInput => InventoryItem.ITEM_TYPE.BONE;
     public override int RefineryInputQty => 15;
 

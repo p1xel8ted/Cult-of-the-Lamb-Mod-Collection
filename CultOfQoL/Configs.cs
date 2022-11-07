@@ -4,7 +4,8 @@ namespace CultOfQoL;
 
 public partial class Plugin
 {
-    internal static ConfigEntry<bool> SkipIntros;
+    internal static ConfigEntry<bool> SkipDevIntros;
+    internal static ConfigEntry<bool> SkipCrownVideo;
     internal static ConfigEntry<bool> EasyFishing;
     internal static ConfigEntry<bool> FastCollecting;
     internal static ConfigEntry<bool> RemoveMenuClutter;

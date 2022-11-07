@@ -34,7 +34,8 @@ public partial class Plugin : BaseUnityPlugin
         DodgeSpeedMulti = Config.Bind("Player", "Dodge Speed Multiplier", 1.5f, "How much faster the player dodges.");
 
         //General
-        SkipIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
+        SkipDevIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
+        SkipCrownVideo = Config.Bind("General", "Skip Crown Video", true, "Skips the video when the lamb gets given the crown.");
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
@@ -97,6 +98,7 @@ public partial class Plugin : BaseUnityPlugin
         NotifyOfBedCollapse = Config.Bind("Notifications", "Notify of Bed Collapse", true, "Display a notification when a bed has collapsed.");
         ShowPhaseNotifications = Config.Bind("Notifications", "Phase Notifications", true, "Show a notification when the time of day changes.");
         ShowWeatherChangeNotifications = Config.Bind("Notifications", "Weather Notifications", true, "Show a notification when the weather changes.");
+       
         //Followers
         GiveFollowersNewNecklaces = Config.Bind("Followers", "Give Followers New Necklaces", true, "Followers will be able to receive new necklaces, with the old one being returned to you.");
         CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("Followers", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");

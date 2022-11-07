@@ -8,37 +8,43 @@ public static class SkipIntros
 {
     private static bool AlreadyRun { get; set; }
 
-    [HarmonyPatch]
-    public static class SkipIntrosPatch
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(IntroDeathSceneManager), nameof(IntroDeathSceneManager.GiveCrown))]
+    public static bool IntroDeathSceneManager_GiveCrownOne(ref IntroDeathSceneManager __instance)
     {
-        [HarmonyPatch(typeof(LoadMainMenu), nameof(LoadMainMenu.Start))]
-        public static class LoadMainMenuStart
+        if (!Plugin.SkipCrownVideo.Value) return true;
+        __instance.VideoComplete();
+        return false;
+    }
+
+    [HarmonyPatch(typeof(LoadMainMenu), nameof(LoadMainMenu.Start))]
+    public static class LoadMainMenuStart
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(ref bool __state)
         {
-            [HarmonyPrefix]
-            public static bool Prefix(ref bool __state)
+            if (AlreadyRun) return true;
+            if (Plugin.SkipDevIntros.Value)
             {
-                if (AlreadyRun) return true;
-                if (Plugin.SkipIntros.Value)
-                {
-                    __state = true;
-                    return false;
-                }
-
-                __state = false;
-                return true;
+                __state = true;
+                return false;
             }
 
-            [HarmonyPostfix]
-            public static void Postfix(ref bool __state)
-            {
-                if (AlreadyRun) return;
-                if (!__state) return;
-                if (!Plugin.SkipIntros.Value) return;
-                AlreadyRun = true;
-                AudioManager.Instance.enabled = true;
+            __state = false;
+            return true;
+        }
 
-                MMTransition.Play(MMTransition.TransitionType.ChangeSceneAutoResume, MMTransition.Effect.BlackFade, "Main Menu", 0f, "", null);
-            }
+        [HarmonyPostfix]
+        public static void Postfix(ref bool __state)
+        {
+            if (AlreadyRun) return;
+            if (!__state) return;
+            if (!Plugin.SkipDevIntros.Value) return;
+            AlreadyRun = true;
+            AudioManager.Instance.enabled = true;
+
+            MMTransition.Play(MMTransition.TransitionType.ChangeSceneAutoResume, MMTransition.Effect.BlackFade, "Main Menu", 0f, "", null);
         }
     }
 }

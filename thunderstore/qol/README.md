@@ -29,6 +29,7 @@
 * Modify run, dodge, and lunge speed.
 * Modify base damage dealt.
 * Receive notification when a bed has collapsed.
+* Skip recieve crown video.
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -62,6 +63,11 @@ Feel free to reach out to me on the channel below.
 * When exiting a building, the weather is actually changed twice by the game, so you might see two notifications.
 
 ## Changelog
+
+## 2.0.4 - 07/11/2022
+
+* Added option to skip the receive crown video.
+* Fixed skins unlocks not working.
 
 ## 2.0.3 - 17/10/2022
 
