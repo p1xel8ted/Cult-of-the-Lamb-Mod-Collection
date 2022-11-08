@@ -10,8 +10,8 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class FastCollectingPatches
 {
-    [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
     public static void Interaction_CollectResourceChest_Update(ref Interaction_CollectResourceChest __instance)
     {
         // L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
@@ -37,8 +37,9 @@ public static class FastCollectingPatches
     }
 
 
-    [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
+
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
     public static void LumberjackStation_Update(ref LumberjackStation __instance)
     {
         // L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
@@ -63,10 +64,10 @@ public static class FastCollectingPatches
             __instance.AutomaticallyInteract = true;
         }
     }
-
-    [HarmonyPatch(typeof(BuildingShrine), nameof(BuildingShrine.Update))]
+    
     [HarmonyPrefix]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(BuildingShrine), nameof(BuildingShrine.Update))]
     public static void BuildingShrine_Update(ref float ___ReduceDelay, ref float ___Delay)
     {
         if (!Plugin.FastCollecting.Value) return;
@@ -74,10 +75,9 @@ public static class FastCollectingPatches
         ___Delay = 0.0f;
     }
 
-
-    [HarmonyPatch(typeof(BuildingShrinePassive), nameof(BuildingShrinePassive.Update))]
     [HarmonyPrefix]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(BuildingShrinePassive), nameof(BuildingShrinePassive.Update))]
     public static void BuildingShrinePassive_Update(ref float ___Delay)
     {
         if (!Plugin.FastCollecting.Value) return;

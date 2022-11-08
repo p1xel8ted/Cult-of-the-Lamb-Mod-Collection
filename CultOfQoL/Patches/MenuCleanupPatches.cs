@@ -9,8 +9,8 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class MenuCleanupPatches
 {
-    [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
     public static void MainMenu_Start(ref MainMenu __instance)
     {
         if (!Plugin.RemoveMenuClutter.Value) return;
@@ -18,8 +18,8 @@ public static class MenuCleanupPatches
         __instance._roadmapButton.gameObject.SetActive(false);
     }
 
-    [HarmonyPatch(typeof(LoadMenu), nameof(LoadMenu.Start))]
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(LoadMenu), nameof(LoadMenu.Start))]
     public static void LoadMenu_Start(ref LoadMenu __instance)
     {
         if (!Plugin.RemoveNewGameButton.Value) return;
@@ -30,36 +30,32 @@ public static class MenuCleanupPatches
         }
     }
 
-
-    [HarmonyPatch(typeof(UIMainMenuController), nameof(UIMainMenuController.Awake))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(UIMainMenuController), nameof(UIMainMenuController.Awake))]
     public static void UIMainMenuController_Awake(ref UIMainMenuController __instance)
     {
         if (!Plugin.RemoveMenuClutter.Value) return;
         __instance._discordButton.gameObject.SetActive(false);
     }
 
-
-    [HarmonyPatch(typeof(UITwitchExtensionButton), nameof(UITwitchExtensionButton.Awake))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(UITwitchExtensionButton), nameof(UITwitchExtensionButton.Awake))]
     public static void UITwitchExtensionButton_Awake(ref UITwitchExtensionButton __instance)
     {
         if (!Plugin.RemoveTwitchButton.Value) return;
         __instance.gameObject.SetActive(false);
     }
 
-
-    [HarmonyPatch(typeof(UITwitchButton), nameof(UITwitchButton.Awake))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(UITwitchButton), nameof(UITwitchButton.Awake))]
     public static void UITwitchButton_Awake(ref UITwitchButton __instance)
     {
         if (!Plugin.RemoveTwitchButton.Value) return;
         __instance.gameObject.SetActive(false);
     }
 
-
-    [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.Start))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.Start))]
     public static void UIPauseMenuController_Start(ref UIPauseMenuController __instance)
     {
         if (!Plugin.RemoveMenuClutter.Value) return;

@@ -7,8 +7,8 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 internal static class StructurePatches
 {
-    [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.LifeSpawn), MethodType.Getter)]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.LifeSpawn), MethodType.Getter)]
     public static void Structures_LumberjackStation_LifeSpawn(Structures_LumberjackStation __instance, ref int __result)
     {
         if (Plugin.LumberAndMiningStationsDontAge.Value)
@@ -56,17 +56,16 @@ internal static class StructurePatches
     }
 
     //stop fuel being taken when speakers are off
-    [HarmonyPatch(typeof(Structures_PropagandaSpeaker), nameof(Structures_PropagandaSpeaker.OnNewPhaseStarted))]
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(Structures_PropagandaSpeaker), nameof(Structures_PropagandaSpeaker.OnNewPhaseStarted))]
     public static bool Structures_PropagandaSpeaker_OnNewPhaseStarted()
     {
         if (!Plugin.TurnOffSpeakersAtNight.Value) return true;
         return !TimeManager.IsNight;
     }
 
-
-    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase))]
     public static void TimeManager_StartNewPhase(DayPhase phase)
     {
         if (!Plugin.TurnOffSpeakersAtNight.Value) return;
@@ -85,9 +84,8 @@ internal static class StructurePatches
         }
     }
 
-
-    [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.IncreaseAge))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_LumberjackStation), nameof(Structures_LumberjackStation.IncreaseAge))]
     public static void Structures_LumberjackStation_IncreaseAge(ref Structures_LumberjackStation __instance)
     {
         if (!Plugin.LumberAndMiningStationsDontAge.Value) return;
@@ -96,9 +94,8 @@ internal static class StructurePatches
         Plugin.L("Resetting age of lumber/mining station to 0!");
     }
 
-
-    [HarmonyPatch(typeof(Structures_Bed), MethodType.Constructor)]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Bed), MethodType.Constructor)]
     public static void Structures_Bed_Constructor(ref Structures_Bed __instance)
     {
         if (Plugin.UseCustomSoulCapacity.Value)
@@ -111,9 +108,8 @@ internal static class StructurePatches
         __instance.SoulMax *= 2;
     }
 
-
-    [HarmonyPatch(typeof(Structures_Shrine), nameof(Structures_Shrine.SoulMax), MethodType.Getter)]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Shrine), nameof(Structures_Shrine.SoulMax), MethodType.Getter)]
     public static void Structures_Shrine_SoulMax(ref int __result)
     {
         if (Plugin.UseCustomSoulCapacity.Value)
@@ -127,9 +123,8 @@ internal static class StructurePatches
         __result *= 2;
     }
 
-
-    [HarmonyPatch(typeof(Structures_Shrine_Misfit), nameof(Structures_Shrine_Misfit.SoulMax), MethodType.Getter)]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Shrine_Misfit), nameof(Structures_Shrine_Misfit.SoulMax), MethodType.Getter)]
     public static void Structures_Shrine_Misfit_SoulMax(ref int __result)
     {
         if (Plugin.UseCustomSoulCapacity.Value)
@@ -143,9 +138,8 @@ internal static class StructurePatches
         __result *= 2;
     }
 
-
-    [HarmonyPatch(typeof(Structures_Shrine_Ratau), nameof(Structures_Shrine_Ratau.SoulMax), MethodType.Getter)]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Shrine_Ratau), nameof(Structures_Shrine_Ratau.SoulMax), MethodType.Getter)]
     public static void Structures_Shrine_Ratau_SoulMax(ref int __result)
     {
         if (Plugin.UseCustomSoulCapacity.Value)
@@ -159,9 +153,8 @@ internal static class StructurePatches
         __result *= 2;
     }
 
-
-    [HarmonyPatch(typeof(Structures_Shrine_Passive), nameof(Structures_Shrine_Passive.SoulMax), MethodType.Getter)]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Shrine_Passive), nameof(Structures_Shrine_Passive.SoulMax), MethodType.Getter)]
     public static void Structures_Shrine_Passive_SoulMax(ref int __result)
     {
         if (Plugin.UseCustomSoulCapacity.Value)
@@ -174,10 +167,9 @@ internal static class StructurePatches
         __result *= 2;
     }
 
-
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(Interaction_SiloFertilizer), nameof(Interaction_SiloFertilizer.OnInteract))]
     [HarmonyPatch(typeof(Interaction_SiloFertilizer), nameof(Interaction_SiloFertilizer.UpdateCapacityIndicators))]
-    [HarmonyPrefix]
     public static void Interaction_SiloFertilizer_Capacity(ref Interaction_SiloFertilizer __instance)
     {
         if (Plugin.UseCustomSiloCapacity.Value)
@@ -192,10 +184,9 @@ internal static class StructurePatches
         }
     }
 
-
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(Interaction_SiloSeeder), nameof(Interaction_SiloSeeder.OnInteract))]
     [HarmonyPatch(typeof(Interaction_SiloSeeder), nameof(Interaction_SiloSeeder.UpdateCapacityIndicators))]
-    [HarmonyPrefix]
     public static void Interaction_SiloSeeder_Capacity(ref Interaction_SiloSeeder __instance)
     {
         if (Plugin.UseCustomSiloCapacity.Value)
@@ -210,9 +201,8 @@ internal static class StructurePatches
         }
     }
 
-
-    [HarmonyPatch(typeof(Structures_Refinery), nameof(Structures_Refinery.GetCost), typeof(InventoryItem.ITEM_TYPE))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Refinery), nameof(Structures_Refinery.GetCost), typeof(InventoryItem.ITEM_TYPE))]
     public static void Structures_Refinery_GetCost(ref List<StructuresData.ItemCost> __result)
     {
         if (!Plugin.AdjustRefineryRequirements.Value) return;

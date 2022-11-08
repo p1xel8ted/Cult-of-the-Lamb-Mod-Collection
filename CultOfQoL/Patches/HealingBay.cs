@@ -24,7 +24,8 @@ public static class HealingBay
         NotificationCentre.Instance.PlayGenericNotification($"{followerBrain._info.Name} is no longer exhausted!");
         _fi = null;
     }
-
+    
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(UIFollowerSelectMenuController), nameof(UIFollowerSelectMenuController.Show),
         typeof(List<FollowerInfo>),
         typeof(List<FollowerInfo>),
@@ -34,7 +35,6 @@ public static class HealingBay
         typeof(bool),
         typeof(bool)
     )]
-    [HarmonyPrefix]
     public static void UIFollowerSelectMenuController_Show(ref List<FollowerInfo> blackList)
     {
         if (!Run) return;
@@ -62,9 +62,9 @@ public static class HealingBay
             _isHealingBay = false;
         }
     }
-
-    [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.HealingRoutine))]
+    
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.HealingRoutine))]
     public static void Interaction_HealingBay_HealingRoutine(ref Follower follower)
     {
         if (!Run) return;

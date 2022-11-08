@@ -5,6 +5,10 @@
 
 ## Changelog
 
+## 2.0.5 - 08/11/2022
+
+* Fixed progress issue (inventory doesn't work etc) from skipping crown video.
+
 ## 2.0.4 - 07/11/2022
 
 * Added option to skip the receive crown video.

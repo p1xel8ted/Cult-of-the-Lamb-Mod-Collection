@@ -5,8 +5,8 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class NecklacePatches
 {
-    [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.GiveItemRoutine))]
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.GiveItemRoutine))]
     public static void interaction_FollowerInteraction_GiveItemRoutine(ref interaction_FollowerInteraction __instance, ref InventoryItem.ITEM_TYPE itemToGive)
     {
         if (!Plugin.GiveFollowersNewNecklaces.Value) return;

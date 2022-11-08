@@ -5,31 +5,25 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class GameOverPatches
 {
-    [HarmonyPatch(typeof(PlayerController), "Update")]
-    public static class PlayerControllerUpdatePatch
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(PlayerController), nameof(PlayerController.Update))]
+    public static void PlayerController_Update()
     {
-        [HarmonyPrefix]
-        public static void Prefix()
-        {
-            if (!Plugin.DisableGameOver.Value) return;
-            DataManager.Instance.GameOverEnabled = false;
-            DataManager.Instance.GameOver = false;
-            DataManager.Instance.InGameOver = false;
-            DataManager.Instance.DisplayGameOverWarning = false;
-        }
+        if (!Plugin.DisableGameOver.Value) return;
+        DataManager.Instance.GameOverEnabled = false;
+        DataManager.Instance.GameOver = false;
+        DataManager.Instance.InGameOver = false;
+        DataManager.Instance.DisplayGameOverWarning = false;
     }
 
-    [HarmonyPatch(typeof(TimeManager), "StartNewPhase", typeof(DayPhase))]
-    public static class TimeManagerStartNewPhasePatch
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase), typeof(DayPhase))]
+    public static void TimeManager_StartNewPhase()
     {
-        [HarmonyPrefix]
-        public static void Prefix()
-        {
-            if (!Plugin.DisableGameOver.Value) return;
-            DataManager.Instance.GameOverEnabled = false;
-            DataManager.Instance.GameOver = false;
-            DataManager.Instance.InGameOver = false;
-            DataManager.Instance.DisplayGameOverWarning = false;
-        }
+        if (!Plugin.DisableGameOver.Value) return;
+        DataManager.Instance.GameOverEnabled = false;
+        DataManager.Instance.GameOver = false;
+        DataManager.Instance.InGameOver = false;
+        DataManager.Instance.DisplayGameOverWarning = false;
     }
 }

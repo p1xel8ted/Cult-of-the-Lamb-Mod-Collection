@@ -10,9 +10,9 @@ public static class GameSpeedManipulationPatches
     private static float _newGameSpeed;
     private static int _newSpeed;
     private static bool _timeMessageShown;
-
-    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.Simulate), typeof(float))]
+    
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.Simulate), typeof(float))]
     public static void TimeManager_Simulate(ref float deltaGameTime)
     {
         if (Plugin.SlowDownTime.Value)
@@ -20,9 +20,8 @@ public static class GameSpeedManipulationPatches
             deltaGameTime /= Mathf.Abs(Plugin.SlowDownTimeMultiplier.Value);
     }
 
-
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.Update))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(GameManager), nameof(GameManager.Update))]
     public static void GameManager_Update(GameManager __instance)
     {
         if (__instance is null) return;

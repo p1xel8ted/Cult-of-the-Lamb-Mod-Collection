@@ -8,8 +8,8 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class FishingPatches
 {
-    [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.SetState))]
     [HarmonyTranspiler]
+    [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.SetState))]
     public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
     {
         if (!Plugin.EasyFishing.Value) return instructions;
@@ -26,9 +26,8 @@ public static class FishingPatches
             .InstructionEnumeration();
     }
 
-
-    [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.IsNeedleWithinSection))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.IsNeedleWithinSection))]
     public static void UIFishingOverlayController_IsNeedleWithinSection(ref bool __result)
     {
         if (!Plugin.EasyFishing.Value) return;

@@ -8,8 +8,8 @@ public static class Notifications
 {
     private static readonly List<int> StructureID = new();
 
-    [HarmonyPatch(typeof(Scarecrow), nameof(Scarecrow.ShutTrap))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Scarecrow), nameof(Scarecrow.ShutTrap))]
     public static void Scarecrow_ShutTrap(ref Scarecrow __instance)
     {
         var name = __instance.Structure.Structure_Info.GetLocalizedName();
@@ -20,8 +20,8 @@ public static class Notifications
     }
 
 
-    [HarmonyPatch(typeof(Structures_Bed), nameof(Structures_Bed.Collapse))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_Bed), nameof(Structures_Bed.Collapse))]
     public static void Structures_Bed_Collapse(ref Structures_Bed __instance)
     {
         var name = __instance.Data.GetLocalizedName();
@@ -31,9 +31,8 @@ public static class Notifications
         }
     }
 
-
-    [HarmonyPatch(typeof(Interaction_AddFuel), nameof(Interaction_AddFuel.Update))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(Interaction_AddFuel), nameof(Interaction_AddFuel.Update))]
     public static void Interaction_AddFuel_Update(ref Interaction_AddFuel __instance)
     {
         if (!Plugin.NotifyOfNoFuel.Value) return;
