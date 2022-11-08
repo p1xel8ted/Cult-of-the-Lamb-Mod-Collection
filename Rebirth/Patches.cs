@@ -9,13 +9,13 @@ namespace Rebirth;
 [HarmonyWrapSafe]
 public static class Patches
 {
-    [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
     [HarmonyPrefix]
-    public static void Prefix(DropLootOnDeath __instance, Health Victim)
+    [HarmonyPatch(typeof(DropLootOnDeath), nameof(DropLootOnDeath.OnDie))]
+    public static void DropLootOnDeath_OnDie(DropLootOnDeath __instance, Health Victim)
     {
         if (Victim.team == Health.Team.Team2)
         {
-           // Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
+            // Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
             if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
@@ -25,7 +25,7 @@ public static class Patches
 
         if (Victim.name.ToLower(CultureInfo.InvariantCulture).Contains("breakable body pile"))
         {
-           // Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
+            // Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
             if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
@@ -33,7 +33,4 @@ public static class Patches
             }
         }
     }
-    
-    
-
 }

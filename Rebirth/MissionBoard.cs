@@ -45,48 +45,7 @@ public static class MissionBoard
     }
 
     private static readonly Dictionary<int, MissionButton> MissionButtons = new();
-
-
-    // [HarmonyPostfix]
-    // [HarmonyPatch(typeof(MissionInfoCard), nameof(MissionInfoCard.Start))]
-    // public static void MissionInfoCard_MissionInfoCard(ref MissionInfoCard __instance)
-    // {
-    //     // var contentParent = GameObject.Find("Missionary Menu(Clone)/FollowerSelectContainer/Right/CardContainer/Mission Follower Info/Transform/Content/Copy");
-    //     var content = GameObject.Find("Missionary Menu(Clone)/FollowerSelectContainer/Right/CardContainer/Mission Follower Info/Transform/Content/Copy/Options");
-    //
-    //     var newParent = new GameObject();
-    //     var parent = content.transform.parent;
-    //     newParent.transform.SetParent(parent);
-    //     var scroll = newParent.AddComponent<ScrollRect>();
-    //
-    //     scroll.viewport = parent.GetComponent<RectTransform>();
-    //
-    //     content.transform.SetParent(newParent.transform);
-    //     scroll.content = content.GetComponent<RectTransform>();
-    //     scroll.vertical = true;
-    //     scroll.horizontal = true;
-    //     scroll.verticalScrollbar = newParent.AddComponent<Scrollbar>();
-    //     scroll.movementType = ScrollRect.MovementType.Clamped;
-    //     // scroll.SetLayoutVertical();
-    //     //scroll.
-    //
-    //     // var scroll = contentParent.AddComponent<ScrollRect>();
-    //     // var scrollBar = new GameObject();
-    //     // var bar = scrollBar.AddComponent<Scrollbar>();
-    //     // scroll.content = content.GetComponent<RectTransform>();
-    //     // scroll.verticalScrollbar = bar;
-    //
-    //     //
-    //     // foreach (var content in __instance.GetComponentsInChildren<Component>().Where(a => a.name == "Content"))
-    //     // {
-    //     //     var scroll = content.gameObject.AddComponent<ScrollRect>();
-    //     //     scroll.transform.SetParent(content.transform);
-    //     //
-    //     //     scroll.content = content.GetComponentInChildren<RectTransform>();
-    //     // }
-    // }
-
-
+    
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MissionInfoCard), nameof(MissionInfoCard.Configure))]
     public static void MissionInfoCard_Configure(ref MissionInfoCard __instance, ref FollowerInfo config)
