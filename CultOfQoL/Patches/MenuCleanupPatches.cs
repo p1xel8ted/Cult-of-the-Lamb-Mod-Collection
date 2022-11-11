@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Lamb.UI.MainMenu;
 using Lamb.UI.PauseMenu;
-using UnityEngine.UI;
 
 namespace CultOfQoL.Patches;
 
@@ -17,19 +15,7 @@ public static class MenuCleanupPatches
         __instance._creditsButton.gameObject.SetActive(false);
         __instance._roadmapButton.gameObject.SetActive(false);
     }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(LoadMenu), nameof(LoadMenu.Start))]
-    public static void LoadMenu_Start(ref LoadMenu __instance)
-    {
-        if (!Plugin.RemoveNewGameButton.Value) return;
-        var saveCount = __instance._saveSlots.Count(slot => SaveAndLoad.SaveExist(slot._saveIndex));
-        if (saveCount > 0)
-        {
-            __instance._saveSlots[0].gameObject.SetActive(false);
-        }
-    }
-
+    
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UIMainMenuController), nameof(UIMainMenuController.Awake))]
     public static void UIMainMenuController_Awake(ref UIMainMenuController __instance)

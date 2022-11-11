@@ -6,6 +6,7 @@ using System.IO;
 using BepInEx.Configuration;
 using COTL_API.CustomFollowerCommand;
 using COTL_API.CustomInventory;
+using COTL_API.CustomMission;
 using COTL_API.CustomObjectives;
 using COTL_API.Helpers;
 using Socket.Newtonsoft.Json.Utilities.LinqBridge;
@@ -14,13 +15,13 @@ using UnityEngine;
 namespace Rebirth
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
-    [BepInDependency("io.github.xhayper.COTL_API", "0.1.6")]
+    [BepInDependency("io.github.xhayper.COTL_API", "0.1.7")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
         internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
-        private const string PluginVer = "1.0.0";
+        private const string PluginVer = "1.0.1";
 
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);
@@ -30,6 +31,10 @@ namespace Rebirth
         public static InventoryItem.ITEM_TYPE RebirthItem { get; private set; }
         private CustomObjective RebirthCollectItemQuest { get; set; }
         internal static RebirthItem RebirthItemInstance { get; private set; }
+        
+        public static InventoryItem.ITEM_TYPE RebirthMissionItem1 { get; private set; }
+        public static InventoryItem.ITEM_TYPE RebirthMissionItem2 { get; private set; }
+        public static InventoryItem.ITEM_TYPE RebirthMissionItem3 { get; private set; }
 
         private void Awake()
         {
@@ -42,6 +47,9 @@ namespace Rebirth
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
             CustomFollowerCommandManager.Add(new RebirthSubCommand());
             RebirthItem = CustomItemManager.Add(new RebirthItem());
+            RebirthMissionItem1 = CustomMissionManager.Add(new MissionItem());
+            RebirthMissionItem2 = CustomMissionManager.Add(new MissionItem2());
+            RebirthMissionItem3 = CustomMissionManager.Add(new MissionItem3());
             RebirthItemInstance = new RebirthItem();
 
             RebirthCollectItemQuest = CustomObjectiveManager.CollectItem(RebirthItem, UnityEngine.Random.Range(15, 26), false, FollowerLocation.Dungeon1_1, 4800f);

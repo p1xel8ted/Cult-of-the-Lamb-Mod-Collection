@@ -15,7 +15,7 @@ namespace Namify
     {
         internal const string PluginGuid = "p1xel8ted.cotl.namify";
         private const string PluginName = "Namify";
-        private const string PluginVer = "0.1.0";
+        private const string PluginVer = "0.1.1";
 
         public static ManualLogSource Log { get; private set; }
         private static readonly Harmony Harmony = new(PluginGuid);

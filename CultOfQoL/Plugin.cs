@@ -10,7 +10,7 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.5";
+    private const string PluginVer = "2.0.6";
 
     internal static ManualLogSource Log;
     private static readonly Harmony Harmony = new(PluginGuid);
@@ -21,7 +21,7 @@ public partial class Plugin : BaseUnityPlugin
         Log = new ManualLogSource("Cult-of-QoL-Collection");
         BepInEx.Logging.Logger.Sources.Add(Log);
 
-        ModEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
+        _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
 
         //Player
         EnableBaseDamageMultiplier = Config.Bind("Player", "Enable Base Damage Multiplier", false, "Enable/disable the base damage multiplier.");
@@ -39,7 +39,6 @@ public partial class Plugin : BaseUnityPlugin
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
-        RemoveNewGameButton = Config.Bind("General", "Remove New Game Button", true, "Removes the new game button from the main menu (provided you have at least one save game.)");
 
         //Weather
         MoreDynamicWeather = Config.Bind("Weather", "More Dynamic Weather", true, "Weather is more dynamic and changes more often.");
@@ -48,8 +47,7 @@ public partial class Plugin : BaseUnityPlugin
         WindLowerChance = Config.Bind("Weather", "Light Wind Range", 25, "The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light wind.");
         WindUpperChance = Config.Bind("Weather", "Heavy Wind Range", 75, "The game basically uses a 100 sided dice to determine the weather. This is the higher end of the range of the dice roll. If it rolls higher than this number, heavy wind.");
         ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather During The Day", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
-
-
+        
         //Game Mechanics
         ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
         IncreaseGoldenFleeceDamageRate = Config.Bind("Game Mechanics", "Increase Golden Fleece Rate", true, "Doubles the damage increase.");
@@ -110,7 +108,7 @@ public partial class Plugin : BaseUnityPlugin
 
     private void OnEnable()
     {
-        if (ModEnabled.Value)
+        if (_modEnabled.Value)
         {
             Harmony.PatchAll();
             Log.LogInfo($"Loaded {PluginName}!");

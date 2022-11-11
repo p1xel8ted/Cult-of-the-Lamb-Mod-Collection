@@ -26,7 +26,7 @@
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="false"/>
         <PackageReference Include="BepInEx.Core" Version="5.4.21"/>
         <PackageReference Include="UnityEngine.Modules" Version="2019.4.40"/>
-          <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.17-*"/>
+          <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.18-*"/>
     </ItemGroup>
     
 

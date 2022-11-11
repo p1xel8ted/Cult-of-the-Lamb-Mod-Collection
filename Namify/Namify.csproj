@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>0.1.0</AssemblyVersion>
-        <ReleaseVersion>0.1.0</ReleaseVersion>
+        <AssemblyVersion>0.1.1</AssemblyVersion>
+        <ReleaseVersion>0.1.1</ReleaseVersion>
         <Authors>p1xel8ted</Authors>
         <PackageId>Namify</PackageId>
         <Title>Namify</Title>
-        <FileVersion>0.1.0</FileVersion>
-        <PackageVersion>0.1.0</PackageVersion>
+        <FileVersion>0.1.1</FileVersion>
+        <PackageVersion>0.1.1</PackageVersion>
     </PropertyGroup>
     <ItemGroup>
       <Reference Include="COTL_API">

@@ -9,7 +9,6 @@ public partial class Plugin
     internal static ConfigEntry<bool> EasyFishing;
     internal static ConfigEntry<bool> FastCollecting;
     internal static ConfigEntry<bool> RemoveMenuClutter;
-    internal static ConfigEntry<bool> RemoveNewGameButton;
     internal static ConfigEntry<bool> RemoveTwitchButton;
     internal static ConfigEntry<bool> BulkFollowerCommands;
     internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange;
@@ -29,7 +28,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> DoubleLifespanInstead;
     internal static ConfigEntry<bool> DisableGameOver;
 
-    internal static ConfigEntry<bool> ModEnabled;
+    private static ConfigEntry<bool> _modEnabled;
     internal static ConfigEntry<bool> TurnOffSpeakersAtNight;
     internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck;
     internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead;
