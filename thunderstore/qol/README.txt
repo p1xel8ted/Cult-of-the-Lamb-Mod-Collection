@@ -1,9 +1,13 @@
 ## Known Issues
 
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
-* When exiting a building, the weather is actually changed twice by the game, so you might see two notifications.
 
 ## Changelog
+
+## 2.0.6 - 13/11/2022
+
+* Fixed issue that was causing the New Game button to vanish...
+* Added Mass Collect - at the moment it only works with the beds.
 
 ## 2.0.5 - 08/11/2022
 

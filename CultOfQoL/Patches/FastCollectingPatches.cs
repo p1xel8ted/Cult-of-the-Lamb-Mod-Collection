@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
@@ -82,6 +83,18 @@ public static class FastCollectingPatches
     {
         if (!Plugin.FastCollecting.Value) return;
         ___Delay = 0.0f;
+    }
+    
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Interaction_Bed), nameof(Interaction_Bed.OnSecondaryInteract))]
+    public static void Interaction_Bed_OnSecondaryInteract(ref Interaction_Bed __instance)
+    {
+        if (!Plugin.MassCollecting.Value) return;
+        var interactions = Object.FindObjectsOfType<Interaction_Bed>().ToList();
+        foreach (var interaction in interactions)
+        {
+            GameManager.GetInstance().StartCoroutine(interaction.GiveReward());
+        }
     }
 
 

@@ -53,7 +53,7 @@ public partial class Plugin : BaseUnityPlugin
         IncreaseGoldenFleeceDamageRate = Config.Bind("Game Mechanics", "Increase Golden Fleece Rate", true, "Doubles the damage increase.");
         UseCustomDamageValue = Config.Bind("Game Mechanics", "Use Custom Damage Value", false, "Use a custom damage value instead of the default 10%.");
         CustomDamageMulti = Config.Bind("Game Mechanics", "Custom Damage Multiplier", 2.0f, "The custom damage multiplier to use. Based off the games default 5%.");
-
+        MassCollecting = Config.Bind("Game Mechanics", "Mass Collecting", true, "Allows you to collect resources from multiple structures at once. Currently, only the bed is working.");   
         AdjustRefineryRequirements = Config.Bind("Game Mechanics", "Adjust Refinery Requirements", true, "Where possible, halves the materials needed to convert items in the refinery. Rounds up.");
         EasyFishing = Config.Bind("Game Mechanics", "Cheese Fishing Mini-Game", true, "Fishing mini-game cheese. Just cast and let the mod do the rest.");
         DisableGameOver = Config.Bind("Game Mechanics", "No More Game-Over", false, "Disables the game over function when you have 0 followers for consecutive days.");
@@ -103,6 +103,7 @@ public partial class Plugin : BaseUnityPlugin
         CollectTitheFromOldFollowers = Config.Bind("Followers", "Collect Tithe From Old Followers", true, "Re-enable collecting tithe from the elderly. Brutal.");
         AddExhaustedToHealingBay = Config.Bind("Followers", "Add Exhausted To Healing Bay", true, "Allows you to select exhausted followers for rest and relaxation in the healing bays.");
         BulkFollowerCommands = Config.Bind("Followers", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
+        OnlyShowDissenters = Config.Bind("Followers", "Only Show Dissenters In Prison Menu", true, "Only show dissenting followers when interacting with the prison.");
     }
 
 

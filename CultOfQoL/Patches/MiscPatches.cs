@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening.Core;
 using HarmonyLib;
 
 namespace CultOfQoL.Patches;
@@ -24,4 +25,5 @@ public class MiscPatches
             __instance._extraText ??= Array.Empty<string>();
         }
     }
+
 }

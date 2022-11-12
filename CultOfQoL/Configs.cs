@@ -72,6 +72,8 @@ public partial class Plugin
     public static ConfigEntry<float> DodgeSpeedMulti;
     public static ConfigEntry<float> LungeSpeedMulti;
     
+    public static ConfigEntry<bool> OnlyShowDissenters;
+    
     public static ConfigEntry<bool> DisablePropagandaSpeakerAudio;
     
     public static ConfigEntry<bool> UseCustomDamageValue;
@@ -80,4 +82,5 @@ public partial class Plugin
 
     public static WriteOnce<float> RunSpeed { get; } = new();
     public static WriteOnce<float> DodgeSpeed { get; } = new();
+    public static ConfigEntry<bool> MassCollecting;
 }

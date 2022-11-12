@@ -1,4 +1,6 @@
 using HarmonyLib;
+using Socket.Newtonsoft.Json.Utilities.LinqBridge;
+using UnityEngine;
 
 namespace CultOfQoL.Patches;
 
@@ -13,5 +15,7 @@ public static class DebugPatches
         Plugin.L($"LocationManager_CheckExistingStructure: Found null structure. Skipping check.");
         return false;
     }
+
+
 
 }

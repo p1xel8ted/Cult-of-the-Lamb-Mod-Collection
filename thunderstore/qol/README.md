@@ -30,6 +30,7 @@
 * Modify base damage dealt.
 * Receive notification when a bed has collapsed.
 * Skip recieve crown video.
+* Mass collect resources from select structures. WIP*
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -60,9 +61,13 @@ Feel free to reach out to me on the channel below.
 ## Known Issues
 
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
-* When exiting a building, the weather is actually changed twice by the game, so you might see two notifications.
 
 ## Changelog
+
+## 2.0.6 - 13/11/2022
+
+* Fixed issue that was causing the New Game button to vanish...
+* Added Mass Collect - at the moment it only works with the beds.
 
 ## 2.0.5 - 08/11/2022
 
