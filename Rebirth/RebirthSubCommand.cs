@@ -45,8 +45,7 @@ namespace Rebirth
 
         public override bool ShouldAppearFor(Follower follower)
         {
-            var bornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
-            return bornAgainFollower is {BornAgain: true};
+            return SaveData.FollowerBornAgain(follower.Brain._directInfoAccess);
         }
 
         public override bool IsAvailable(Follower follower)

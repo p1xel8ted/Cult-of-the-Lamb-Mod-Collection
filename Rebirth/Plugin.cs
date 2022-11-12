@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -9,6 +10,7 @@ using COTL_API.CustomInventory;
 using COTL_API.CustomMission;
 using COTL_API.CustomObjectives;
 using COTL_API.Helpers;
+using COTL_API.Saves;
 using Socket.Newtonsoft.Json.Utilities.LinqBridge;
 using UnityEngine;
 
@@ -32,12 +34,16 @@ namespace Rebirth
         private CustomObjective RebirthCollectItemQuest { get; set; }
         internal static RebirthItem RebirthItemInstance { get; private set; }
         
-        public static InventoryItem.ITEM_TYPE RebirthMissionItem1 { get; private set; }
-        public static InventoryItem.ITEM_TYPE RebirthMissionItem2 { get; private set; }
-        public static InventoryItem.ITEM_TYPE RebirthMissionItem3 { get; private set; }
+        public static InventoryItem.ITEM_TYPE RebirthMission { get; private set; }
+
+        
+        public static readonly ModdedSaveData<List<int>> RebirthSaveData = new(PluginGuid);
 
         private void Awake()
         {
+            RebirthSaveData.LoadOrder = ModdedSaveLoadOrder.LOAD_AS_SOON_AS_POSSIBLE;
+            ModdedSaveManager.RegisterModdedSave(RebirthSaveData);
+            
             _modEnabled = Config.Bind("General", "Enabled", true, "Enable/disable this mod.");
 
             Log = Logger;
@@ -47,13 +53,13 @@ namespace Rebirth
             CustomFollowerCommandManager.Add(new RebirthFollowerCommand());
             CustomFollowerCommandManager.Add(new RebirthSubCommand());
             RebirthItem = CustomItemManager.Add(new RebirthItem());
-            RebirthMissionItem1 = CustomMissionManager.Add(new MissionItem());
-            RebirthMissionItem2 = CustomMissionManager.Add(new MissionItem2());
-            RebirthMissionItem3 = CustomMissionManager.Add(new MissionItem3());
+            RebirthMission = CustomMissionManager.Add(new MissionItem());
+
             RebirthItemInstance = new RebirthItem();
 
             RebirthCollectItemQuest = CustomObjectiveManager.CollectItem(RebirthItem, UnityEngine.Random.Range(15, 26), false, FollowerLocation.Dungeon1_1, 4800f);
             RebirthCollectItemQuest.InitialQuestText = $"Please Leader, please! I'm {"weary of this existence".Wave()} and seek to be reborn! I will do anything for you! Can you please help me?";
+
         }
 
         private void OnEnable()

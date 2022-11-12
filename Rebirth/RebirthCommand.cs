@@ -59,22 +59,17 @@ namespace Rebirth
                 return false;
             }
 
-            BornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
-            if (BornAgainFollower is {BornAgain: true})
-            {
-                return false;
-            }
-
-            return true;
+            BornAgainFollower = SaveData.FollowerBornAgain(follower.Brain._directInfoAccess);
+            return !BornAgainFollower;
         }
 
         public override bool ShouldAppearFor(Follower follower)
         {
-            var bornAgainFollower = SaveData.GetBornAgainFollowerData(follower.Brain._directInfoAccess);
-            return bornAgainFollower is {BornAgain: false};
+            var bornAgainFollower = SaveData.FollowerBornAgain(follower.Brain._directInfoAccess);
+            return !bornAgainFollower;
         }
 
-        private static SaveData.BornAgainFollowerData BornAgainFollower { get; set; }
+        private static bool BornAgainFollower { get; set; }
 
 
         private static IEnumerator GiveFollowerIE(FollowerInfo f, Follower old)
@@ -111,8 +106,7 @@ namespace Rebirth
             {
                 GameManager.GetInstance().StartCoroutine(GiveFollowerIE(fi, follower));
                 Plugin.Log.LogWarning($"New follower: {fi.Name}");
-                var bornAgainFollower = new SaveData.BornAgainFollowerData(fi, true);
-                SaveData.SetBornAgainFollowerData(bornAgainFollower);
+                SaveData.AddBornAgainFollower(fi);
                 fi.FollowerLevel = oldLevel;
                 fi.XPLevel = oldXp;
 
