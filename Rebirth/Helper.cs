@@ -1,5 +1,5 @@
 using HarmonyLib;
-using Random = UnityEngine.Random;
+using UnityEngine;
 
 namespace Rebirth;
 
@@ -11,6 +11,10 @@ public static class Helper
     
     public static bool IsOld(Follower follower)
     {
+        if (Plugin.RebirthOldFollowers.Value)
+        {
+            return false;
+        }
         return follower.Outfit.CurrentOutfit == FollowerOutfitType.Old && (follower.Brain.Info.OldAge || follower.Brain.HasThought(Thought.OldAge));
     }
 

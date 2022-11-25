@@ -36,6 +36,11 @@ Feel free to reach out to me on the channel below.
 
 ## Changelog
 
+### 1.0.1 - 25/11/2022 - You must upate COTL_API to 0.1.10!
+
+* Compatibility update for COTL API 0.1.10
+* Added ability to rebirth elderly followers. Default is off. Can be changed in the config file.
+
 ### 1.0.0 - 17/10/2022 - You must upate COTL_API to 0.1.6!
 
 * Moved the token from the common to rare pool of the offering shrine.

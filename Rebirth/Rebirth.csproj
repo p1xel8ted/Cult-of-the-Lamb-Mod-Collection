@@ -10,6 +10,7 @@
         <PackageVersion>1.0.1</PackageVersion>
         <IsPackable>false</IsPackable>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <DebugType>portable</DebugType>

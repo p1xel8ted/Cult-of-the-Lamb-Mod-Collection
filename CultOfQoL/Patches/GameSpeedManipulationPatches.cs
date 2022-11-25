@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public static class GameSpeedManipulationPatches
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.Update))]
-    public static void GameManager_Update(GameManager __instance)
+    public static void GameManager_Update(GameManager? __instance)
     {
         if (__instance is null) return;
         if (Plugin.SlowDownTime.Value && !_timeMessageShown)
@@ -93,7 +94,7 @@ public static class GameSpeedManipulationPatches
             }
 
             GameManager.SetTimeScale(_newGameSpeed);
-            NotificationCentre.Instance.PlayGenericNotification(_newGameSpeed == 1
+            NotificationCentre.Instance.PlayGenericNotification(Math.Abs(_newGameSpeed - 1) < 0.001f
                 ? $"Returned game speed to {_newGameSpeed} (default)"
                 : $"Increased game speed to {_newGameSpeed}");
             return;
@@ -116,7 +117,7 @@ public static class GameSpeedManipulationPatches
             }
 
             GameManager.SetTimeScale(_newGameSpeed);
-            NotificationCentre.Instance.PlayGenericNotification(_newGameSpeed == 1
+            NotificationCentre.Instance.PlayGenericNotification(Math.Abs(_newGameSpeed - 1) < 0.001f
                 ? $"Returned game speed to {_newGameSpeed} (default)"
                 : $"Decreased game speed to {_newGameSpeed}");
         }

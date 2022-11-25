@@ -12,7 +12,7 @@ public static class FishingPatches
     [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.SetState))]
     public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
     {
-        if (!Plugin.EasyFishing.Value) return instructions;
+        if (Plugin.EasyFishing is {Value: false}) return instructions;
 
         return new CodeMatcher(instructions)
             .MatchForward(false,
@@ -30,7 +30,7 @@ public static class FishingPatches
     [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.IsNeedleWithinSection))]
     public static void UIFishingOverlayController_IsNeedleWithinSection(ref bool __result)
     {
-        if (!Plugin.EasyFishing.Value) return;
+        if (Plugin.EasyFishing is {Value: false}) return;
         __result = true;
     }
 }

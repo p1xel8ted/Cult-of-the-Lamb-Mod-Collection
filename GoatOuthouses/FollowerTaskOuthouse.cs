@@ -5,20 +5,20 @@ namespace GoatOuthouses;
 
 public class FollowerTaskOuthouse : FollowerTask
 {
-    private Follower _follower;
-    private bool holdingPoop;
-    private readonly int _siloFertizilerId;
-    private readonly Structures_SiloFertiliser _siloFertiziler;
+    private Follower? _follower;
+    private bool _holdingPoop;
+    private readonly int _siloFertiliserId;
+    private readonly Structures_SiloFertiliser _siloFertiliser;
 
-    public FollowerTaskOuthouse(int siloFertiziler)
+    public FollowerTaskOuthouse(int siloFertiliser)
     {
-        _siloFertizilerId = siloFertiziler;
-        _siloFertiziler = StructureManager.GetStructureByID<Structures_SiloFertiliser>(_siloFertizilerId);
+        _siloFertiliserId = siloFertiliser;
+        _siloFertiliser = StructureManager.GetStructureByID<Structures_SiloFertiliser>(_siloFertiliserId);
     }
 
     public override int GetSubTaskCode()
     {
-        return _siloFertizilerId;
+        return _siloFertiliserId;
     }
 
     public override void OnStart()
@@ -26,7 +26,7 @@ public class FollowerTaskOuthouse : FollowerTask
         SetState(FollowerTaskState.GoingTo);
     }
 
-    private void DoingBegin(Follower follower)
+    private void DoingBegin(Follower? follower)
     {
         if (follower)
         {
@@ -43,7 +43,7 @@ public class FollowerTaskOuthouse : FollowerTask
                 return;
             }
 
-            holdingPoop = true;
+            _holdingPoop = true;
             structureByID.Data.Inventory[0].quantity--;
             if (structureByID.Data.Inventory[0].quantity <= 0)
             {
@@ -79,20 +79,20 @@ public class FollowerTaskOuthouse : FollowerTask
         follower.SetHat(HatType.None);
         follower.SimpleAnimator.ChangeStateAnimation(StateMachine.State.Moving, "run");
 
-        if (this.holdingPoop)
+        if (_holdingPoop)
         {
-            this.RefundPoop();
+            RefundPoop();
         }
         base.Cleanup(follower);
     }
 
-    public override void OnDoingBegin(Follower follower)
+    public override void OnDoingBegin(Follower? follower)
     {
         _follower = follower;
         DoingBegin(follower);
     }
 
-    public override void OnGoingToBegin(Follower follower)
+    public override void OnGoingToBegin(Follower? follower)
     {
         base.OnGoingToBegin(follower);
         _follower = follower;
@@ -109,7 +109,7 @@ public class FollowerTaskOuthouse : FollowerTask
     public override void OnAbort()
     {
         base.OnAbort();
-        if (holdingPoop)
+        if (_holdingPoop)
         {
             RefundPoop();
         }
@@ -117,21 +117,21 @@ public class FollowerTaskOuthouse : FollowerTask
     
     public override void SimDoingBegin(SimFollower simFollower)
     {
-        this.DoingBegin(null);
+        DoingBegin(null);
     }
     
-    public override void Setup(Follower follower)
+    public override void Setup(Follower? follower)
     {
         base.Setup(follower);
-        this._follower = follower;
+        _follower = follower;
     }
     
     public override void SimCleanup(SimFollower simFollower)
     {
         base.SimCleanup(simFollower);
-        if (this.holdingPoop)
+        if (_holdingPoop)
         {
-            this.RefundPoop();
+            RefundPoop();
         }
     }
 
@@ -154,7 +154,7 @@ public class FollowerTaskOuthouse : FollowerTask
                 interactionOuthouse.Update();
             }
 
-            holdingPoop = false;
+            _holdingPoop = false;
         }
     }
 

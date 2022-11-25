@@ -9,7 +9,7 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class HealingBay
 {
-    private static FollowerBrainInfo _fi;
+    private static FollowerBrainInfo? _fi;
     private static readonly bool Run = Plugin.AddExhaustedToHealingBay.Value;
     private static bool _isHealingBay;
 

@@ -1,10 +1,7 @@
+using System.IO;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using System.IO;
-using System.Linq;
-using BepInEx.Configuration;
-using Sirenix.Utilities;
 
 namespace GoatOuthouses
 {

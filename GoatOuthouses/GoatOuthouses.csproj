@@ -10,6 +10,7 @@
         <RootNamespace>GoatOuthouses</RootNamespace>
         <Product>GoatOuthouses</Product>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />

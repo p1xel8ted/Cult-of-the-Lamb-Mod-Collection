@@ -1,20 +1,17 @@
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ShamurasRevenge;
 
 [HarmonyPatch]
 public static class Revenge
 {
-    [field: FormerlySerializedAs("SpiderPrefab")]
-    public static GameObject SpiderPrefab { get; set; }
+    public static GameObject SpiderPrefab = null!;
 
-    [field: FormerlySerializedAs("SpawnParent")]
-    public static Transform SpawnParent { get; set; }
+    public static Transform SpawnParent = null!;
 
     public static Vector3 RandomPointInCollider { get; set; }
-    public static CritterSpawner CritterSpawner { get; set; }
+    public static CritterSpawner CritterSpawner = null!;
     
 
     [HarmonyPatch(typeof(CritterSpawner),nameof(CritterSpawner.OnNewPhaseStarted))]
@@ -42,7 +39,7 @@ public static class Revenge
 
            // Plugin.MakeThemAllPoop();
            FollowerManager.MakeAllFollowersPoopOrVomit();
-           NotificationCentre.Instance.PlayGenericNotification($"All the followers have spoiled themselves in terror!");
+           NotificationCentre.Instance.PlayGenericNotification("All the followers have spoiled themselves in terror!");
         }
     }
 }

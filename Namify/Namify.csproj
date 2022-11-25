@@ -7,6 +7,7 @@
         <Title>Namify</Title>
         <FileVersion>0.1.1</FileVersion>
         <PackageVersion>0.1.1</PackageVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
       <Reference Include="COTL_API">

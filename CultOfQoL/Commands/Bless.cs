@@ -24,10 +24,10 @@ public static class Bless
         follower.SetBodyAnimation("idle", true);
         yield return new WaitForSeconds(0.5f);
         AudioManager.Instance.PlayOneShot("event:/followers/gain_loyalty", follower.gameObject.transform.position);
-        ObjectiveManager.CompleteCustomObjective(Objectives.CustomQuestTypes.BlessAFollower, -1);
+        ObjectiveManager.CompleteCustomObjective(Objectives.CustomQuestTypes.BlessAFollower);
         instance.eventListener.PlayFollowerVO(instance.generalAcknowledgeVO);
         follower.Brain.Stats.ReceivedBlessing = true;
-        follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Bless, delegate()
+        follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Bless, delegate
         {
             Plugin.L($"Adding Adoration thoughts to {follower.name}");
             CultFaithManager.AddThought(Thought.Cult_Bless, -1, 1f, Array.Empty<string>());

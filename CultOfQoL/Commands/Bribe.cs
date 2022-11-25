@@ -32,18 +32,18 @@ public static class Bribe
             else
             {
                 AudioManager.Instance.PlayOneShot("event:/followers/pop_in", follower.transform.position);
-                ResourceCustomTarget.Create(follower.gameObject, PlayerFarming.Instance.CameraBone.transform.position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate()
+                ResourceCustomTarget.Create(follower.gameObject, PlayerFarming.Instance.CameraBone.transform.position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate
                 {
                     follower.SetBodyAnimation("Reactions/react-love2", false);
                     follower.AddBodyAnimation("idle", true, 0f);
                     AudioManager.Instance.PlayOneShot("event:/followers/gain_loyalty", follower.gameObject.transform.position);
                     follower.Brain.Stats.Bribed = true;
                     instance.eventListener.PlayFollowerVO(instance.generalAcknowledgeVO);
-                    Inventory.ChangeItemQuantity(20, -3, 0);
-                    follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Bribe, delegate()
+                    Inventory.ChangeItemQuantity(20, -3);
+                    follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Bribe, delegate
                     {
                         Plugin.L($"Adding Adoration thoughts to {follower.name}");
-                        follower.Brain.AddThought(Thought.Bribed, false, false);
+                        follower.Brain.AddThought(Thought.Bribed);
                         if (instance.follower.Brain.Stats.Adoration >= instance.follower.Brain.Stats.MAX_ADORATION)
                         {
                             instance.follower = follower;

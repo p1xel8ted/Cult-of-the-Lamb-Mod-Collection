@@ -8,6 +8,7 @@
 
 * Fixed issue that was causing the New Game button to vanish...
 * Added Mass Collect - at the moment it only works with the beds.
+* Added option to only show dissenters in the prison menu.
 
 ## 2.0.5 - 08/11/2022
 

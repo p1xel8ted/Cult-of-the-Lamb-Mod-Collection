@@ -8,7 +8,7 @@ public static class TarotCardPatches
 {
     [HarmonyPrefix]
     [HarmonyPatch(typeof(TarotCards), nameof(TarotCards.DrawRandomCard))]
-    public static bool TarotCards_DrawRandomCard(ref TarotCards.TarotCard __result)
+    public static bool TarotCards_DrawRandomCard(ref TarotCards.TarotCard? __result)
     {
         if (!Plugin.ThriceMultiplyTarotCardLuck.Value) return true;
 

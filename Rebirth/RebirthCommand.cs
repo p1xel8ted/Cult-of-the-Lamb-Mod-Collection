@@ -122,7 +122,7 @@ namespace Rebirth
             }
             else
             {
-                Plugin.Log.LogWarning($"New follower is null!");
+                Plugin.Log.LogWarning("New follower is null!");
             }
 
             NotificationCentre.NotificationsEnabled = true;

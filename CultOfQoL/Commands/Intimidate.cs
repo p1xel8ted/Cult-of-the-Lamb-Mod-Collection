@@ -30,12 +30,12 @@ public static class Intimidate
 	HUD_Manager.Instance.ShowBW(0.33f, 1f, 0f);
 	yield return new WaitForSeconds(0.5f);
 	AudioManager.Instance.PlayOneShot("event:/followers/gain_loyalty", follower.transform.position);
-	ObjectiveManager.CompleteCustomObjective(Objectives.CustomQuestTypes.BlessAFollower, -1);
+	ObjectiveManager.CompleteCustomObjective(Objectives.CustomQuestTypes.BlessAFollower);
 	follower.Brain.Stats.Intimidated = true;
-	follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Intimidate, delegate()
+	follower.Brain.AddAdoration(FollowerBrain.AdorationActions.Intimidate, delegate
 	{
 		Plugin.L($"Adding Adoration thoughts to {follower.name}");
-		follower.Brain.AddThought(Thought.Intimidated, false, false);
+		follower.Brain.AddThought(Thought.Intimidated);
 		if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
 		{
 			instance.follower = follower;

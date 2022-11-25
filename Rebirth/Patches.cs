@@ -1,7 +1,7 @@
 using System.Globalization;
 using COTL_API.CustomInventory;
 using HarmonyLib;
-using Random = UnityEngine.Random;
+using UnityEngine;
 
 namespace Rebirth;
 

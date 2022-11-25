@@ -1,5 +1,4 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 
@@ -12,7 +11,7 @@ public partial class Plugin : BaseUnityPlugin
     private const string PluginName = "Cult of QoL Collection";
     private const string PluginVer = "2.0.6";
 
-    internal static ManualLogSource Log;
+    internal static ManualLogSource Log = null!;
     private static readonly Harmony Harmony = new(PluginGuid);
 
 

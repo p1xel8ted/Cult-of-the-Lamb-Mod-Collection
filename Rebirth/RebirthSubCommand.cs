@@ -3,7 +3,6 @@ using COTL_API.CustomFollowerCommand;
 using COTL_API.Helpers;
 using UnityEngine;
 
-
 namespace Rebirth
 {
     internal class RebirthSubCommand : CustomFollowerCommand

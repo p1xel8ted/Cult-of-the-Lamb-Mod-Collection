@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using System.IO;
 using UnityEngine;
 
 namespace ShamurasRevenge
@@ -16,15 +16,15 @@ namespace ShamurasRevenge
         private const string PluginName = "Shamura's Revenge";
         private const string PluginVer = "1.0.0";
 
-        public static ManualLogSource Log { get; private set; }
+        public static ManualLogSource Log = null!;
         private static readonly Harmony Harmony = new(PluginGuid);
-        public static string PluginPath { get; private set; }
+        public static string PluginPath = null!;
 
 
         private void Awake()
         {
             Log = Logger;
-            PluginPath = Path.GetDirectoryName(Info.Location);
+            PluginPath = Path.GetDirectoryName(Info.Location) ?? throw new DirectoryNotFoundException();
         }
 
         private void OnEnable()
@@ -57,7 +57,7 @@ namespace ShamurasRevenge
             {
                 GameManager.GetInstance().StartCoroutine(PoopAll(follower));
             }
-            NotificationCentre.Instance.PlayGenericNotification($"All the followers have pooped themselves in terror!");
+            NotificationCentre.Instance.PlayGenericNotification("All the followers have pooped themselves in terror!");
         }
 
         public static List<Follower> PoopList { get; } = new();
