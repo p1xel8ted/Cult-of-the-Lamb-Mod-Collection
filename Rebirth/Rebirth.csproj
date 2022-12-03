@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <ReleaseVersion>1.0.1</ReleaseVersion>
+        <AssemblyVersion>1.0.2</AssemblyVersion>
+        <ReleaseVersion>1.0.2</ReleaseVersion>
         <Authors>p1xel8ted</Authors>
         <PackageId>Rebirth</PackageId>
         <Title>Rebirth</Title>
         <PackageIcon>rebirth_command.png</PackageIcon>
-        <FileVersion>1.0.1</FileVersion>
-        <PackageVersion>1.0.1</PackageVersion>
+        <FileVersion>1.0.2</FileVersion>
+        <PackageVersion>1.0.2</PackageVersion>
         <IsPackable>false</IsPackable>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <Nullable>enable</Nullable>

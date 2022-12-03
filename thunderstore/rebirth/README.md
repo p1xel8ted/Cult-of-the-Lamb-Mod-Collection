@@ -36,6 +36,10 @@ Feel free to reach out to me on the channel below.
 
 ## Changelog
 
+### 1.0.2 - 3/12/2022 - You must upate COTL_API to 0.1.12!
+
+* Added support for changing config options from within the Cult of the Lamb Mod settings menu.
+
 ### 1.0.1 - 25/11/2022 - You must upate COTL_API to 0.1.10!
 
 * Compatibility update for COTL API 0.1.10

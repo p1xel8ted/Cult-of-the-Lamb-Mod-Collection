@@ -7,6 +7,7 @@ using COTL_API.CustomFollowerCommand;
 using COTL_API.CustomInventory;
 using COTL_API.CustomMission;
 using COTL_API.CustomObjectives;
+using COTL_API.CustomSettings;
 using COTL_API.Saves;
 using HarmonyLib;
 using Random = UnityEngine.Random;
@@ -14,13 +15,13 @@ using Random = UnityEngine.Random;
 namespace Rebirth
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
-    [BepInDependency("io.github.xhayper.COTL_API", "0.1.10")]
+    [BepInDependency("io.github.xhayper.COTL_API", "0.1.12")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
         internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
-        private const string PluginVer = "1.0.1";
+        private const string PluginVer = "1.0.2";
 
         public static ManualLogSource Log { get; private set; } = null!;
         private static readonly Harmony Harmony = new(PluginGuid);
@@ -39,6 +40,7 @@ namespace Rebirth
 
         private void Awake()
         {
+          
             RebirthSaveData.LoadOrder = ModdedSaveLoadOrder.LOAD_AS_SOON_AS_POSSIBLE;
             ModdedSaveManager.RegisterModdedSave(RebirthSaveData);
             
@@ -57,6 +59,10 @@ namespace Rebirth
 
             RebirthCollectItemQuest = CustomObjectiveManager.CollectItem(RebirthItem, Random.Range(15, 26), false, FollowerLocation.Dungeon1_1, 4800f);
             RebirthCollectItemQuest.InitialQuestText = $"Please Leader, please! I'm {"weary of this existence".Wave()} and seek to be reborn! I will do anything for you! Can you please help me?";
+            CustomSettingsManager.AddBepInExConfig("Rebirth", "Rebirth Old Followers",RebirthOldFollowers, b =>
+            {
+                Log.LogWarning("Setting RebirthOldFollowers to " + b);
+            });
 
         }
 
