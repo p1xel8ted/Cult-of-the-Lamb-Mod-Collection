@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using MonoMod.Utils;
 using UnityEngine;
+// ReSharper disable InconsistentNaming
 
 namespace CultOfQoL.Patches;
 
@@ -38,7 +39,6 @@ public static class FastCollectingPatches
     }
 
 
-
     [HarmonyPrefix]
     [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
     public static void LumberjackStation_Update(ref LumberjackStation __instance)
@@ -65,7 +65,7 @@ public static class FastCollectingPatches
             __instance.AutomaticallyInteract = true;
         }
     }
-    
+
     [HarmonyPrefix]
     [HarmonyPostfix]
     [HarmonyPatch(typeof(BuildingShrine), nameof(BuildingShrine.Update))]
@@ -84,7 +84,7 @@ public static class FastCollectingPatches
         if (!Plugin.FastCollecting.Value) return;
         ___Delay = 0.0f;
     }
-    
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Interaction_Bed), nameof(Interaction_Bed.OnSecondaryInteract))]
     public static void Interaction_Bed_OnSecondaryInteract(ref Interaction_Bed __instance)
@@ -108,12 +108,24 @@ public static class FastCollectingPatches
         {
             if (!Plugin.FastCollecting.Value) return instructions;
 
-            return new CodeMatcher(instructions)
-                .MatchForward(false,
-                    new CodeMatch(OpCodes.Ldc_R4),
-                    new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
-                .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f)
-                .InstructionEnumeration();
+            var codes = new List<CodeInstruction>(instructions);
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].opcode == OpCodes.Newobj && codes[i + 1].OperandIs(AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
+                {
+                    Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found WaitForSeconds at {i}");
+                    codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f;
+                }
+
+                // return new CodeMatcher(instructions)
+                //     .MatchForward(false,
+                //         new CodeMatch(OpCodes.Ldc_R4),
+                //         new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
+                //     .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f)
+                //     .InstructionEnumeration();
+            }
+
+            return codes.AsEnumerable();
         }
 
         //collection speed for Interaction_CollectResourceChest - default speed is 0.1f
@@ -124,12 +136,23 @@ public static class FastCollectingPatches
         {
             if (!Plugin.FastCollecting.Value) return instructions;
             var delayField = AccessTools.Field(originalMethod.GetRealDeclaringType(), "Delay");
-            return new CodeMatcher(instructions)
-                .MatchForward(false,
-                    new CodeMatch(OpCodes.Ldc_R4),
-                    new CodeMatch(OpCodes.Stfld, delayField))
-                .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f)
-                .InstructionEnumeration();
+            var codes = new List<CodeInstruction>(instructions);
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].StoresField(delayField))
+                {
+                    Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
+                    codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f;
+                }
+            }
+
+            return codes.AsEnumerable();
+            // return new CodeMatcher(instructions)
+            //     .MatchForward(false,
+            //         new CodeMatch(OpCodes.Ldc_R4),
+            //         new CodeMatch(OpCodes.Stfld, delayField))
+            //     .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f)
+            //     .InstructionEnumeration();
         }
 
 
@@ -142,12 +165,25 @@ public static class FastCollectingPatches
         {
             if (!Plugin.FastCollecting.Value) return instructions;
             var delayField = AccessTools.Field(originalMethod.GetRealDeclaringType(), "Delay");
-            return new CodeMatcher(instructions)
-                .MatchForward(false,
-                    new CodeMatch(OpCodes.Ldc_R4),
-                    new CodeMatch(OpCodes.Stfld, delayField))
-                .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Outhouse") ? 0.025f : 0f)
-                .InstructionEnumeration();
+            
+            var codes = new List<CodeInstruction>(instructions);
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].StoresField(delayField))
+                {
+                    Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
+                    codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Outhouse") ? 0.025f : 0f;
+                }
+            }
+
+            return codes.AsEnumerable();
+            
+            // return new CodeMatcher(instructions)
+            //     .MatchForward(false,
+            //         new CodeMatch(OpCodes.Ldc_R4),
+            //         new CodeMatch(OpCodes.Stfld, delayField))
+            //     .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Outhouse") ? 0.025f : 0f)
+            //     .InstructionEnumeration();
         }
     }
 }
