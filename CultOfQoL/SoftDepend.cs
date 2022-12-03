@@ -9,19 +9,25 @@ public static class SoftDepend
 {
     private static bool? _enabled;
 
-    public static bool Enabled {
-        get {
+    public static bool Enabled
+    {
+        get
+        {
             if (_enabled != null) return (bool) _enabled;
-            var plugin = BepInEx.Bootstrap.Chainloader.PluginInfos.FirstOrDefault(a=>a.Value.Metadata.GUID == "io.github.xhayper.COTL_API").Value;
-            if(plugin!=null && plugin.Metadata.Version >= new Version(0, 1, 12)) {
+            var plugin = BepInEx.Bootstrap.Chainloader.PluginInfos.FirstOrDefault(a => a.Value.Metadata.GUID == "io.github.xhayper.COTL_API").Value;
+            if (plugin != null && plugin.Metadata.Version >= new Version(0, 1, 12))
+            {
                 _enabled = true;
-            } else {
+            }
+            else
+            {
                 _enabled = false;
             }
-            return (bool)_enabled;
+
+            return (bool) _enabled;
         }
     }
-    
+
     public static void AddSettingsMenus()
     {
         CustomSettingsManager.AddBepInExConfig("Cult of QoL", Plugin._modEnabled.Definition.Key, Plugin._modEnabled, b =>
@@ -37,7 +43,7 @@ public static class SoftDepend
                 Plugin.Harmony.PatchAll();
             }
         });
-        
+
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Player", Plugin.EnableBaseDamageMultiplier.Definition.Key, Plugin.EnableBaseDamageMultiplier);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Player", Plugin.BaseDamageMultiplier.Definition.Key, Plugin.BaseDamageMultiplier, 1, MMSlider.ValueDisplayFormat.RawValue);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Player", Plugin.EnableRunSpeedMulti.Definition.Key, Plugin.EnableRunSpeedMulti);
@@ -67,23 +73,23 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Game Mechanics", "No More Game-Over", Plugin.DisableGameOver);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Game Mechanics", "3x Tarot Luck", Plugin.ThriceMultiplyTarotCardLuck);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Infinite Lumber & Mining Stations", Plugin.LumberAndMiningStationsDontAge, b =>
-         {
-             if (!b) return;
-             Plugin.DoubleLifespanInstead.Value = false;
-             Plugin.FiftyPercentIncreaseToLifespanInstead.Value = false;   
-         });
+        {
+            if (!b) return;
+            Plugin.DoubleLifespanInstead.Value = false;
+            Plugin.FiftyPercentIncreaseToLifespanInstead.Value = false;
+        });
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Double Life Span Instead", Plugin.DoubleLifespanInstead, b =>
-         {
-             if (!b) return;
-             Plugin.LumberAndMiningStationsDontAge.Value = false;
-             Plugin.FiftyPercentIncreaseToLifespanInstead.Value = false;
-         });
+        {
+            if (!b) return;
+            Plugin.LumberAndMiningStationsDontAge.Value = false;
+            Plugin.FiftyPercentIncreaseToLifespanInstead.Value = false;
+        });
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Add 50% to Life Span Instead", Plugin.FiftyPercentIncreaseToLifespanInstead, b =>
-         {
-             if (!b) return;
-             Plugin.DoubleLifespanInstead.Value = false;
-             Plugin.LumberAndMiningStationsDontAge.Value = false;
-         });
+        {
+            if (!b) return;
+            Plugin.DoubleLifespanInstead.Value = false;
+            Plugin.LumberAndMiningStationsDontAge.Value = false;
+        });
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.TurnOffSpeakersAtNight.Definition.Key, Plugin.TurnOffSpeakersAtNight);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.DisablePropagandaSpeakerAudio.Definition.Key, Plugin.DisablePropagandaSpeakerAudio);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Speed", Plugin.EnableGameSpeedManipulation.Definition.Key, Plugin.EnableGameSpeedManipulation);
