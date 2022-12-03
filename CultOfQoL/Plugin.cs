@@ -22,7 +22,7 @@ public partial class Plugin : BaseUnityPlugin
         Log = new ManualLogSource("Cult-of-QoL-Collection");
         BepInEx.Logging.Logger.Sources.Add(Log);
 
-        _modEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
+        ModEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
         
         //Player
         EnableBaseDamageMultiplier = Config.Bind("Player", "Enable Base Damage Multiplier", false, "Enable/disable the base damage multiplier.");
@@ -114,7 +114,7 @@ public partial class Plugin : BaseUnityPlugin
 
     private void OnEnable()
     {
-        if (_modEnabled.Value)
+        if (ModEnabled.Value)
         {
             Harmony.PatchAll();
             Log.LogInfo($"Loaded {PluginName}!");

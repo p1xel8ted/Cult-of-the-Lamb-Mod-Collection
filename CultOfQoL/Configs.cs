@@ -28,7 +28,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> DoubleLifespanInstead = null!;
     internal static ConfigEntry<bool> DisableGameOver = null!;
 
-    internal static ConfigEntry<bool> _modEnabled = null!;
+    internal static ConfigEntry<bool> ModEnabled = null!;
     internal static ConfigEntry<bool> TurnOffSpeakersAtNight = null!;
     internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck = null!;
     internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead = null!;

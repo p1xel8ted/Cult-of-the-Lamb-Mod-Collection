@@ -30,7 +30,7 @@ public static class SoftDepend
 
     public static void AddSettingsMenus()
     {
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL", Plugin._modEnabled.Definition.Key, Plugin._modEnabled, b =>
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL", Plugin.ModEnabled.Definition.Key, Plugin.ModEnabled, b =>
         {
             if (!b)
             {
