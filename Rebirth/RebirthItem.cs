@@ -19,7 +19,7 @@ public sealed class RebirthItem : CustomInventoryItem
     public override string InternalName => "REBIRTH_ITEM";
 
     public override bool AddItemToDungeonChests => true;
-    public override int DungeonChestSpawnChance => 15;
+    public override int DungeonChestSpawnChance => 5;
     public override int DungeonChestMinAmount => 4;
     public override int DungeonChestMaxAmount => 7;
     public override Vector3 LocalScale { get; } = new(0.7f, 0.7f, 1f);

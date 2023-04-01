@@ -6,16 +6,16 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
      <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
 
-        <OutputPath>C:\\Program Files (x86)\\Steam\\steamapps\\common\\Cult of the Lamb\\BepInEx\\plugins</OutputPath>
+        <OutputPath>H:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins</OutputPath>
     
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <DebugType>portable</DebugType>
-        <OutputPath>C:\\Program Files (x86)\\Steam\\steamapps\\common\\Cult of the Lamb\\BepInEx\\plugins</OutputPath>
+        <OutputPath>H:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <OutputPath>C:\\Program Files (x86)\\Steam\\steamapps\\common\\Cult of the Lamb\\BepInEx\\plugins</OutputPath>
+        <OutputPath>H:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins</OutputPath>
     </PropertyGroup>
     <PropertyGroup>
         <!-- First one is "Forced Access" warning, second one is "Missing XML" comment -->

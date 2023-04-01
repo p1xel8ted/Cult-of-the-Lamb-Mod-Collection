@@ -24,6 +24,19 @@
         <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
       </Reference>
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="assets\rebirth_command.png" />
+      <AdditionalFiles Include="assets\rebirth_command.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AdditionalFiles>
+      <None Remove="assets\placeholder.png" />
+      <AdditionalFiles Include="assets\placeholder.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AdditionalFiles>
+      <None Update="assets\rebirth_item.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 
     <Import Project="..\CultOfTheLambMods.Common.props" />
 </Project>
