@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rebirth", "Rebirth\Rebirth.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShamurasRevenge", "ShamurasRevenge\ShamurasRevenge.csproj", "{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoatOuthouses", "GoatOuthouses\GoatOuthouses.csproj", "{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Namify", "Namify\Namify.csproj", "{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}"
 EndProject
 Global

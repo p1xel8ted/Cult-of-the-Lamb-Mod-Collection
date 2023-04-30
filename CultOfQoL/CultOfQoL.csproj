@@ -1,73 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <AssemblyName>CultOfQoL</AssemblyName>
-        <AssemblyVersion>2.0.7</AssemblyVersion>
-        <ReleaseVersion>2.0.7</ReleaseVersion>
-        <Description>General QoL Tweaks</Description>
-        <Authors>p1xel8ted</Authors>
-        <PackageVersion>2.0.7</PackageVersion>
-        <Title>Cult of QoL Collection</Title>
-        <PackageProjectUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</PackageProjectUrl>
-        <PackageIcon>icon.png</PackageIcon>
-        <RepositoryUrl>https://github.com/p1xel8ted/Cult-of-the-Lamb-Mod-Collection</RepositoryUrl>
-        <FileVersion>2.0.7</FileVersion>
-<!--        <TargetFramework>net48</TargetFramework>-->
-        <LangVersion>11</LangVersion>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <DebugType>full</DebugType>
-        <BaseOutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\</BaseOutputPath>
-        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <PublicSign>false</PublicSign>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DebugType>full</DebugType>
-        <OutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\</OutputPath>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <OutputPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\</OutputPath>
-    </PropertyGroup>
-    
-<!--    <ItemGroup>-->
-<!--        <PackageReference Include="BepInEx.Analyzers" Version="1.0.8">-->
-<!--          <PrivateAssets>all</PrivateAssets>-->
-<!--          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
-<!--        </PackageReference>-->
-<!--        <PackageReference Include="BepInEx.Core" Version="5.4.21" />-->
-<!--        <PackageReference Include="UnityEngine.Modules" Version="2019.4.40" IncludeAssets="compile">-->
-<!--        </PackageReference>-->
-<!--        <PackageReference Include="CultOfTheLamb.GameLibs" Version="1.0.18-r.0" IncludeAssets="compile">-->
-<!--        </PackageReference>-->
-<!--    </ItemGroup>-->
-    <PropertyGroup>
-        <!-- First one is "Forced Access" warning, second one is "Missing XML" comment -->
-        <NoWarn>Publicizer001,CS1591</NoWarn>
+        <Version>2.0.7</Version>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <FileVersion>$(Version)</FileVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="COTL_API">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
-        </Reference>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>..\libs\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="COTL_API">
+        <HintPath>..\..\..\..\..\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
+      </Reference>
+      <Reference Include="FMODUnity">
+        <HintPath>..\libs\FMODUnity.dll</HintPath>
+      </Reference>
+      <Reference Include="spine-unity">
+        <HintPath>..\libs\spine-unity.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>..\libs\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.AnimationModule">
+        <HintPath>..\libs\UnityEngine.AnimationModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule">
+        <HintPath>..\libs\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.InputLegacyModule">
+        <HintPath>..\libs\UnityEngine.InputLegacyModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UI">
+        <HintPath>..\libs\UnityEngine.UI.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.UIModule">
+        <HintPath>..\libs\UnityEngine.UIModule.dll</HintPath>
+      </Reference>
     </ItemGroup>
-
-    <Import Project="..\CultOfTheLambMods.Common.props" />
-    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="icon.png">
-            <Pack>True</Pack>
-        </None>
-    </ItemGroup>
-
-
-<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
-<!--        <Exec Command="&quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\bin\mono&quot; &quot;C:\Program Files\Unity 2019.4.40f1\Editor\Data\MonoBleedingEdge\lib\mono\4.5\pdb2mdb.exe&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Cult of the Lamb\BepInEx\plugins\CultOfQol.dll&quot;" />-->
-<!--    </Target>-->
 </Project>

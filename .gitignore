@@ -51,6 +51,15 @@ obj/
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
+
+# Libs
+libs/
+libs
+lib
+lib/
+download
+download/
+
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
