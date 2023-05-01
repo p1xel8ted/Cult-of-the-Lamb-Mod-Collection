@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using HarmonyLib;
+using Debugger = DG.Tweening.Core.Debugger;
 
 namespace CultOfQoL.Patches;
 
@@ -13,7 +15,12 @@ public static class DebugPatches
         Plugin.L("LocationManager_CheckExistingStructure: Found null structure. Skipping check.");
         return false;
     }
-
-
+    
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(Debugger), nameof(Debugger.LogInvalidTween))]
+    public static bool Debugger_LogInvalidTween()
+    {
+        return false;
+    }
 
 }
