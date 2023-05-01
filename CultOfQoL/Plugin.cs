@@ -33,20 +33,21 @@ public partial class Plugin : BaseUnityPlugin
         DodgeSpeedMulti = Config.Bind("Player", "Dodge Speed Multiplier", 1.5f, new ConfigDescription("How much faster the player dodges.", new AcceptableValueRange<float>(0, 100)));
         EnableLungeSpeedMulti = Config.Bind("Player", "Enable Lunge Speed Multiplier", true, "Enable/disable the lunge speed multiplier.");
         LungeSpeedMulti = Config.Bind("Player", "Lunge Speed Multiplier", 1.5f, new ConfigDescription("How much faster the player lunges.", new AcceptableValueRange<float>(0, 100)));
+        
         //General
         SkipDevIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
         SkipCrownVideo = Config.Bind("General", "Skip Crown Video", true, "Skips the video when the lamb gets given the crown.");
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
+        DisableAd = Config.Bind("General", "Disable Ad", true, "Disables the new ad 'feature'.");
+        RemoveHelpButtonInPauseMenu = Config.Bind("General", "Remove Help Button In Pause Menu", true, "Removes the help button in the pause menu.");
+        RemoveTwitchButtonInPauseMenu = Config.Bind("General", "Remove Twitch Button In Pause Menu", true, "Removes the twitch button in the pause menu.");
+        RemovePhotoModeButtonInPauseMenu = Config.Bind("General", "Remove Photo Mode Button In Pause Menu", true, "Removes the photo mode button in the pause menu.");
 
         //Weather
-        MoreDynamicWeather = Config.Bind("Weather", "More Dynamic Weather", true, "Weather is more dynamic and changes more often.");
-        ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather During The Day", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
-        RainLowerChance = Config.Bind("Weather", "Light Rain Range", 15, new ConfigDescription("The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.", new AcceptableValueRange<int>(0, 100)));
-        RainUpperChance = Config.Bind("Weather", "Heavy Rain Range", 85, new ConfigDescription("The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.", new AcceptableValueRange<int>(0, 100)));
-        WindLowerChance = Config.Bind("Weather", "Light Wind Range", 25, new ConfigDescription("The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.", new AcceptableValueRange<int>(0, 100)));
-        WindUpperChance = Config.Bind("Weather", "Heavy Wind Range", 75, new ConfigDescription("The game basically uses a 100 sided dice to determine the weather. This is the lower end of the range of the dice roll. If it rolls less than this number, light rain.", new AcceptableValueRange<int>(0, 100)));
+        ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather On Phase Change", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
+        RandomWeatherChangeWhenExitingArea = Config.Bind("Weather", "Random Weather Change When Exiting Area", true, "When exiting a building/area, the weather will change to a random weather type instead of the previous weather.");
 
         //Game Mechanics
         ReverseGoldenFleeceDamageChange = Config.Bind("Game Mechanics", "Reverse Golden Fleece Change", true, "Reverts the default damage increase to 10% instead of 5%.");
@@ -105,10 +106,15 @@ public partial class Plugin : BaseUnityPlugin
         BulkFollowerCommands = Config.Bind("Followers", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
         OnlyShowDissenters = Config.Bind("Followers", "Only Show Dissenters In Prison Menu", true, "Only show dissenting followers when interacting with the prison.");
         
-        if (SoftDepend.Enabled)
-        {
-            SoftDepend.AddSettingsMenus();
-        }
+        // if (SoftDepend.Enabled)
+        // {
+        //     SoftDepend.AddSettingsMenus();
+        //     Log.LogWarning("SoftDepend is enabled. You can configure mod settings in the settings menu.");
+        // }
+        // else
+        // {
+        //     Log.LogWarning("SoftDepend is disabled.");
+        // }
     }
 
 
