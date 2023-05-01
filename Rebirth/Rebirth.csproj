@@ -10,9 +10,6 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AdditionalFiles>
       <None Remove="assets\placeholder.png" />
-      <AdditionalFiles Include="assets\placeholder.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </AdditionalFiles>
       <None Update="assets\rebirth_item.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
