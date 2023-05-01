@@ -10,8 +10,8 @@ namespace Rebirth
     {
         public override string InternalName => "REBIRTH_COMMAND";
 
-        public override Sprite CommandIcon { get; } =
-            TextureHelper.CreateSpriteFromPath(Path.Combine(Plugin.PluginPath, "assets", "rebirth_command.png"));
+        public override Sprite CommandIcon => TextureHelper.CreateSpriteFromPath(Path.Combine(Plugin.PluginPath, "assets", "rebirth_command.png"));
+
 
         public override string GetTitle(Follower follower)
         {
