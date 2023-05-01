@@ -1,9 +1,12 @@
 using BepInEx.Configuration;
+using Lamb.UI.MainMenu;
 
 namespace CultOfQoL;
 
 public partial class Plugin
 {
+    internal static ConfigEntry<bool> DisableAd = null!;
+    
     internal static ConfigEntry<bool> SkipDevIntros = null!;
     internal static ConfigEntry<bool> SkipCrownVideo = null!;
     internal static ConfigEntry<bool> EasyFishing = null!;
@@ -46,11 +49,8 @@ public partial class Plugin
 
     internal static ConfigEntry<bool> GiveFollowersNewNecklaces = null!;
 
-    internal static ConfigEntry<bool> MoreDynamicWeather = null!;
-    internal static ConfigEntry<int> RainLowerChance = null!;
-    internal static ConfigEntry<int> RainUpperChance = null!;
-    internal static ConfigEntry<int> WindLowerChance = null!;
-    internal static ConfigEntry<int> WindUpperChance = null!;
+
+    public static ConfigEntry<bool> RandomWeatherChangeWhenExitingArea = null!;
     internal static ConfigEntry<bool> ChangeWeatherOnPhaseChange = null!;
     internal static ConfigEntry<bool> ShowPhaseNotifications = null!;
     internal static ConfigEntry<bool> ShowWeatherChangeNotifications = null!;
@@ -65,6 +65,11 @@ public partial class Plugin
 
     public static ConfigEntry<float> CustomDamageMulti = null!;
 
+    
+    public static ConfigEntry<bool> RemoveHelpButtonInPauseMenu = null!;
+    public static ConfigEntry<bool> RemoveTwitchButtonInPauseMenu  = null!;
+    public static ConfigEntry<bool> RemovePhotoModeButtonInPauseMenu = null!;
+    
     public static ConfigEntry<bool> EnableRunSpeedMulti = null!;
     public static ConfigEntry<bool> EnableDodgeSpeedMulti = null!;
     public static ConfigEntry<bool> EnableLungeSpeedMulti = null!;
@@ -83,5 +88,5 @@ public partial class Plugin
 
     public static WriteOnce<float> RunSpeed { get; } = new();
     public static WriteOnce<float> DodgeSpeed { get; } = new();
-
+    public static UIMainMenuController UIMainMenuController = null!;
 }
