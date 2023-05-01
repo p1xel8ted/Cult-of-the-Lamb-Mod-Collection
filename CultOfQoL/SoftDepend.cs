@@ -14,15 +14,8 @@ public static class SoftDepend
         get
         {
             if (_enabled != null) return (bool) _enabled;
-            var plugin = BepInEx.Bootstrap.Chainloader.PluginInfos.FirstOrDefault(a => a.Value.Metadata.GUID == "io.github.xhayper.COTL_API").Value;
-            if (plugin != null && plugin.Metadata.Version >= new Version(0, 1, 12))
-            {
-                _enabled = true;
-            }
-            else
-            {
-                _enabled = false;
-            }
+            var plugin = BepInEx.Bootstrap.Chainloader.PluginInfos.FirstOrDefault(a => a.Value.Metadata.GUID.Contains("COTL_API")).Value;
+            _enabled = plugin != null;
 
             return (bool) _enabled;
         }
@@ -57,12 +50,15 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Extra Menu Buttons", Plugin.RemoveMenuClutter);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Twitch Buttons", Plugin.RemoveTwitchButton);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Unlock Twitch Stuff", Plugin.UnlockTwitchStuff);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "More Dynamic Weather", Plugin.MoreDynamicWeather);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Ad", Plugin.DisableAd);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Help Button In Pause Menu", Plugin.RemoveHelpButtonInPauseMenu);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Twitch Button In Pause Menu", Plugin.RemoveTwitchButtonInPauseMenu);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Photo Button In Pause Menu", Plugin.RemovePhotoModeButtonInPauseMenu);
+        
+        
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Change Weather During The Day", Plugin.ChangeWeatherOnPhaseChange);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Light Rain Range", Plugin.RainLowerChance, 1, MMSlider.ValueDisplayFormat.RawValue);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Heavy Rain Range", Plugin.RainUpperChance, 1, MMSlider.ValueDisplayFormat.RawValue);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Light Wind Range", Plugin.WindLowerChance, 1, MMSlider.ValueDisplayFormat.RawValue);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Light Wind Range", Plugin.WindUpperChance, 1, MMSlider.ValueDisplayFormat.RawValue);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Randomize Weather On Exit Area", Plugin.RandomWeatherChangeWhenExitingArea);
+
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Golden Fleece", "Reverse Golden Fleece Change", Plugin.ReverseGoldenFleeceDamageChange);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Golden Fleece", "Increase Golden Fleece Rate", Plugin.IncreaseGoldenFleeceDamageRate);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Golden Fleece", "Use Custom Damage Value", Plugin.UseCustomDamageValue);
