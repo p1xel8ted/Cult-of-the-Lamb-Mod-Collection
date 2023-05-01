@@ -11,6 +11,9 @@
       <Reference Include="COTL_API">
         <HintPath>..\..\..\..\..\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
       </Reference>
+      <Reference Include="DOTween">
+        <HintPath>..\libs\DOTween.dll</HintPath>
+      </Reference>
       <Reference Include="FMODUnity">
         <HintPath>..\libs\FMODUnity.dll</HintPath>
       </Reference>
