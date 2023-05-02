@@ -4,6 +4,20 @@
 
 ## Changelog
 
+## Changelog
+
+## 2.0.7 - 02/05/2023
+
+* Added - Remove New Game button when you have at least one save game.
+* Added - Enable Save on exit when quitting. UI is modified to reflect this.
+* Added - Quick save keybind to save whenever you want.
+* Added - Few developer orientated changes to reduce junk log spam from the game.
+* Added - Disable the new ads and developer/publisher logos on the main menu.
+* Added - Customizable UI scale.
+* Changed - Adjustments to the mass-bless/bribe etc. Still a little wonky, but better than before.
+* Changed - Reworked weather mod to work with the new weather system in game.
+* Changed - Support for modifying settings in game via the mod menu if have the API installed.
+
 ## 2.0.6 - 13/11/2022
 
 * Fixed issue that was causing the New Game button to vanish...

@@ -3,18 +3,18 @@
 # Cult of QoL - A Collection
 
 * Removes intros.
-* Cheese the fishing mini-game. (No need to press anything apart from the initial cast). The reeling UI is also hidden.
-* Remove extra buttons from menus (Discord, bug report, Twitch etc.)
+* Cheese the fishing mini-game. (No need to press anything apart from the initial cast). The reeling UI is also hidden. Compatible with Auto-Fish accessability settings.
+* Remove extra buttons from main menu and pause menus. (Discord, bug report, Twitch etc.)
 * Collect tithes/inspire all at once (unless they're in prison, sleeping, using the bathroom or dissenting.)
 * Reverse the damage change to the golden fleece introduced in 1.0.13.
 * Double the rate the damage increases with the golden fleece.
 * Halves (where possible) the cost of refining goods. Gets rounded up. i.e. something that costs 3 originally ends up being 2. Something that costs 10, becomes 5.
 * Cure illness/exhaustion when a follower gains loyalty (the floaty white eyes thing).
-* Unlock pre-order DLC and Twitch items (Plushie building, drops)
-* You can now collect tithe from the oldies again. Brutal.
+* Unlock pre-order DLC and Twitch drops 1 to 7.
+* You can now collect tithe from the oldies.
 * Increase silo/fertilizer capacity to 32.
 * Increase collection speed from certain structures (shrines, beds, chest near main portal, windmill(?))
-* Turn off propaganda speakers of a night. Despite the flame being on, they don't use fuel. Working on the flame part.
+* Turn off propaganda speakers of a night.
 * Make the days longer. The default is 2x, and that already feels long.
 * Manipulate game speed, or halt it. Not to be confused with day length, this makes EVERYTHING faster.). Left/Right arrow keys to change, default speed is the up key.
 * Disable game over mechanic.
@@ -25,12 +25,20 @@
 * Make lumber/mine/farm/refinery chests auto loot when nearby (like the chest near the main portal).
 * Swap out follower necklaces.
 * Receive notification when structures that use fuel run out.
-* Slightly more "dynamic" weather.
 * Modify run, dodge, and lunge speed.
 * Modify base damage dealt.
 * Receive notification when a bed has collapsed.
 * Skip recieve crown video.
 * Mass collect resources from select structures. WIP*
+* Remove New Game button when you have at least one save game.
+* Enable Save on exit when quitting. UI is modified to reflect this.
+* Quick save keybind to save whenever you want.
+* Reworked weather mod to work with the new weather system in game.
+* Few developer orientated changes to reduce junk log spam from the game.
+* Disable the new ads and developer/publisher logos on the main menu.
+* Customizable UI scale.
+* Adjustments to the mass-bless/bribe etc. Still a little wonky, but better than before.
+* Support for modifying settings in game via the mod menu if have the API installed.
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -41,7 +49,7 @@ Each mod can be enabled/disabled individually from within the config. There migh
 ## Installation
 
 * Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)
-* Place the plugin DLL (CultOfTheLambMods.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
+* Place the plugin DLL (CultOfQoL.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
 
 ## Configuration
 
@@ -63,6 +71,18 @@ Feel free to reach out to me on the channel below.
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 
 ## Changelog
+
+## 2.0.7 - 02/05/2023
+
+* Added - Remove New Game button when you have at least one save game.
+* Added - Enable Save on exit when quitting. UI is modified to reflect this.
+* Added - Quick save keybind to save whenever you want.
+* Added - Few developer orientated changes to reduce junk log spam from the game.
+* Added - Disable the new ads and developer/publisher logos on the main menu.
+* Added - Customizable UI scale.
+* Changed - Adjustments to the mass-bless/bribe etc. Still a little wonky, but better than before.
+* Changed - Reworked weather mod to work with the new weather system in game.
+* Changed - Support for modifying settings in game via the mod menu if have the API installed.
 
 ## 2.0.6 - 13/11/2022
 
