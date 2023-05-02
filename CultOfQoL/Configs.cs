@@ -5,8 +5,14 @@ namespace CultOfQoL;
 
 public partial class Plugin
 {
+    internal static ConfigEntry<bool> EnableQuickSaveShortcut = null!;
+    internal static ConfigEntry<KeyboardShortcut> SaveKeyboardShortcut = null!;
+
     internal static ConfigEntry<bool> DisableAd = null!;
-    
+    internal static ConfigEntry<bool> HideNewGameButtons = null!;
+    internal static ConfigEntry<bool> EnableCustomUiScale = null!;
+    internal static ConfigEntry<int> CustomUiScale = null!;
+
     internal static ConfigEntry<bool> SkipDevIntros = null!;
     internal static ConfigEntry<bool> SkipCrownVideo = null!;
     internal static ConfigEntry<bool> EasyFishing = null!;
