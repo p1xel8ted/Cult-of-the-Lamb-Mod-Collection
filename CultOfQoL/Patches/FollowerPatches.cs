@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Lamb.UI;
 using Lamb.UI.FollowerInteractionWheel;
 
 namespace CultOfQoL.Patches;
@@ -57,16 +58,25 @@ public static class FollowerPatches
                 follower.Brain.ContinueToNextTask();
             }, false));
         }
+        follower.Interaction_FollowerInteraction.Close(false, true, false);
     }
 
     [HarmonyWrapSafe]
-    [HarmonyPostfix]
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnFollowerCommandFinalized), typeof(FollowerCommands[]))]
-    public static void interaction_FollowerInteraction_OnFollowerCommandFinalized(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
+    public static bool interaction_FollowerInteraction_OnFollowerCommandFinalized(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
     {
-        if (!Plugin.BulkFollowerCommands.Value) return;
+        if (!Plugin.BulkFollowerCommands.Value) return true;
+
+        if (followerCommands[0] is not (FollowerCommands.ExtortMoney or FollowerCommands.Bribe or FollowerCommands.Dance
+            or FollowerCommands.Intimidate or FollowerCommands.Bless))
+        {
+            return true;
+        }
+         
 
         if (followerCommands[0] == FollowerCommands.ExtortMoney)
+        {
             foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
             {
                 switch (follower.Brain.CurrentTask)
@@ -81,8 +91,10 @@ public static class FollowerPatches
                         __instance.StartCoroutine(Extort.ExtortMoneyRoutine(follower, __instance));
                         break;
                 }
+               // follower.Interaction_FollowerInteraction.Close(false,true,false);
             }
 
+        }
 
         if (followerCommands[0] == FollowerCommands.Dance)
         {
@@ -100,6 +112,7 @@ public static class FollowerPatches
                         __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Dance));
                         break;
                 }
+              //  follower.Interaction_FollowerInteraction.Close(false,true,false);
             }
         }
 
@@ -154,11 +167,13 @@ public static class FollowerPatches
                     case FollowerTask_OnMissionary:
                         continue;
                     default:
-                        __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Bribe));
-                        break;
+                       __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Bribe));
+                       break;
                 }
             }
         }
+        __instance.Close(false,true,false);
+        return false;
     }
 
 
