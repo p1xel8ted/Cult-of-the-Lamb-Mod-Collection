@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
+using BepInEx.Configuration;
 using COTL_API.CustomSettings;
+using COTL_API.CustomSettings.Elements;
 using Lamb.UI;
+using UnityEngine;
 
 namespace CultOfQoL;
 
@@ -55,7 +58,19 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Twitch Button In Pause Menu", Plugin.RemoveTwitchButtonInPauseMenu);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Photo Button In Pause Menu", Plugin.RemovePhotoModeButtonInPauseMenu);
         
-        
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save","Hide New Game Button(s)", Plugin.HideNewGameButtons);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save","Enable Quick Save Shortcut", Plugin.EnableQuickSaveShortcut);
+        CustomSettingsManager.AddDropdown("Cult of QoL - Save", "Quick Save Key", Plugin.SaveKeyboardShortcut.Value.MainKey.ToString(), Enum.GetNames(typeof(KeyCode)),
+            delegate(int i)
+            {
+                var keyCodes = Enum.GetValues(typeof(KeyCode));
+              Plugin.SaveKeyboardShortcut.Value = new KeyboardShortcut((KeyCode)keyCodes.GetValue(i)); 
+            });
+            
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Scale","Enable Custom UI Scale", Plugin.EnableCustomUiScale);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Scale", "Custom UI Scale Value", Plugin.CustomUiScale, 1,
+            MMSlider.ValueDisplayFormat.RawValue);
+
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Change Weather During The Day", Plugin.ChangeWeatherOnPhaseChange);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Weather", "Randomize Weather On Exit Area", Plugin.RandomWeatherChangeWhenExitingArea);
 
@@ -68,25 +83,13 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Game Mechanics", "Disable Fishing Mini-Game", Plugin.EasyFishing);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Game Mechanics", "No More Game-Over", Plugin.DisableGameOver);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Game Mechanics", "3x Tarot Luck", Plugin.ThriceMultiplyTarotCardLuck);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Infinite Lumber & Mining Stations", Plugin.LumberAndMiningStationsDontAge, b =>
-        {
-            if (!b) return;
-            Plugin.DoubleLifespanInstead.Value = false;
-            Plugin.FiftyPercentIncreaseToLifespanInstead.Value = false;
-        });
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Double Life Span Instead", Plugin.DoubleLifespanInstead, b =>
-        {
-            if (!b) return;
-            Plugin.LumberAndMiningStationsDontAge.Value = false;
-            Plugin.FiftyPercentIncreaseToLifespanInstead.Value = false;
-        });
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Add 50% to Life Span Instead", Plugin.FiftyPercentIncreaseToLifespanInstead, b =>
-        {
-            if (!b) return;
-            Plugin.DoubleLifespanInstead.Value = false;
-            Plugin.LumberAndMiningStationsDontAge.Value = false;
-        });
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.TurnOffSpeakersAtNight.Definition.Key, Plugin.TurnOffSpeakersAtNight);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Infinite Lumber & Mining Stations",
+            Plugin.LumberAndMiningStationsDontAge);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Double Life Span Instead",
+            Plugin.DoubleLifespanInstead);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Add 50% to Life Span Instead",
+            Plugin.FiftyPercentIncreaseToLifespanInstead);
+            CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.TurnOffSpeakersAtNight.Definition.Key, Plugin.TurnOffSpeakersAtNight);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.DisablePropagandaSpeakerAudio.Definition.Key, Plugin.DisablePropagandaSpeakerAudio);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Speed", Plugin.EnableGameSpeedManipulation.Definition.Key, Plugin.EnableGameSpeedManipulation);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Speed", Plugin.ShortenGameSpeedIncrements.Definition.Key, Plugin.ShortenGameSpeedIncrements);
