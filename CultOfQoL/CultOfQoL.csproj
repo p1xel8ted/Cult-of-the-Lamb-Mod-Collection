@@ -17,8 +17,17 @@
       <Reference Include="FMODUnity">
         <HintPath>..\libs\FMODUnity.dll</HintPath>
       </Reference>
+      <Reference Include="Rewired_Core">
+        <HintPath>..\libs\Rewired_Core.dll</HintPath>
+      </Reference>
+      <Reference Include="Rewired_Windows">
+        <HintPath>..\libs\Rewired_Windows.dll</HintPath>
+      </Reference>
       <Reference Include="spine-unity">
         <HintPath>..\libs\spine-unity.dll</HintPath>
+      </Reference>
+      <Reference Include="Unity.TextMeshPro">
+        <HintPath>..\libs\Unity.TextMeshPro.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\libs\UnityEngine.dll</HintPath>
