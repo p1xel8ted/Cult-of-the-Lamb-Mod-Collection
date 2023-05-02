@@ -10,7 +10,6 @@ namespace CultOfQoL.Patches;
 public static class FishingPatches
 {
     [HarmonyTranspiler]
-    [HarmonyDebug]
     [HarmonyPatch(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.SetState))]
     public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
     {
