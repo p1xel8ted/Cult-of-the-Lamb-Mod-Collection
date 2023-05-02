@@ -34,7 +34,6 @@ public static class Bless
             if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
             {
                 instance.follower = follower;
-              
                 follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
             }
         });
