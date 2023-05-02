@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using HarmonyLib;
 using Lamb.UI.MainMenu;
 using Lamb.UI.PauseMenu;
@@ -16,7 +17,7 @@ public static class MenuCleanupPatches
         if (!Plugin.RemoveMenuClutter.Value) return;
         __instance._creditsButton.gameObject.SetActive(false);
         __instance._roadmapButton.gameObject.SetActive(false);
-       
+
     }
     
     [HarmonyPostfix]
@@ -55,16 +56,12 @@ public static class MenuCleanupPatches
     
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MenuAdController), nameof(MenuAdController.Start))]
-    //[HarmonyPatch(typeof(MenuAdController), nameof(MenuAdController.Update))]
     public static void MenuAdController_Start(ref MenuAdController __instance)
     {
         var one = GameObject.Find("Main Menu Controller/Main Menu/MainMenuContainer/Right/Ad/Outline");
         var two = GameObject.Find("Main Menu Controller/Main Menu/MainMenuContainer/Right/Ad/Transform");
         one.SetActive(false);
         two.SetActive(false);
-        // __instance.ads.Clear();
-        // __instance.nonRemoteAds.Clear();
-        // __instance._bannerObj = null;
         __instance.gameObject.SetActive(false);
     }
 
