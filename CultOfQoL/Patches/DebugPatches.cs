@@ -1,4 +1,8 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using Debugger = DG.Tweening.Core.Debugger;
 
@@ -16,11 +20,23 @@ public static class DebugPatches
         return false;
     }
     
+    //removes "tween is invalid" log spam
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Debugger), nameof(Debugger.LogInvalidTween))]
     public static bool Debugger_LogInvalidTween()
     {
         return false;
     }
-
+    
+    //removes "steam informs us controller is null" log spam
+    [HarmonyTranspiler]
+    [HarmonyPatch(typeof(ControlUtilities), nameof(ControlUtilities.GetCurrentInputType))]
+    public static IEnumerable<CodeInstruction> ControlUtilities_GetCurrentInputType(IEnumerable<CodeInstruction> instructions,
+        MethodBase originalMethod)
+    {
+        var codes = new List<CodeInstruction>(instructions);
+        codes.RemoveRange(44,7);
+        return codes.AsEnumerable();
+    }
+    
 }
