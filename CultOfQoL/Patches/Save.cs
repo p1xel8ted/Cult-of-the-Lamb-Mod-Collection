@@ -1,4 +1,5 @@
 using System.Linq;
+using BepInEx;
 using HarmonyLib;
 using Lamb.UI;
 using Lamb.UI.MainMenu;
@@ -30,6 +31,9 @@ public static class Save
     [HarmonyPatch(typeof(UIMenuConfirmationWindow), nameof(UIMenuConfirmationWindow.OnShowStarted))]
     public static void UIMenuConfirmationWindow_Show(ref UIMenuConfirmationWindow __instance)
     {
+        Plugin.Log.LogWarning($"Header: {__instance._headerText.text}, Body: {__instance._bodyText.text}");
+      
+        if (!Plugin.SaveOnQuit.Value) return;
         if (!SaveAndLoad.Loaded) return;
         __instance._headerText.text = "Save & Quit";
         __instance._bodyText.text = "Are you sure you want to quit? Your progress will be saved.";
