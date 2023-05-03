@@ -7,6 +7,7 @@ public partial class Plugin
 {
     internal static ConfigEntry<bool> EnableQuickSaveShortcut = null!;
     internal static ConfigEntry<KeyboardShortcut> SaveKeyboardShortcut = null!;
+    internal static ConfigEntry<bool> SaveOnQuit = null!;
 
     internal static ConfigEntry<bool> DisableAd = null!;
     internal static ConfigEntry<bool> HideNewGameButtons = null!;
