@@ -4,7 +4,10 @@
 
 ## Changelog
 
-## Changelog
+## 2.0.8 - 04/05/2023
+
+* Fixed the UI scale modifications defaulting to on and at such a small value you the UI appears gone.
+* Added the missing option to disable save on exit.
 
 ## 2.0.7 - 02/05/2023
 
