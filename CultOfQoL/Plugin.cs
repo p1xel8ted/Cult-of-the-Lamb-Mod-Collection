@@ -14,7 +14,7 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.7";
+    private const string PluginVer = "2.0.8";
 
     internal static ManualLogSource Log = null!;
     internal static readonly Harmony Harmony = new(PluginGuid);
@@ -45,18 +45,19 @@ public partial class Plugin : BaseUnityPlugin
         RemoveMenuClutter = Config.Bind("General", "Remove Extra Menu Buttons", true, "Removes credits/road-map/discord buttons from the menus.");
         RemoveTwitchButton = Config.Bind("General", "Remove Twitch Buttons", true, "Removes twitch buttons from the menus.");
         UnlockTwitchStuff = Config.Bind("General", "Unlock Twitch Stuff", true, "Unlock pre-order DLC, Twitch plush, and three drops.");
-        DisableAd = Config.Bind("General", "Disable Ad", true, "Disables the new ad 'feature'.");
+        DisableAd = Config.Bind("General", "Disable Ads", true, "Disables the new ad 'feature'.");
         RemoveHelpButtonInPauseMenu = Config.Bind("General", "Remove Help Button In Pause Menu", true, "Removes the help button in the pause menu.");
         RemoveTwitchButtonInPauseMenu = Config.Bind("General", "Remove Twitch Button In Pause Menu", true, "Removes the twitch button in the pause menu.");
         RemovePhotoModeButtonInPauseMenu = Config.Bind("General", "Remove Photo Mode Button In Pause Menu", true, "Removes the photo mode button in the pause menu.");
 
         //Save
+        SaveOnQuit = Config.Bind("Save", "Save On Quit", true, "Modify the exit game menu to save the game when you quit.");
         HideNewGameButtons = Config.Bind("Save", "Hide New Game Button (s)", true, "Hides the new game button if you have at least one save game.");
         EnableQuickSaveShortcut = Config.Bind("Save", "Enable Quick Save Shortcut", true, "Enable/disable the quick save keyboard shortcut.");
         SaveKeyboardShortcut = Config.Bind("Save", "Save Keyboard Shortcut", new KeyboardShortcut(KeyCode.F5), "The keyboard shortcut to save the game.");
         
         //Scale
-        EnableCustomUiScale = Config.Bind("Scale", "Enable Custom UI Scale", true, "Enable/disable the custom UI scale.");
+        EnableCustomUiScale = Config.Bind("Scale", "Enable Custom UI Scale", false, "Enable/disable the custom UI scale.");
         EnableCustomUiScale.SettingChanged += (sender, args) =>
         {
             if (EnableCustomUiScale.Value)
@@ -69,7 +70,7 @@ public partial class Plugin : BaseUnityPlugin
             }
         };
         
-        CustomUiScale = Config.Bind("Scale", "Custom UI Scale", 1, new ConfigDescription("The custom UI scale to use.", new AcceptableValueRange<int>(1, 101)));
+        CustomUiScale = Config.Bind("Scale", "Custom UI Scale", 50, new ConfigDescription("The custom UI scale to use.", new AcceptableValueRange<int>(1, 101)));
         CustomUiScale.SettingChanged += (sender, args) =>
         {
             Scales.UpdateScale();
