@@ -1,7 +1,5 @@
 using System.Linq;
-using BepInEx;
 using HarmonyLib;
-using Lamb.UI;
 using Lamb.UI.MainMenu;
 using src.UI;
 using UnityEngine;
@@ -31,8 +29,7 @@ public static class Save
     [HarmonyPatch(typeof(UIMenuConfirmationWindow), nameof(UIMenuConfirmationWindow.OnShowStarted))]
     public static void UIMenuConfirmationWindow_Show(ref UIMenuConfirmationWindow __instance)
     {
-        Plugin.Log.LogWarning($"Header: {__instance._headerText.text}, Body: {__instance._bodyText.text}");
-      
+        if (PhotoModeManager.PhotoModeActive) return;
         if (!Plugin.SaveOnQuit.Value) return;
         if (!SaveAndLoad.Loaded) return;
         __instance._headerText.text = "Save & Quit";
