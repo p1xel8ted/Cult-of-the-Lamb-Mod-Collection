@@ -14,7 +14,7 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.8";
+    private const string PluginVer = "2.0.8.1";
 
     internal static ManualLogSource Log = null!;
     internal static readonly Harmony Harmony = new(PluginGuid);
