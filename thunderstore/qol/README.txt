@@ -4,6 +4,10 @@
 
 ## Changelog
 
+## 2.0.8.1 - 04/05/2023
+
+* Fixed the save and exit menu appearing when deleting a photo in photo mode.
+
 ## 2.0.8 - 04/05/2023
 
 * Fixed the UI scale modifications defaulting to on and at such a small value you the UI appears gone.
