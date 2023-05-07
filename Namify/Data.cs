@@ -92,7 +92,6 @@ public static class Data
                     foreach (var name in nameText)
                     {
                         Names.AddRange(name.Split());
-                        Plugin.Log.LogWarning($"Backup Name: {name}");
                     }
 
                     SaveData();

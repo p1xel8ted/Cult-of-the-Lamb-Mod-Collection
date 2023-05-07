@@ -1,8 +1,16 @@
+* [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
+* [My Discord](https://discord.gg/39h4MJDDUT)
+
 ## Known Issues
 
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 
 ## Changelog
+
+## 2.0.9 - 07/05/2023
+
+* Added option to auto-load into a specified save game on menu load. Default is slot 1 (slot 0 starts a new game).
+* Cleaned up unnecessary logging.
 
 ## 2.0.8.1 - 04/05/2023
 
