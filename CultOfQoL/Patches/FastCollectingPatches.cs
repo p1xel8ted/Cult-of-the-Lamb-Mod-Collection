@@ -113,7 +113,7 @@ public static class FastCollectingPatches
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].opcode == OpCodes.Newobj && codes[i + 1].OperandIs(AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
                 {
-                    Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found WaitForSeconds at {i}");
+                    //Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found WaitForSeconds at {i}");
                     codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f;
                 }
 
@@ -141,7 +141,7 @@ public static class FastCollectingPatches
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].StoresField(delayField))
                 {
-                    Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
+                    //Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
                     codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f;
                 }
             }
@@ -171,7 +171,7 @@ public static class FastCollectingPatches
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].StoresField(delayField))
                 {
-                    Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
+                    //Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
                     codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Outhouse") ? 0.025f : 0f;
                 }
             }

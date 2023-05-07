@@ -1,4 +1,7 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using CultOfQoL.Patches;
@@ -14,11 +17,11 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.8.1";
+    private const string PluginVer = "2.0.9";
 
     internal static ManualLogSource Log = null!;
     internal static readonly Harmony Harmony = new(PluginGuid);
-    
+
     internal static CanvasScaler? GameCanvasScaler { get; set; }
     internal static CanvasScaler? DungeonCanvasScaler { get; set; }
 
@@ -28,7 +31,7 @@ public partial class Plugin : BaseUnityPlugin
         BepInEx.Logging.Logger.Sources.Add(Log);
 
         ModEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
-        
+
         //Player
         EnableBaseDamageMultiplier = Config.Bind("Player", "Enable Base Damage Multiplier", false, "Enable/disable the base damage multiplier.");
         BaseDamageMultiplier = Config.Bind("Player", "Base Damage Multiplier", 1.5f, new ConfigDescription("The base damage multiplier.", new AcceptableValueRange<float>(0, 100)));
@@ -38,7 +41,7 @@ public partial class Plugin : BaseUnityPlugin
         DodgeSpeedMulti = Config.Bind("Player", "Dodge Speed Multiplier", 1.5f, new ConfigDescription("How much faster the player dodges.", new AcceptableValueRange<float>(0, 100)));
         EnableLungeSpeedMulti = Config.Bind("Player", "Enable Lunge Speed Multiplier", true, "Enable/disable the lunge speed multiplier.");
         LungeSpeedMulti = Config.Bind("Player", "Lunge Speed Multiplier", 1.5f, new ConfigDescription("How much faster the player lunges.", new AcceptableValueRange<float>(0, 100)));
-        
+
         //General
         SkipDevIntros = Config.Bind("General", "Skip Intros", true, "Skip splash screens.");
         SkipCrownVideo = Config.Bind("General", "Skip Crown Video", true, "Skips the video when the lamb gets given the crown.");
@@ -55,7 +58,17 @@ public partial class Plugin : BaseUnityPlugin
         HideNewGameButtons = Config.Bind("Save", "Hide New Game Button (s)", true, "Hides the new game button if you have at least one save game.");
         EnableQuickSaveShortcut = Config.Bind("Save", "Enable Quick Save Shortcut", true, "Enable/disable the quick save keyboard shortcut.");
         SaveKeyboardShortcut = Config.Bind("Save", "Save Keyboard Shortcut", new KeyboardShortcut(KeyCode.F5), "The keyboard shortcut to save the game.");
-        
+        DirectLoadSave = Config.Bind("Save", "Direct Load Save", true, "Directly load the specified save game instead of showing the save menu.");
+        SaveSlotToLoad = Config.Bind("Save", "Save Slot To Load", 1, new ConfigDescription("The save slot to load.", new AcceptableValueList<int>(1, 2, 3)));
+        SaveSlotToLoad.SettingChanged += (sender, args) =>
+        {
+            if (!SaveAndLoad.SaveExist(SaveSlotToLoad.Value))
+            {
+                Log.LogInfo($"The slot you have select doesn't contain a save game.");
+                return;
+            }
+            Log.LogInfo($"Save slot to load changed to {SaveSlotToLoad.Value}");
+        };
         //Scale
         EnableCustomUiScale = Config.Bind("Scale", "Enable Custom UI Scale", false, "Enable/disable the custom UI scale.");
         EnableCustomUiScale.SettingChanged += (sender, args) =>
@@ -69,13 +82,10 @@ public partial class Plugin : BaseUnityPlugin
                 Scales.RestoreScale();
             }
         };
-        
+
         CustomUiScale = Config.Bind("Scale", "Custom UI Scale", 50, new ConfigDescription("The custom UI scale to use.", new AcceptableValueRange<int>(1, 101)));
-        CustomUiScale.SettingChanged += (sender, args) =>
-        {
-            Scales.UpdateScale();
-        };
-        
+        CustomUiScale.SettingChanged += (sender, args) => { Scales.UpdateScale(); };
+
         //Weather
         ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather On Phase Change", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
         RandomWeatherChangeWhenExitingArea = Config.Bind("Weather", "Random Weather Change When Exiting Area", true, "When exiting a building/area, the weather will change to a random weather type instead of the previous weather.");
@@ -99,7 +109,7 @@ public partial class Plugin : BaseUnityPlugin
             DoubleLifespanInstead.Value = false;
             FiftyPercentIncreaseToLifespanInstead.Value = false;
         };
-        
+
         DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", false, "Doubles the life span of lumber/mining stations. Takes 2nd priority.");
         DoubleLifespanInstead.SettingChanged += (sender, args) =>
         {
@@ -107,7 +117,7 @@ public partial class Plugin : BaseUnityPlugin
             LumberAndMiningStationsDontAge.Value = false;
             FiftyPercentIncreaseToLifespanInstead.Value = false;
         };
-        
+
         FiftyPercentIncreaseToLifespanInstead = Config.Bind("Lumber/Mine Mods", "Add 50% to Life Span Instead", true, "For when double is too long for your tastes. This will extend their life by 50% instead of 100%. Takes 3rd priority.");
         FiftyPercentIncreaseToLifespanInstead.SettingChanged += (sender, args) =>
         {
@@ -115,8 +125,8 @@ public partial class Plugin : BaseUnityPlugin
             LumberAndMiningStationsDontAge.Value = false;
             DoubleLifespanInstead.Value = false;
         };
-        
-        
+
+
         //Propaganda
         TurnOffSpeakersAtNight = Config.Bind("Propaganda Mods", "Turn Off Speakers At Night", true, "Turns the speakers off, and stops fuel consumption at night time.");
         DisablePropagandaSpeakerAudio = Config.Bind("Propaganda Mods", "Disable Propaganda Speaker Audio", true, "Disables the audio from propaganda speakers.");
@@ -149,7 +159,7 @@ public partial class Plugin : BaseUnityPlugin
         NotifyOfBedCollapse = Config.Bind("Notifications", "Notify of Bed Collapse", true, "Display a notification when a bed has collapsed.");
         ShowPhaseNotifications = Config.Bind("Notifications", "Phase Notifications", true, "Show a notification when the time of day changes.");
         ShowWeatherChangeNotifications = Config.Bind("Notifications", "Weather Change Notifications", true, "Show a notification when the weather changes.");
-        
+
         //Followers
         GiveFollowersNewNecklaces = Config.Bind("Followers", "Give Followers New Necklaces", true, "Followers will be able to receive new necklaces, with the old one being returned to you.");
         CleanseIllnessAndExhaustionOnLevelUp = Config.Bind("Followers", "Cleanse Illness and Exhaustion", true, "When a follower 'levels up', if they are sick or exhausted, the status is cleansed.");
@@ -159,9 +169,14 @@ public partial class Plugin : BaseUnityPlugin
         OnlyShowDissenters = Config.Bind("Followers", "Only Show Dissenters In Prison Menu", true, "Only show dissenting followers when interacting with the prison.");
 
         if (!SoftDepend.Enabled) return;
-        
+
         SoftDepend.AddSettingsMenus();
-        Log.LogWarning("API detected - You can configure mod settings in the settings menu.");
+        Log.LogInfo("API detected - You can configure mod settings in the settings menu.");
+    }
+
+    private void SaveDropDown(ConfigEntryBase obj)
+    {
+        throw new NotImplementedException();
     }
 
 

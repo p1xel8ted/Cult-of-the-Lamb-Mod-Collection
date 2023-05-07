@@ -22,16 +22,12 @@ public static class Scales
     [HarmonyPatch(typeof(CanvasScaler), nameof(CanvasScaler.OnEnable))]
     public static void CanvasScaler_OnEnable(ref CanvasScaler __instance)
     {
-        Plugin.Log.LogInfo(
-            $"Canvas Scaler Enabled: {__instance.name}, Path: {Helpers.GetGameObjectPath(__instance.gameObject)}");
         if (__instance.name.Equals("Canvas") && Plugin.GameCanvasScaler == null)
         {
             _originalScaleFactor = __instance.scaleFactor;
             _originalReferenceResolutionX = __instance.referenceResolution.x;
             _originalReferenceResolutionY = __instance.referenceResolution.y;
             _originalScaleMode = __instance.uiScaleMode;
-
-            Plugin.Log.LogWarning($"Found GameCanvasScaler, Updating: {__instance.name}");
             Plugin.GameCanvasScaler = __instance;
         }
 
@@ -41,8 +37,7 @@ public static class Scales
             _dOriginalReferenceResolutionX = __instance.referenceResolution.x;
             _dOriginalReferenceResolutionY = __instance.referenceResolution.y;
             _dOriginalScaleMode = __instance.uiScaleMode;
-
-            Plugin.Log.LogWarning($"Found DungeonCanvasScaler, Updating: {__instance.name}");
+            
             Plugin.DungeonCanvasScaler = __instance;
         }
         
@@ -54,7 +49,6 @@ public static class Scales
         if (Plugin.EnableCustomUiScale.Value) return;
         if (Plugin.GameCanvasScaler != null)
         {
-            Plugin.Log.LogWarning($"Restoring GameCanvasScaler Scaler: {Plugin.GameCanvasScaler.name}");
             Plugin.GameCanvasScaler.referenceResolution =
                 new Vector2(_originalReferenceResolutionX, _originalReferenceResolutionY);
             Plugin.GameCanvasScaler.uiScaleMode = _originalScaleMode;
@@ -63,7 +57,6 @@ public static class Scales
 
         if (Plugin.DungeonCanvasScaler != null)
         {
-            Plugin.Log.LogWarning($"Restoring DungeonCanvasScaler Scaler: {Plugin.DungeonCanvasScaler.name}");
             Plugin.DungeonCanvasScaler.referenceResolution =
                 new Vector2(_dOriginalReferenceResolutionX, _dOriginalReferenceResolutionY);
             Plugin.DungeonCanvasScaler.uiScaleMode = _dOriginalScaleMode;

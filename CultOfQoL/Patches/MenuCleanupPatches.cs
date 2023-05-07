@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Lamb.UI.MainMenu;
 using Lamb.UI.PauseMenu;
 using UnityEngine;
@@ -14,12 +12,25 @@ public static class MenuCleanupPatches
     [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
     public static void MainMenu_Start(ref MainMenu __instance)
     {
-        if (!Plugin.RemoveMenuClutter.Value) return;
-        __instance._creditsButton.gameObject.SetActive(false);
-        __instance._roadmapButton.gameObject.SetActive(false);
+        if (Plugin.RemoveMenuClutter.Value)
+        {
+            __instance._creditsButton.gameObject.SetActive(false);
+            __instance._roadmapButton.gameObject.SetActive(false);
+        }
 
+        if (Plugin.DirectLoadSave.Value)
+        {
+            if (SaveAndLoad.SaveExist(Plugin.SaveSlotToLoad.Value))
+            {
+                Plugin.UIMainMenuController.LoadMenu.OnTryLoadSaveSlot(Plugin.SaveSlotToLoad.Value);
+            }
+            else
+            {
+                Plugin.Log.LogWarning("The slot you selected doesn't contain a save game, so direct load was aborted.");
+            }
+        }
     }
-    
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UIMainMenuController), nameof(UIMainMenuController.Awake))]
     public static void UIMainMenuController_Awake(ref UIMainMenuController __instance)
@@ -35,7 +46,7 @@ public static class MenuCleanupPatches
             }
         }
     }
-    
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.Awake))]
     public static void UIPauseMenuController_Awake(ref UIPauseMenuController __instance)
@@ -44,16 +55,18 @@ public static class MenuCleanupPatches
         {
             __instance._helpButton.gameObject.SetActive(false);
         }
+
         if (Plugin.RemovePhotoModeButtonInPauseMenu.Value)
         {
             __instance._photoModeButton.gameObject.SetActive(false);
         }
+
         if (Plugin.RemoveTwitchButtonInPauseMenu.Value)
         {
             __instance._twitchSettingsButton.gameObject.SetActive(false);
         }
     }
-    
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MenuAdController), nameof(MenuAdController.Start))]
     public static void MenuAdController_Start(ref MenuAdController __instance)

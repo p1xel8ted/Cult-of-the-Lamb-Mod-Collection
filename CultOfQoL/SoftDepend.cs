@@ -57,17 +57,20 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Help Button In Pause Menu", Plugin.RemoveHelpButtonInPauseMenu);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Twitch Button In Pause Menu", Plugin.RemoveTwitchButtonInPauseMenu);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - General", "Remove Photo Button In Pause Menu", Plugin.RemovePhotoModeButtonInPauseMenu);
-        
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save","Hide New Game Button(s)", Plugin.HideNewGameButtons);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save","Enable Quick Save Shortcut", Plugin.EnableQuickSaveShortcut);
+
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Direct Load Save", Plugin.DirectLoadSave);
+        CustomSettingsManager.AddDropdown("Cult of QoL - Save", "Save To Load", Plugin.SaveSlotToLoad.Value.ToString(), new[] {"1", "2", "3"}, delegate(int i) { Plugin.SaveSlotToLoad.Value = i + 1; });
+
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Hide New Game Button(s)", Plugin.HideNewGameButtons);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Enable Quick Save Shortcut", Plugin.EnableQuickSaveShortcut);
         CustomSettingsManager.AddDropdown("Cult of QoL - Save", "Quick Save Key", Plugin.SaveKeyboardShortcut.Value.MainKey.ToString(), Enum.GetNames(typeof(KeyCode)),
             delegate(int i)
             {
                 var keyCodes = Enum.GetValues(typeof(KeyCode));
-              Plugin.SaveKeyboardShortcut.Value = new KeyboardShortcut((KeyCode)keyCodes.GetValue(i)); 
+                Plugin.SaveKeyboardShortcut.Value = new KeyboardShortcut((KeyCode) keyCodes.GetValue(i));
             });
-            
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Scale","Enable Custom UI Scale", Plugin.EnableCustomUiScale);
+
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Scale", "Enable Custom UI Scale", Plugin.EnableCustomUiScale);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Scale", "Custom UI Scale Value", Plugin.CustomUiScale, 1,
             MMSlider.ValueDisplayFormat.RawValue);
 
@@ -89,7 +92,7 @@ public static class SoftDepend
             Plugin.DoubleLifespanInstead);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Lumber/Mine Mods", "Add 50% to Life Span Instead",
             Plugin.FiftyPercentIncreaseToLifespanInstead);
-            CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.TurnOffSpeakersAtNight.Definition.Key, Plugin.TurnOffSpeakersAtNight);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.TurnOffSpeakersAtNight.Definition.Key, Plugin.TurnOffSpeakersAtNight);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Propaganda", Plugin.DisablePropagandaSpeakerAudio.Definition.Key, Plugin.DisablePropagandaSpeakerAudio);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Speed", Plugin.EnableGameSpeedManipulation.Definition.Key, Plugin.EnableGameSpeedManipulation);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Speed", Plugin.ShortenGameSpeedIncrements.Definition.Key, Plugin.ShortenGameSpeedIncrements);

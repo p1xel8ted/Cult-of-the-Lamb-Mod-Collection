@@ -20,7 +20,7 @@ public static class FishingPatches
         {
             if (!codes[i].LoadsField(AccessTools.Field(typeof(UIFishingOverlayController), nameof(UIFishingOverlayController.reelingCanvasGroup)))) continue;
             if (codes[i + 2].opcode == OpCodes.Callvirt) continue;
-            Plugin.Log.LogWarning($"Found {nameof(UIFishingOverlayController.reelingCanvasGroup)} at {i}");
+           // Plugin.Log.LogWarning($"Found {nameof(UIFishingOverlayController.reelingCanvasGroup)} at {i}");
             codes[i + 1].operand = 0f;
             codes[i + 2].operand = 0f;
         }

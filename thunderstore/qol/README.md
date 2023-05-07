@@ -39,6 +39,7 @@
 * Customizable UI scale.
 * Adjustments to the mass-bless/bribe etc. Still a little wonky, but better than before.
 * Support for modifying settings in game via the mod menu if have the API installed.
+* Load straight into a specified save game after menu splash.
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -57,9 +58,10 @@ The configuration file is generated when you first run the game with the mod ena
 
 ## Issues, questions, etc.
 
-Feel free to reach out to me on the channel below.
+Feel free to reach out to me on the channel below or join me on my own Discord for a look at my non-COTL work.
 
 * [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
+* [My Discord](https://discord.gg/39h4MJDDUT)
 
 ## Contributors
 
@@ -71,6 +73,11 @@ Feel free to reach out to me on the channel below.
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 
 ## Changelog
+
+## 2.0.9 - 07/05/2023
+
+* Added option to auto-load into a specified save game on menu load. Default is slot 1 (slot 0 starts a new game).
+* Cleaned up unnecessary logging.
 
 ## 2.0.8.1 - 04/05/2023
 

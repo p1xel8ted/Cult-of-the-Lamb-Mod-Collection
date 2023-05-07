@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Lamb.UI.MainMenu;
 using MMTools;
 
 namespace CultOfQoL.Patches;
@@ -17,10 +18,10 @@ public static class SkipIntros
         DataManager.Instance.HadInitialDeathCatConversation = true;
         return false;
     }
-
-    [HarmonyPatch(typeof(LoadMainMenu), nameof(LoadMainMenu.Start))]
+    
     [HarmonyPrefix]
-    public static bool Prefix()
+    [HarmonyPatch(typeof(LoadMainMenu), nameof(LoadMainMenu.Start))]
+    public static bool LoadMainMenu_Start()
     {
         if (AlreadyRun) return true;
         if (!Plugin.SkipDevIntros.Value) return true;
