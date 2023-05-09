@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using CultOfQoL.Patches;
@@ -17,7 +14,7 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.0.9";
+    private const string PluginVer = "2.1.0";
 
     internal static ManualLogSource Log = null!;
     internal static readonly Harmony Harmony = new(PluginGuid);
