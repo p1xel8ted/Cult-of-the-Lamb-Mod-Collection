@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>2.0.9</Version>
+        <Version>2.1.0</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
     </PropertyGroup>
@@ -11,17 +11,8 @@
       <Reference Include="COTL_API">
         <HintPath>..\..\..\..\..\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
       </Reference>
-      <Reference Include="DOTween">
-        <HintPath>..\libs\DOTween.dll</HintPath>
-      </Reference>
       <Reference Include="FMODUnity">
         <HintPath>..\libs\FMODUnity.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Core">
-        <HintPath>..\libs\Rewired_Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Windows">
-        <HintPath>..\libs\Rewired_Windows.dll</HintPath>
       </Reference>
       <Reference Include="spine-unity">
         <HintPath>..\libs\spine-unity.dll</HintPath>
@@ -31,9 +22,6 @@
       </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\libs\UnityEngine.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AnimationModule">
-        <HintPath>..\libs\UnityEngine.AnimationModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>..\libs\UnityEngine.CoreModule.dll</HintPath>
