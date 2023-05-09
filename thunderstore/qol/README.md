@@ -45,7 +45,16 @@ Each mod can be enabled/disabled individually from within the config. There migh
 
 ## Donate
 
+If you enjoy the mod, please consider a donating [here](https://ko-fi.com/p1xel8ted) or using the Buy Me a Coffee button below. Alternativly, hit that thumbs up button!
+
 [![KoFiLogo](https://raw.githubusercontent.com/p1xel8ted/GYK-Mods-QMod/main/kofi-nexus-smaller.png)](https://ko-fi.com/p1xel8ted)
+
+## Community
+
+Feel free to reach out to me on the channels below and/or join me on my own Discord for a look at my other work (Sun Haven, Graveyard Keeper, Roots of Pacha, Potion Permit and a growing list of Ultra-wide mods).
+
+* [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
+* [My Discord](https://discord.gg/39h4MJDDUT)
 
 ## Installation
 
@@ -55,13 +64,6 @@ Each mod can be enabled/disabled individually from within the config. There migh
 ## Configuration
 
 The configuration file is generated when you first run the game with the mod enabled. It can be found in the "...\Cult of the Lamb\BepInEx\config" folder.
-
-## Issues, questions, etc.
-
-Feel free to reach out to me on the channel below or join me on my own Discord for a look at my non-COTL work.
-
-* [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
-* [My Discord](https://discord.gg/39h4MJDDUT)
 
 ## Contributors
 
@@ -73,6 +75,10 @@ Feel free to reach out to me on the channel below or join me on my own Discord f
 * Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
 
 ## Changelog
+
+## 2.1.0 - 09/05/2023
+
+* Removed patch that was causing GOG users grief. The patch was a vanilla bug fix to which wasn't present in the GOG version.
 
 ## 2.0.9 - 07/05/2023
 

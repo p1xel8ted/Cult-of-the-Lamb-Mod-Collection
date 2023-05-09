@@ -9,7 +9,16 @@
 
 ## Donate
 
+If you enjoy the mod, please consider a donating [here](https://ko-fi.com/p1xel8ted) or using the Buy Me a Coffee button below. Alternativly, hit that thumbs up button!
+
 [![KoFiLogo](https://raw.githubusercontent.com/p1xel8ted/GYK-Mods-QMod/main/kofi-nexus-smaller.png)](https://ko-fi.com/p1xel8ted)
+
+## Community
+
+Feel free to reach out to me on the channels below and/or join me on my own Discord for a look at my other work (Sun Haven, Graveyard Keeper, Roots of Pacha, Potion Permit and a growing list of Ultra-wide mods).
+
+* [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
+* [My Discord](https://discord.gg/39h4MJDDUT)
 
 ## Installation
 
