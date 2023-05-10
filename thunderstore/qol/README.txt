@@ -7,6 +7,10 @@
 
 ## Changelog
 
+## 2.1.0 - 09/05/2023
+
+* Removed bugfix patch that was causing some users grief.
+
 ## 2.0.9 - 07/05/2023
 
 * Added option to auto-load into a specified save game on menu load. Default is slot 1 (slot 0 starts a new game).

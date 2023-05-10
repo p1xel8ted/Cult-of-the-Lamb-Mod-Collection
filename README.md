@@ -1,4 +1,5 @@
 # Cult of QoL Collection
+![Game Logo](header.jpg)<br>
 
 ## What (more will be added over time)
 

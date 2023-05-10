@@ -14,5 +14,6 @@ public static class Extort
         ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
         yield return new WaitForSeconds(0.2f);
         ResourceCustomTarget.Create(instance.state.gameObject, position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate { Inventory.AddItem(20, 1); });
+        follower.Interaction_FollowerInteraction.Close(false, true, false);
     }
 }

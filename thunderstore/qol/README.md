@@ -28,7 +28,7 @@
 * Modify run, dodge, and lunge speed.
 * Modify base damage dealt.
 * Receive notification when a bed has collapsed.
-* Skip recieve crown video.
+* Skip receive crown video.
 * Mass collect resources from select structures. WIP*
 * Remove New Game button when you have at least one save game.
 * Enable Save on exit when quitting. UI is modified to reflect this.
@@ -78,7 +78,7 @@ The configuration file is generated when you first run the game with the mod ena
 
 ## 2.1.0 - 09/05/2023
 
-* Removed patch that was causing GOG users grief. The patch was a vanilla bug fix to which wasn't present in the GOG version.
+* Removed bugfix patch that was causing some users grief.
 
 ## 2.0.9 - 07/05/2023
 

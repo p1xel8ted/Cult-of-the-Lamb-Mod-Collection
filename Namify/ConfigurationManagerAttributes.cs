@@ -1,4 +1,4 @@
-﻿namespace CultOfQoL;
+﻿namespace Namify;
 
 /// <summary>
 /// Class that specifies how a setting should be displayed inside the ConfigurationManager settings window.
