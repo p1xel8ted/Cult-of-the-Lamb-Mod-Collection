@@ -34,12 +34,11 @@ public static class Bless
             if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
             {
                 instance.follower = follower;
-                follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
+                follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, () => { Helpers.Callback(follower);}, false));
             }
+
+            Helpers.Callback(follower);
         });
-        Plugin.L($"Resetting {follower.name} and sending to next task.");
-        follower.Dropped();
-        follower.ResetStateAnimations();
-        follower.Brain.ContinueToNextTask();
     }
+
 }
