@@ -7,7 +7,8 @@ namespace CultOfQoL;
 [HarmonyPatch]
 public static class Intimidate
 {
-    public static IEnumerator IntimidateRoutine(Follower follower, interaction_FollowerInteraction instance,
+    public static IEnumerator IntimidateRoutine(Follower follower,
+        interaction_FollowerInteraction instance,
         FollowerTaskType previousTaskType)
     {
         Plugin.Log.LogInfo($"Follower: {follower.name}, Instance follower: {instance.follower.name}");
@@ -41,12 +42,10 @@ public static class Intimidate
             if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
             {
                 instance.follower = follower;
-                follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, null, false));
+                follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, () => { Helpers.Callback(follower); }, false));
             }
+
+            Helpers.Callback(follower);
         });
-        Plugin.L($"Resetting {follower.name} and sending to next task.");
-        follower.Dropped();
-        follower.ResetStateAnimations();
-        follower.Brain.ContinueToNextTask();
     }
 }
