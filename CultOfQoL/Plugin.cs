@@ -51,7 +51,8 @@ public partial class Plugin : BaseUnityPlugin
         RemovePhotoModeButtonInPauseMenu = Config.Bind("General", "Remove Photo Mode Button In Pause Menu", true, "Removes the photo mode button in the pause menu.");
 
         //Save
-        SaveOnQuit = Config.Bind("Save", "Save On Quit", true, "Modify the exit game menu to save the game when you quit.");
+        SaveOnQuitToDesktop = Config.Bind("Save", "Save On Quit To Desktop", true, "Modify the confirmation dialog to save the game when you quit to desktop.");
+        SaveOnQuitToMenu = Config.Bind("Save", "Save On Quit To Menu", true, "Modify the confirmation dialog to save the game when you quit to menu.");
         HideNewGameButtons = Config.Bind("Save", "Hide New Game Button (s)", true, "Hides the new game button if you have at least one save game.");
         EnableQuickSaveShortcut = Config.Bind("Save", "Enable Quick Save Shortcut", true, "Enable/disable the quick save keyboard shortcut.");
         SaveKeyboardShortcut = Config.Bind("Save", "Save Keyboard Shortcut", new KeyboardShortcut(KeyCode.F5), "The keyboard shortcut to save the game.");
