@@ -1,6 +1,10 @@
+using System;
 using System.Linq;
 using HarmonyLib;
+using I2.Loc;
+using Lamb.UI;
 using Lamb.UI.MainMenu;
+using Lamb.UI.PauseMenu;
 using src.UI;
 using UnityEngine;
 
@@ -24,20 +28,40 @@ public static class Save
             slot.gameObject.SetActive(false);
         }
     }
-
+    
+    
     [HarmonyPrefix]
-    [HarmonyPatch(typeof(UIMenuConfirmationWindow), nameof(UIMenuConfirmationWindow.OnShowStarted))]
-    public static void UIMenuConfirmationWindow_Show(ref UIMenuConfirmationWindow __instance)
+    [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.OnMainMenuButtonPressed))]
+    private static bool UIPauseMenuController_OnMainMenuButtonPressed(ref UIPauseMenuController __instance)
     {
-        if (PhotoModeManager.PhotoModeActive) return;
-        if (!Plugin.SaveOnQuit.Value) return;
-        if (!SaveAndLoad.Loaded) return;
-        __instance._headerText.text = "Save & Quit";
-        __instance._bodyText.text = "Are you sure you want to quit? Your progress will be saved.";
-        __instance.OnConfirm = delegate
+       
+        if (!Plugin.SaveOnQuitToMenu.Value) return true;
+       
+        
+        var saveAndQuit = __instance.Push(MonoSingleton<UIManager>.Instance.ConfirmationWindowTemplate);
+        saveAndQuit.Configure("Save & Quit", "Are you sure you want to quit to menu? Your progress will be saved.");
+        var instance = __instance;
+        saveAndQuit.OnConfirm += delegate
+        {
+            SaveAndLoad.Save();
+            instance.LoadMainMenu();
+        };
+        return false;
+    }
+    
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.OnQuitButtonPressed))]
+    private static bool UIPauseMenuController_OnQuitButtonPressed(ref UIPauseMenuController __instance)
+    {
+        if (!Plugin.SaveOnQuitToDesktop.Value) return true;
+     
+        var saveAndQuit = __instance.Push(MonoSingleton<UIManager>.Instance.ConfirmationWindowTemplate);
+        saveAndQuit.Configure("Save & Quit", "Are you sure you want to quit to desktop? Your progress will be saved.");
+        saveAndQuit.OnConfirm += delegate
         {
             SaveAndLoad.Save();
             Application.Quit();
         };
+        return false;
     }
 }
