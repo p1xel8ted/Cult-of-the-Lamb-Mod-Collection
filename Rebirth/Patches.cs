@@ -16,7 +16,7 @@ public static class Patches
         if (Victim.team == Health.Team.Team2)
         {
             // Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
-            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
+            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance,0.05f))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
                 InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
@@ -26,7 +26,7 @@ public static class Patches
         if (Victim.name.ToLower(CultureInfo.InvariantCulture).Contains("breakable body pile"))
         {
             // Plugin.Log.LogWarning($"Victim: {__instance.name}, Team: {Victim.team}");
-            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance))
+            if (CustomItemManager.DropLoot(Plugin.RebirthItemInstance,0.05f))
             {
                 Plugin.Log.LogWarning($"Got a Rebirth token from {__instance.name}!");
                 InventoryItem.Spawn(Plugin.RebirthItem, Random.Range(1, 3), __instance.transform.position);
