@@ -61,6 +61,8 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Direct Load Save", Plugin.DirectLoadSave);
         CustomSettingsManager.AddDropdown("Cult of QoL - Save", "Save To Load", Plugin.SaveSlotToLoad.Value.ToString(), new[] {"1", "2", "3"}, delegate(int i) { Plugin.SaveSlotToLoad.Value = i + 1; });
 
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Save On Quit To Menu", Plugin.SaveOnQuitToMenu);
+        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Save On Quit To Desktop", Plugin.SaveOnQuitToDesktop);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Hide New Game Button(s)", Plugin.HideNewGameButtons);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Save", "Enable Quick Save Shortcut", Plugin.EnableQuickSaveShortcut);
         CustomSettingsManager.AddDropdown("Cult of QoL - Save", "Quick Save Key", Plugin.SaveKeyboardShortcut.Value.MainKey.ToString(), Enum.GetNames(typeof(KeyCode)),
