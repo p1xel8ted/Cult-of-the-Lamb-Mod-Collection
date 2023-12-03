@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultOfQoL", "CultOfQoL\Cult
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rebirth", "Rebirth\Rebirth.csproj", "{9CA32326-F877-4488-A758-7258B3FC6851}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShamurasRevenge", "ShamurasRevenge\ShamurasRevenge.csproj", "{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Namify", "Namify\Namify.csproj", "{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{9CA32326-F877-4488-A758-7258B3FC6851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CA32326-F877-4488-A758-7258B3FC6851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CA32326-F877-4488-A758-7258B3FC6851}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20FE14B1-64A3-4EDE-8C7D-D491D968B38C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46E2BEB1-1DC0-4ADA-8E82-25720D811A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU

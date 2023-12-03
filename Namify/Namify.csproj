@@ -5,6 +5,9 @@
       <FileVersion>$(Version)</FileVersion>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Update="BepInEx.Core" Version="5.4.21" />
+    </ItemGroup>
+    <ItemGroup>
       <Reference Include="Assembly-CSharp">
         <HintPath>..\libs\Assembly-CSharp.dll</HintPath>
       </Reference>

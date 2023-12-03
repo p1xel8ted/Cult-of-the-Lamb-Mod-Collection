@@ -5,20 +5,20 @@
         <FileVersion>$(Version)</FileVersion>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Update="BepInEx.Core" Version="5.4.21" />
+    </ItemGroup>
+    <ItemGroup>
       <Reference Include="Assembly-CSharp">
         <HintPath>..\libs\Assembly-CSharp.dll</HintPath>
       </Reference>
       <Reference Include="COTL_API">
-        <HintPath>..\..\..\..\..\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
+        <HintPath>..\libs\COTL_API.dll</HintPath>
       </Reference>
       <Reference Include="FMODUnity">
         <HintPath>..\libs\FMODUnity.dll</HintPath>
       </Reference>
       <Reference Include="spine-unity">
         <HintPath>..\libs\spine-unity.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.TextMeshPro">
-        <HintPath>..\libs\Unity.TextMeshPro.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\libs\UnityEngine.dll</HintPath>
