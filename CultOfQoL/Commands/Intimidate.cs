@@ -1,7 +1,3 @@
-using System.Collections;
-using HarmonyLib;
-using UnityEngine;
-
 namespace CultOfQoL;
 
 [HarmonyPatch]

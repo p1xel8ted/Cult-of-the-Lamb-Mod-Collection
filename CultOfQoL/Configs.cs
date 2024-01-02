@@ -1,6 +1,3 @@
-using BepInEx.Configuration;
-using Lamb.UI.MainMenu;
-
 namespace CultOfQoL;
 
 public partial class Plugin

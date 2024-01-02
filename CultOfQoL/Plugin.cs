@@ -1,10 +1,7 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using CultOfQoL.Patches;
-using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace CultOfQoL;
 
@@ -14,7 +11,7 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.1.0";
+    private const string PluginVer = "2.1.2";
 
     internal static ManualLogSource Log = null!;
     internal static readonly Harmony Harmony = new(PluginGuid);
@@ -24,9 +21,18 @@ public partial class Plugin : BaseUnityPlugin
 
     private void Awake()
     {
-        Log = new ManualLogSource("Cult-of-QoL-Collection");
+        Log = new ManualLogSource(PluginName);
         BepInEx.Logging.Logger.Sources.Add(Log);
 
+        SceneManager.sceneLoaded += (_, _) =>
+        {
+            var buttons = Resources.FindObjectsOfTypeAll<MMButton>();
+            foreach (var button in buttons)
+            {
+                button.Selectable.navigation = button.Selectable.navigation with {mode = Navigation.Mode.Automatic};
+            }
+        };
+        
         ModEnabled = Config.Bind("General", "Mod Enabled", true, "Enable/disable this mod.");
 
         //Player
@@ -171,7 +177,6 @@ public partial class Plugin : BaseUnityPlugin
         SoftDepend.AddSettingsMenus();
         Log.LogInfo("API detected - You can configure mod settings in the settings menu.");
     }
-    
     private void OnEnable()
     {
         if (ModEnabled.Value)

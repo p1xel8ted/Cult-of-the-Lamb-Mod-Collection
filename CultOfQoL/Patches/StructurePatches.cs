@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using HarmonyLib;
-using UnityEngine;
+﻿using Object = UnityEngine.Object;
 
 namespace CultOfQoL.Patches;
 

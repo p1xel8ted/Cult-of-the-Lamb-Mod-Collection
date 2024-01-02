@@ -1,9 +1,3 @@
-## Known Issues
-
-* Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
-
-## Changelog
-
 ## 2.1.2 - 02/01/2024
 
 * Fixed menu items having cooked navigation when certain ones are disabled. This only ocurred when using a controller/gamepad.
@@ -48,7 +42,6 @@
 
 * Fixed issue that was causing the New Game button to vanish...
 * Added Mass Collect - at the moment it only works with the beds.
-* Added option to only show dissenters in the prison menu.
 
 ## 2.0.5 - 08/11/2022
 
@@ -116,9 +109,9 @@
 * Lumberjack stations now have their loot speed delay lowered when collecting from the chest. Its not totally 0 (its 0.01), because it makes the animations look like junk.
 * Added option for chests to enable them to automatically give you the loot when you're nearby. 
 * Added option to double the distance required before the loot is sent your way.
-* Added option to set a trigger limit before loot is automatically retreived.
+* Added option to set a trigger limit before loot is automatically retrieved.
 * Added the ability to "heal" exhausted followers in the healing bays.
-* Added option to recieve a notification when one of the scarecrows catches a bird.
+* Added option to receive a notification when one of the scarecrows catches a bird.
 * Fixed the passive and main shrines from not having their capacity doubled.
 
 ### 1.7.0 - 10/09/2022
@@ -136,10 +129,7 @@
 * Added checks to ensure we're not inspiring/extorting when sleeping/dissenting/bathroom/prison.
 * Inspire All "should" be fixed now.
 * Added option to double lumber/mine stations age instead of only lasting forever.
-* Added option to turn off propaganda speakers of a night. The fuel animation still runs for now but doesn't consume fuel.
-
-* Removed anything outhouse related as they're being put into a separate outhouse-specific mod.
-
+* Removed anything outhouse related as they're being put into a separate outhouse specific mod.
 * WIP - Option to double the storage capacity of shrines (not quite done, the main one ignores it for some reason).
 
 ### 1.5.0 - 02/09/2022

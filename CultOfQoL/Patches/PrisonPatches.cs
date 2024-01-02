@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using HarmonyLib;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]

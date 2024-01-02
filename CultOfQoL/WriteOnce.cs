@@ -1,5 +1,3 @@
-using System;
-
 namespace CultOfQoL;
 
 public sealed class WriteOnce<T>

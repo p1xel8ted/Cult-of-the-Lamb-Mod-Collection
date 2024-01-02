@@ -1,11 +1,10 @@
-using HarmonyLib;
-using UnityEngine;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class PlayerPatches
 {
+    private const string PlayerPrefab = "PlayerPrefab";
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PlayerController), nameof(PlayerController.Start))]
     public static void PlayerController_Start(ref PlayerController __instance)
@@ -14,16 +13,22 @@ public static class PlayerPatches
         Plugin.RunSpeed.Value = __instance.RunSpeed;
     }
 
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Health), nameof(Health.DealDamage))]
     public static void Health_DealDamage(ref Health? __instance, ref float Damage, ref GameObject Attacker)
     {
         if (__instance is null) return;
+
+        if (__instance.isPlayer) return; // Don't apply to player
+
+        if (!Attacker.name.Contains(PlayerPrefab)) return; // Only apply to player attacks
         if (Plugin.EnableBaseDamageMultiplier.Value)
         {
             Damage *= Mathf.Abs(Plugin.BaseDamageMultiplier.Value);
         }
     }
+
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(PlayerController), nameof(PlayerController.Update))]
@@ -33,7 +38,6 @@ public static class PlayerPatches
         {
             __instance.RunSpeed = Plugin.RunSpeed.Value *= Mathf.Abs(Plugin.RunSpeedMulti.Value);
         }
-        
     }
 
 

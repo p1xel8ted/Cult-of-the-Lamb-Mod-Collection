@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace CultOfQoL;
 
 public partial class Plugin

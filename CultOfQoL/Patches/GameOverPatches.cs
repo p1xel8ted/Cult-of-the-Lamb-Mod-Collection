@@ -1,5 +1,3 @@
-using HarmonyLib;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]

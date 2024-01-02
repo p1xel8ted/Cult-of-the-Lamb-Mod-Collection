@@ -1,9 +1,4 @@
-﻿using HarmonyLib;
-using Lamb.UI.MainMenu;
-using Lamb.UI.PauseMenu;
-using UnityEngine;
-
-namespace CultOfQoL.Patches;
+﻿namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class MenuCleanupPatches
@@ -12,11 +7,18 @@ public static class MenuCleanupPatches
     [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
     public static void MainMenu_Start(ref MainMenu __instance)
     {
-        if (Plugin.RemoveMenuClutter.Value)
+        var buttons = __instance.GetComponentsInChildren<MMButton>();
+        foreach (var button in buttons)
         {
-            __instance._creditsButton.gameObject.SetActive(false);
-            __instance._roadmapButton.gameObject.SetActive(false);
+            button.Selectable.navigation = button.Selectable.navigation with {mode = Navigation.Mode.Automatic};
         }
+
+
+        __instance.SetActiveStateForMenu(__instance._creditsButton.gameObject, !Plugin.RemoveMenuClutter.Value);
+        __instance.SetActiveStateForMenu(__instance._roadmapButton.gameObject, !Plugin.RemoveMenuClutter.Value);
+        __instance._creditsButton.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
+        __instance._roadmapButton.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
+
 
         if (Plugin.DirectLoadSave.Value)
         {
@@ -36,36 +38,31 @@ public static class MenuCleanupPatches
     public static void UIMainMenuController_Awake(ref UIMainMenuController __instance)
     {
         Plugin.UIMainMenuController = __instance;
-        if (Plugin.RemoveMenuClutter.Value)
-        {
-            __instance._discordButton.gameObject.SetActive(false);
-            var stuff = GameObject.Find("Main Menu Controller/Main Menu/MainMenuContainer/Right/Transform/");
-            if (stuff != null)
-            {
-                stuff.gameObject.SetActive(false);
-            }
-        }
+        __instance._discordButton.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
+        var stuff = GameObject.Find("Main Menu Controller/Main Menu/MainMenuContainer/Right/Transform/");
+        if (stuff == null) return;
+        __instance.SetActiveStateForMenu(stuff.gameObject, !Plugin.RemoveMenuClutter.Value);
+        stuff.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.Awake))]
     public static void UIPauseMenuController_Awake(ref UIPauseMenuController __instance)
     {
-        if (Plugin.RemoveHelpButtonInPauseMenu.Value)
-        {
-            __instance._helpButton.gameObject.SetActive(false);
-        }
+        __instance.SetActiveStateForMenu(__instance._helpButton.gameObject, !Plugin.RemoveHelpButtonInPauseMenu.Value);
+        __instance._helpButton.gameObject.SetActive(!Plugin.RemoveHelpButtonInPauseMenu.Value);
 
-        if (Plugin.RemovePhotoModeButtonInPauseMenu.Value)
-        {
-            __instance._photoModeButton.gameObject.SetActive(false);
-        }
 
-        if (Plugin.RemoveTwitchButtonInPauseMenu.Value)
-        {
-            __instance._twitchSettingsButton.gameObject.SetActive(false);
-        }
+        GameObject gameObject;
+        (gameObject = __instance._photoModeButton.gameObject).SetActive(!Plugin.RemovePhotoModeButtonInPauseMenu.Value);
+        __instance.SetActiveStateForMenu(gameObject, !Plugin.RemovePhotoModeButtonInPauseMenu.Value);
+
+
+        GameObject o;
+        (o = __instance._twitchSettingsButton.gameObject).SetActive(!Plugin.RemoveTwitchButtonInPauseMenu.Value);
+        __instance.SetActiveStateForMenu(o, !Plugin.RemoveTwitchButtonInPauseMenu.Value);
     }
+
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MenuAdController), nameof(MenuAdController.Start))]
@@ -73,33 +70,31 @@ public static class MenuCleanupPatches
     {
         var one = GameObject.Find("Main Menu Controller/Main Menu/MainMenuContainer/Right/Ad/Outline");
         var two = GameObject.Find("Main Menu Controller/Main Menu/MainMenuContainer/Right/Ad/Transform");
-        one.SetActive(false);
-        two.SetActive(false);
-        __instance.gameObject.SetActive(false);
+        one.SetActive(!Plugin.RemoveMenuClutter.Value);
+        two.SetActive(!Plugin.RemoveMenuClutter.Value);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UITwitchExtensionButton), nameof(UITwitchExtensionButton.Awake))]
     public static void UITwitchExtensionButton_Awake(ref UITwitchExtensionButton __instance)
     {
-        if (!Plugin.RemoveTwitchButton.Value) return;
-        __instance.gameObject.SetActive(false);
+        __instance.gameObject.SetActive(!Plugin.RemoveTwitchButton.Value);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UITwitchButton), nameof(UITwitchButton.Awake))]
     public static void UITwitchButton_Awake(ref UITwitchButton __instance)
     {
-        if (!Plugin.RemoveTwitchButton.Value) return;
-        __instance.gameObject.SetActive(false);
+        __instance.gameObject.SetActive(!Plugin.RemoveTwitchButton.Value);
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.Start))]
     public static void UIPauseMenuController_Start(ref UIPauseMenuController __instance)
     {
-        if (!Plugin.RemoveMenuClutter.Value) return;
-        __instance._bugReportButton.gameObject.SetActive(false);
-        __instance._discordButton.gameObject.SetActive(false);
+        __instance.SetActiveStateForMenu(__instance._bugReportButton.gameObject, !Plugin.RemoveMenuClutter.Value);
+        __instance.SetActiveStateForMenu(__instance._discordButton.gameObject, !Plugin.RemoveMenuClutter.Value);
+        __instance._bugReportButton.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
+        __instance._discordButton.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
     }
 }

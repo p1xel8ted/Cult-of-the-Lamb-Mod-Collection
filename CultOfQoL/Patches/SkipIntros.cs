@@ -1,8 +1,4 @@
-﻿using HarmonyLib;
-using Lamb.UI.MainMenu;
-using MMTools;
-
-namespace CultOfQoL.Patches;
+﻿namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class SkipIntros

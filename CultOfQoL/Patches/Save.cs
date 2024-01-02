@@ -1,13 +1,3 @@
-using System;
-using System.Linq;
-using HarmonyLib;
-using I2.Loc;
-using Lamb.UI;
-using Lamb.UI.MainMenu;
-using Lamb.UI.PauseMenu;
-using src.UI;
-using UnityEngine;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]

@@ -1,10 +1,5 @@
-using System;
-using System.Linq;
-using BepInEx.Configuration;
 using COTL_API.CustomSettings;
 using COTL_API.CustomSettings.Elements;
-using Lamb.UI;
-using UnityEngine;
 
 namespace CultOfQoL;
 

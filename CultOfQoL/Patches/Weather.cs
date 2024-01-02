@@ -1,7 +1,3 @@
-using System.Linq;
-using HarmonyLib;
-using Map;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]

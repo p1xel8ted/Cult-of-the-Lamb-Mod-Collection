@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using HarmonyLib;
-using Lamb.UI.FollowerSelect;
-using UnityEngine;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using HarmonyLib;
+﻿using JetBrains.Annotations;
+using UnityEngine.InputSystem.Utilities;
 
 namespace CultOfQoL.Patches;
 
@@ -14,7 +14,7 @@ internal static class TwitchJunk
 
         var availableTwitchTotemDecorations = DataManager.GetAvailableTwitchTotemDecorations();
         var availableTwitchTotemSkins = DataManager.GetAvailableTwitchTotemSkins();
-        
+
         var twitchSkins = new List<string>(5) {"TwitchCat", "TwitchMouse", "TwitchPoggers", "TwitchDog", "TwitchDogAlt"};
 
         // if (!DataManager.TwitchTotemRewardAvailable()) return;
@@ -23,7 +23,7 @@ internal static class TwitchJunk
             StructuresData.CompleteResearch(totem);
             StructuresData.SetRevealed(totem);
         }
-        
+
         foreach (var skin in twitchSkins)
         {
             DataManager.SetFollowerSkinUnlocked(skin);
@@ -36,20 +36,41 @@ internal static class TwitchJunk
     }
 
 
-   
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePrePurchaseDLC))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePlushBonusDLC))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticatePAXDLC))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop1))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop2))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop3))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop4))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop5))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop6))]
-    [HarmonyPatch(typeof(GameManager), nameof(GameManager.AuthenticateTwitchDrop7))]
-    public static void GameManager_Postfix(ref bool __result)
+    [Harmony]
+    [UsedImplicitly]
+    public static class Drops
     {
-        __result = Plugin.UnlockTwitchStuff.Value;
+        private const string AuthenticateMethod = "Authenticate";
+        private const string Heretic = "Heretic";
+        private const string Cultist = "Cultist";
+
+        [UsedImplicitly]
+        [HarmonyTargetMethods]
+        public static IEnumerable<MethodBase> TargetMethods()
+        {
+            foreach (var method in AccessTools.GetDeclaredMethods(typeof(GameManager)))
+            {
+                if (method.Name.Contains(Heretic, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+                if (method.Name.Contains(Cultist, StringComparison.OrdinalIgnoreCase))
+                { 
+                    continue;
+                }
+                if (!method.Name.StartsWith(AuthenticateMethod)) continue;
+                
+                Plugin.Log.LogInfo($"[AuthenticateOverride] Overriding {method.Name}");
+                yield return method;
+            }
+        }
+
+        [UsedImplicitly]
+        [HarmonyPostfix]
+        public static void Authenticate(ref bool __result, MethodBase __originalMethod)
+        {
+            __result = Plugin.UnlockTwitchStuff.Value;
+        }
+
     }
 }
