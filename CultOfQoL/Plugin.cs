@@ -1,9 +1,4 @@
-﻿using BepInEx;
-using BepInEx.Logging;
-using CultOfQoL.Patches;
-using UnityEngine.SceneManagement;
-
-namespace CultOfQoL;
+﻿namespace CultOfQoL;
 
 [BepInPlugin(PluginGuid, PluginName, PluginVer)]
 [BepInDependency("io.github.xhayper.COTL_API", BepInDependency.DependencyFlags.SoftDependency)]
@@ -11,10 +6,10 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.1.2";
+    private const string PluginVer = "2.1.3";
 
     internal static ManualLogSource Log = null!;
-    internal static readonly Harmony Harmony = new(PluginGuid);
+    internal readonly static Harmony Harmony = new(PluginGuid);
 
     internal static CanvasScaler? GameCanvasScaler { get; set; }
     internal static CanvasScaler? DungeonCanvasScaler { get; set; }
@@ -68,10 +63,10 @@ public partial class Plugin : BaseUnityPlugin
         {
             if (!SaveAndLoad.SaveExist(SaveSlotToLoad.Value))
             {
-                Log.LogInfo($"The slot you have select doesn't contain a save game.");
+                L($"The slot you have select doesn't contain a save game.");
                 return;
             }
-            Log.LogInfo($"Save slot to load changed to {SaveSlotToLoad.Value}");
+            L($"Save slot to load changed to {SaveSlotToLoad.Value}");
         };
         //Scale
         EnableCustomUiScale = Config.Bind("Scale", "Enable Custom UI Scale", false, "Enable/disable the custom UI scale.");
@@ -150,7 +145,7 @@ public partial class Plugin : BaseUnityPlugin
         CustomRangeMulti = Config.Bind("Chest Auto-Interact", "Custom Range Multiplier", 2.0f, new ConfigDescription("Enter a multiplier to use for auto-collect range when using custom range.", new AcceptableValueRange<float>(0, 100)));
 
         //Capacity
-        JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
+        //JustRightSiloCapacity = Config.Bind("Capacity", "Set Silo Capacity to 32", true, "Set silo capacity for seed and fertilizer at 32.");
         UseCustomSiloCapacity = Config.Bind("Capacity", "Use Custom Silo Capacity", false, "Use a custom silo capacity instead of the default or increased capacity.");
         CustomSiloCapacityMulti = Config.Bind("Capacity", "Custom Silo Capacity Multiplier", 2.0f, new ConfigDescription("Enter a multiplier to use for silo capacity when using custom capacity.", new AcceptableValueRange<float>(0, 1000)));
         DoubleSoulCapacity = Config.Bind("Capacity", "Double Soul Capacity", true, "Doubles the soul capacity of applicable structures.");
@@ -173,7 +168,7 @@ public partial class Plugin : BaseUnityPlugin
         OnlyShowDissenters = Config.Bind("Followers", "Only Show Dissenters In Prison Menu", true, "Only show dissenting followers when interacting with the prison.");
 
         if (!SoftDepend.Enabled) return;
-
+        
         SoftDepend.AddSettingsMenus();
         Log.LogInfo("API detected - You can configure mod settings in the settings menu.");
     }
@@ -182,22 +177,22 @@ public partial class Plugin : BaseUnityPlugin
         if (ModEnabled.Value)
         {
             Harmony.PatchAll();
-            Log.LogInfo($"Loaded {PluginName}!");
+            L($"Loaded {PluginName}!");
         }
         else
         {
-            Log.LogInfo($"{PluginName} is disabled in config!");
+            L($"{PluginName} is disabled in config!");
         }
     }
 
     private void OnDisable()
     {
         Harmony.UnpatchSelf();
-        L($"Unloaded {PluginName}!");
+        // L($"Unloaded {PluginName}!");
     }
 
     public static void L(string message)
     {
-        Log.LogWarning(message);
+        Log.LogInfo(message);
     }
 }

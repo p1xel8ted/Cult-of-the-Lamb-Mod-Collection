@@ -1,4 +1,4 @@
-using Object = UnityEngine.Object;
+
 
 // ReSharper disable InconsistentNaming
 
@@ -12,6 +12,12 @@ public static class FastCollectingPatches
     public static void Interaction_CollectResourceChest_Update(ref Interaction_CollectResourceChest __instance)
     {
         // L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
+
+        if (__instance.StructureInfo?.Inventory == null)
+        {
+            return;
+        }
+
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Mathf.Abs(Plugin.TriggerAmount.Value) || triggerExists))
@@ -33,13 +39,21 @@ public static class FastCollectingPatches
         }
     }
 
-
+    //todo: [Error  : Unity Log] NullReferenceException: Object reference not set to an instance of an object
+    // Stack trace:
+    // CultOfQoL.Patches.FastCollectingPatches.LumberjackStation_Update (LumberjackStation& __instance) (at C:/Users/Ben/OneDrive/Development/Cult-of-the-Lamb-Mod-Collection/CultOfQoL/Patches/FastCollectingPatches.cs:43)
+    // (wrapper dynamic-method) LumberjackStation.DMD<LumberjackStation::Update>(LumberjackStation)
     [HarmonyPrefix]
     [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
     public static void LumberjackStation_Update(ref LumberjackStation __instance)
     {
         // L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
 
+        if (__instance.StructureInfo?.Inventory == null)
+        {
+            return;
+        }
+        
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Mathf.Abs(Plugin.TriggerAmount.Value) || triggerExists))
@@ -108,7 +122,7 @@ public static class FastCollectingPatches
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].opcode == OpCodes.Newobj && codes[i + 1].OperandIs(AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
                 {
-                    //Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found WaitForSeconds at {i}");
+                    Plugin.L($"{originalMethod.GetRealDeclaringType().Name}: Found WaitForSeconds at {i}");
                     codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f;
                 }
 
@@ -136,7 +150,7 @@ public static class FastCollectingPatches
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].StoresField(delayField))
                 {
-                    //Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
+                    Plugin.L($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
                     codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f;
                 }
             }
@@ -160,19 +174,19 @@ public static class FastCollectingPatches
         {
             if (!Plugin.FastCollecting.Value) return instructions;
             var delayField = AccessTools.Field(originalMethod.GetRealDeclaringType(), "Delay");
-            
+
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
             {
                 if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].StoresField(delayField))
                 {
-                    //Plugin.Log.LogWarning($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
+                    Plugin.L($"{originalMethod.GetRealDeclaringType().Name}: Found Delay at {i}");
                     codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Outhouse") ? 0.025f : 0f;
                 }
             }
 
             return codes.AsEnumerable();
-            
+
             // return new CodeMatcher(instructions)
             //     .MatchForward(false,
             //         new CodeMatch(OpCodes.Ldc_R4),

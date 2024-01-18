@@ -1,7 +1,4 @@
-﻿using JetBrains.Annotations;
-using UnityEngine.InputSystem.Utilities;
-
-namespace CultOfQoL.Patches;
+﻿namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 internal static class TwitchJunk
@@ -43,13 +40,18 @@ internal static class TwitchJunk
         private const string AuthenticateMethod = "Authenticate";
         private const string Heretic = "Heretic";
         private const string Cultist = "Cultist";
-
+        private const string Sinful = "Sinful";
+        
         [UsedImplicitly]
         [HarmonyTargetMethods]
         public static IEnumerable<MethodBase> TargetMethods()
         {
             foreach (var method in AccessTools.GetDeclaredMethods(typeof(GameManager)))
             {
+                if (method.Name.Contains(Sinful, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
                 if (method.Name.Contains(Heretic, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
@@ -60,7 +62,7 @@ internal static class TwitchJunk
                 }
                 if (!method.Name.StartsWith(AuthenticateMethod)) continue;
                 
-                Plugin.Log.LogInfo($"[AuthenticateOverride] Overriding {method.Name}");
+                Plugin.L($"[AuthenticateOverride] Overriding {method.Name}");
                 yield return method;
             }
         }

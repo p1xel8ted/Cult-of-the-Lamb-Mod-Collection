@@ -4,6 +4,12 @@
 
 ## Changelog
 
+## 2.1.3 - 18/01/2024
+
+- Mostly updated for Sins of the Flesh
+- Mass follower commands are currently disabled due to the large amount of changes made to the game code for them
+- In game settings via the API won't work until it's updated
+
 ## 2.1.2 - 02/01/2024
 
 * Fixed menu items having cooked navigation when certain ones are disabled. This only ocurred when using a controller/gamepad.

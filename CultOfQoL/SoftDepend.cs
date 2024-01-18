@@ -1,6 +1,3 @@
-using COTL_API.CustomSettings;
-using COTL_API.CustomSettings.Elements;
-
 namespace CultOfQoL;
 
 public static class SoftDepend
@@ -101,7 +98,7 @@ public static class SoftDepend
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Chests", Plugin.IncreaseRange.Definition.Key, Plugin.IncreaseRange);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Chests", Plugin.UseCustomRange.Definition.Key, Plugin.UseCustomRange);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Chests", Plugin.CustomRangeMulti.Definition.Key, Plugin.CustomRangeMulti, 1, MMSlider.ValueDisplayFormat.RawValue);
-        CustomSettingsManager.AddBepInExConfig("Cult of QoL - Capacity", Plugin.JustRightSiloCapacity.Definition.Key, Plugin.JustRightSiloCapacity);
+        // CustomSettingsManager.AddBepInExConfig("Cult of QoL - Capacity", Plugin.JustRightSiloCapacity.Definition.Key, Plugin.JustRightSiloCapacity);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Capacity", Plugin.UseCustomSiloCapacity.Definition.Key, Plugin.UseCustomSiloCapacity);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Capacity", Plugin.CustomSiloCapacityMulti.Definition.Key, Plugin.CustomSiloCapacityMulti, 1, MMSlider.ValueDisplayFormat.RawValue);
         CustomSettingsManager.AddBepInExConfig("Cult of QoL - Capacity", Plugin.DoubleSoulCapacity.Definition.Key, Plugin.DoubleSoulCapacity);

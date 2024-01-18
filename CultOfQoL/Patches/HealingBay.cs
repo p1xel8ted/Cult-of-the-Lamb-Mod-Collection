@@ -4,7 +4,7 @@ namespace CultOfQoL.Patches;
 public static class HealingBay
 {
     private static FollowerBrainInfo? _fi;
-    private static readonly bool Run = Plugin.AddExhaustedToHealingBay.Value;
+    private readonly static bool Run = Plugin.AddExhaustedToHealingBay.Value;
     private static bool _isHealingBay;
 
     private static IEnumerator StartHeal(FollowerBrainInfo followerBrain)
@@ -18,30 +18,30 @@ public static class HealingBay
         NotificationCentre.Instance.PlayGenericNotification($"{followerBrain._info.Name} is no longer exhausted!");
         _fi = null;
     }
-    
+
     [HarmonyPrefix]
-    [HarmonyPatch(typeof(UIFollowerSelectMenuController), nameof(UIFollowerSelectMenuController.Show),
-        typeof(List<FollowerInfo>),
-        typeof(List<FollowerInfo>),
-        typeof(bool),
-        typeof(UpgradeSystem.Type),
-        typeof(bool),
-        typeof(bool),
-        typeof(bool)
-    )]
-    public static void UIFollowerSelectMenuController_Show(ref List<FollowerInfo> blackList)
+    [HarmonyPatch(typeof(UIFollowerSelectMenuController), nameof(UIFollowerSelectMenuController.Show), typeof(List<FollowerSelectEntry>), typeof(bool), typeof(UpgradeSystem.Type), typeof(bool), typeof(bool), typeof(bool), typeof(bool))]
+    public static void UIFollowerSelectMenuController_Show(ref List<FollowerSelectEntry> followerSelectEntries)
     {
         if (!Run) return;
         Plugin.L($"IsHealingBay: {_isHealingBay}");
         if (!_isHealingBay) return;
-        blackList.RemoveAll(follower => follower.CursedState is Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
-                                        follower.Exhaustion > 0);
+        
+        followerSelectEntries.Clear();
+        foreach (var follower in Follower.Followers)
+        {
+            if (follower.Brain.Info.CursedState is Thought.Ill or Thought.Injured or Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared)
+            {
+                followerSelectEntries.Add(new FollowerSelectEntry(follower));
+            }
+        }
     }
 
 
     [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.OnInteract))]
     public static class InteractionHealingBayOnInteractPatches
     {
+        [UsedImplicitly]
         [HarmonyPrefix]
         public static void Prefix()
         {
@@ -49,6 +49,7 @@ public static class HealingBay
             _isHealingBay = true;
         }
 
+        [UsedImplicitly]
         [HarmonyPostfix]
         public static void Postfix()
         {
@@ -56,7 +57,7 @@ public static class HealingBay
             _isHealingBay = false;
         }
     }
-    
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Interaction_HealingBay), nameof(Interaction_HealingBay.HealingRoutine))]
     public static void Interaction_HealingBay_HealingRoutine(ref Follower follower)
@@ -71,6 +72,7 @@ public static class HealingBay
     [HarmonyPatch(typeof(NotificationCentre), nameof(NotificationCentre.PlayFollowerNotification))]
     public static class NotificationCentrePlayFollowerNotificationPatches
     {
+        [UsedImplicitly]
         [HarmonyPrefix]
         public static bool Prefix(ref NotificationCentre.NotificationType type, ref FollowerBrainInfo info, ref bool __state)
         {
@@ -88,6 +90,7 @@ public static class HealingBay
             return true;
         }
 
+        [UsedImplicitly]
         [HarmonyPostfix]
         public static void Postfix(ref FollowerBrainInfo info, ref bool __state)
         {

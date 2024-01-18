@@ -1,5 +1,3 @@
-using Random = UnityEngine.Random;
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]

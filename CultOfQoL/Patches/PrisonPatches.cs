@@ -3,11 +3,14 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class PrisonPatches
 {
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(Prison), nameof(Prison.ImprisonableFollowers))]
-    public static void Prison_ImprisonableFollowers(ref List<Follower> __result)
+    [HarmonyPrefix]
+   // [HarmonyPatch(typeof(UIFollowerSelectMenuController), nameof(UIFollowerSelectMenuController.Show), typeof(List<FollowerSelectEntry>), typeof(bool), typeof(bool), typeof(bool), typeof(bool))]
+    [HarmonyPatch(typeof(UIFollowerSelectMenuController), nameof(UIFollowerSelectMenuController.Show), typeof(List<FollowerSelectEntry>), typeof(bool), typeof(UpgradeSystem.Type), typeof(bool), typeof(bool), typeof(bool), typeof(bool))]
+    public static void UIFollowerSelectMenuController_Show(ref UIFollowerSelectMenuController __instance, ref List<FollowerSelectEntry> followerSelectEntries)
     {
+        if (__instance is not UIPrisonMenuController) return;
         if (!Plugin.OnlyShowDissenters.Value) return;
-        __result.RemoveAll(follower => follower.Brain.Info.CursedState != Thought.Dissenter);
+        followerSelectEntries.RemoveAll(follower => follower.FollowerInfo.CursedState != Thought.Dissenter);
     }
+
 }

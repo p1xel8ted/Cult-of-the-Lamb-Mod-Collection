@@ -1,6 +1,4 @@
-﻿using Object = UnityEngine.Object;
-
-namespace CultOfQoL.Patches;
+﻿namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 internal static class StructurePatches
@@ -92,18 +90,20 @@ internal static class StructurePatches
         Plugin.L("Resetting age of lumber/mining station to 0!");
     }
 
+
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(Structures_Bed), MethodType.Constructor)]
-    public static void Structures_Bed_Constructor(ref Structures_Bed __instance)
+    [HarmonyPatch(typeof(StructureBrain), nameof(StructureBrain.SoulMax), MethodType.Getter)]
+    public static void Structures_Bed_Constructor(StructureBrain __instance, ref int __result)
     {
+        if (__instance is not Structures_Bed) return;
         if (Plugin.UseCustomSoulCapacity.Value)
         {
-            __instance.SoulMax = Mathf.CeilToInt(__instance.SoulMax * Mathf.Abs(Plugin.CustomSoulCapacityMulti.Value));
+            __result = Mathf.CeilToInt(__result * Mathf.Abs(Plugin.CustomSoulCapacityMulti.Value));
             return;
         }
 
         if (!Plugin.DoubleSoulCapacity.Value) return;
-        __instance.SoulMax *= 2;
+        __result *= 2;
     }
 
     [HarmonyPostfix]
@@ -165,40 +165,18 @@ internal static class StructurePatches
         __result *= 2;
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Interaction_SiloFertilizer), nameof(Interaction_SiloFertilizer.OnInteract))]
-    [HarmonyPatch(typeof(Interaction_SiloFertilizer), nameof(Interaction_SiloFertilizer.UpdateCapacityIndicators))]
-    public static void Interaction_SiloFertilizer_Capacity(ref Interaction_SiloFertilizer __instance)
+    
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Structures_SiloSeed), nameof(Structures_SiloSeed.Capacity), MethodType.Getter)]
+    [HarmonyPatch(typeof(Structures_SiloFertiliser), nameof(Structures_SiloFertiliser.Capacity), MethodType.Getter)]
+    public static void Structures_Capacity(ref float __result)
     {
         if (Plugin.UseCustomSiloCapacity.Value)
         {
-            __instance.StructureBrain.Capacity = Mathf.Ceil(15 * Mathf.Abs(Plugin.CustomSiloCapacityMulti.Value));
-            return;
-        }
-
-        if (Plugin.JustRightSiloCapacity.Value)
-        {
-            __instance.StructureBrain.Capacity = 32f;
+            __result = Mathf.Ceil(__result * Mathf.Abs(Plugin.CustomSiloCapacityMulti.Value));
         }
     }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Interaction_SiloSeeder), nameof(Interaction_SiloSeeder.OnInteract))]
-    [HarmonyPatch(typeof(Interaction_SiloSeeder), nameof(Interaction_SiloSeeder.UpdateCapacityIndicators))]
-    public static void Interaction_SiloSeeder_Capacity(ref Interaction_SiloSeeder __instance)
-    {
-        if (Plugin.UseCustomSiloCapacity.Value)
-        {
-            __instance.StructureBrain.Capacity = Mathf.Ceil(15 * Mathf.Abs(Plugin.CustomSiloCapacityMulti.Value));
-            return;
-        }
-
-        if (Plugin.JustRightSiloCapacity.Value)
-        {
-            __instance.StructureBrain.Capacity = 32f;
-        }
-    }
-
+    
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Structures_Refinery), nameof(Structures_Refinery.GetCost), typeof(InventoryItem.ITEM_TYPE))]
     public static void Structures_Refinery_GetCost(ref List<StructuresData.ItemCost> __result)

@@ -30,7 +30,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> LumberAndMiningStationsDontAge = null!;
     internal static ConfigEntry<bool> CollectTitheFromOldFollowers = null!;
     internal static ConfigEntry<bool> EnableGameSpeedManipulation = null!;
-    internal static ConfigEntry<bool> JustRightSiloCapacity = null!;
+
     internal static ConfigEntry<bool> DoubleSoulCapacity = null!;
     internal static ConfigEntry<bool> ShortenGameSpeedIncrements = null!;
     internal static ConfigEntry<bool> SlowDownTime = null!;

@@ -22,4 +22,18 @@ public class MiscPatches
         }
     }
 
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(Debugger), nameof(Debugger.LogInvalidTween))]
+    public static bool Debugger_LogInvalidTween(Tween t)
+    {
+        return false;
+    }
+    
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(Debug), nameof(Debug.Log), typeof(object))]
+    public static bool Debug_Log(object message)
+    {
+        return message is not string s || !s.Contains("Steam informs us the controller is a");
+    }
+
 }
