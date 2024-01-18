@@ -15,13 +15,13 @@ using Random = UnityEngine.Random;
 namespace Rebirth
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
-    [BepInDependency("io.github.xhayper.COTL_API", "0.1.12")]
+    [BepInDependency("io.github.xhayper.COTL_API", "0.1.26")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
         internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
-        private const string PluginVer = "1.0.2";
+        private const string PluginVer = "1.0.3";
 
         public static ManualLogSource Log { get; private set; } = null!;
         private static readonly Harmony Harmony = new(PluginGuid);

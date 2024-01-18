@@ -24,7 +24,8 @@ public static class Patches
         Data.LoadData();
     }
 
-    [HarmonyPatch(typeof(UIFollowerIndoctrinationMenuController), nameof(UIFollowerIndoctrinationMenuController.Show), typeof(Follower), typeof(bool))]
+    [HarmonyPatch(typeof(UIFollowerIndoctrinationMenuController), nameof(UIFollowerIndoctrinationMenuController.Show), typeof(Follower), typeof(OriginalFollowerLookData), typeof
+        (bool))]
     [HarmonyPostfix]
     private static void UIFollowerIndoctrinationMenuController_Show(ref UIFollowerIndoctrinationMenuController __instance)
     {
@@ -33,7 +34,7 @@ public static class Patches
         {
             var name = instance._targetFollower.Brain.Info.Name;
             if (name != _pendingName) return;
-            Plugin.Log.LogWarning($"Follower name {name} confirmed! Removing name from saved name list.");
+            Plugin.Log.LogInfo($"Follower name {name} confirmed! Removing name from saved name list.");
             Data.Names.RemoveAll(n => n == _pendingName);
         });
     }

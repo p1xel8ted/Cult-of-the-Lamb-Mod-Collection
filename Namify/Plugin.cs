@@ -11,10 +11,10 @@ namespace Namify
     {
         private const string PluginGuid = "p1xel8ted.cotl.namify";
         private const string PluginName = "Namify";
-        private const string PluginVer = "0.1.2";
+        private const string PluginVer = "0.1.3";
 
         public static ManualLogSource Log = null!;
-        private static readonly Harmony Harmony = new(PluginGuid);
+        private readonly static Harmony Harmony = new(PluginGuid);
 
         internal static ConfigEntry<string> PersonalApiKey = null!;
         

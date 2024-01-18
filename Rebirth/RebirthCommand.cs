@@ -95,7 +95,6 @@ namespace Rebirth
             NotificationCentre.NotificationsEnabled = false;
             var name = follower.name;
             var oldId = follower.Brain.Info.ID;
-            var oldLevel = follower.Brain._directInfoAccess.FollowerLevel;
             var oldXp = follower.Brain.Info.XPLevel;
             var newXp = Mathf.CeilToInt(oldXp / 2f);
             var halfXp = Helper.DoHalfStats();
@@ -107,14 +106,13 @@ namespace Rebirth
                 GameManager.GetInstance().StartCoroutine(GiveFollowerIE(fi, follower));
                 Plugin.Log.LogWarning($"New follower: {fi.Name}");
                 SaveData.AddBornAgainFollower(fi);
-                fi.FollowerLevel = oldLevel;
                 fi.XPLevel = oldXp;
 
                 if (halfXp)
                 {
-                    if (fi.FollowerLevel >= 2)
+                    if (fi.XPLevel >= 2)
                     {
-                        fi.FollowerLevel -= 1;
+                        fi.XPLevel -= 1;
                     }
 
                     fi.XPLevel = newXp;

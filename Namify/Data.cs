@@ -10,7 +10,7 @@ public static class Data
 {
     private const string DataPath = "namify_names.json";
     public static List<string> Names = new();
-    private static readonly COTLDataReadWriter<List<string>> NameReadWriter = new();
+    private readonly static COTLDataReadWriter<List<string>> NameReadWriter = new();
 
     internal static void LoadData()
     {
@@ -51,7 +51,7 @@ public static class Data
 
         GameManager.GetInstance().StartCoroutine(GetRequest("https://randommer.io/api/Name?nameType=fullname&quantity=1000", true, req =>
         {
-            if (req.isNetworkError || req.isHttpError)
+            if (req.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError or UnityWebRequest.Result.DataProcessingError)
             {
                 Plugin.Log.LogError($"{req.error}: {req.downloadHandler.text}");
                 NotificationCentre.Instance.PlayGenericNotification("There was an error retrieving names for Namify! Trying back-up source...");
@@ -81,7 +81,7 @@ public static class Data
         {
             yield return GameManager.GetInstance().StartCoroutine(GetRequest("https://namey.muffinlabs.com/name.json?count=10&with_surname=true&frequency=all", false, req =>
             {
-                if (req.isNetworkError || req.isHttpError)
+                if (req.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError or UnityWebRequest.Result.DataProcessingError)
                 {
                     Plugin.Log.LogError($"{req.error}: {req.downloadHandler.text}");
                     NotificationCentre.Instance.PlayGenericNotification("There was an error retrieving names for Namify from the backup source!");
