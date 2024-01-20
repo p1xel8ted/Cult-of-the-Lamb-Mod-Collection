@@ -8,7 +8,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> SaveOnQuitToMenu = null!;
     internal static ConfigEntry<bool> DirectLoadSave = null!;
     internal static ConfigEntry<int> SaveSlotToLoad = null!;
-
+    internal static ConfigEntry<KeyboardShortcut> DirectLoadSkipKey = null!;
     internal static ConfigEntry<bool> DisableAd = null!;
     internal static ConfigEntry<bool> HideNewGameButtons = null!;
     internal static ConfigEntry<bool> EnableCustomUiScale = null!;
@@ -90,10 +90,13 @@ public partial class Plugin
     
     public static ConfigEntry<bool> UseCustomDamageValue = null!;
     public static ConfigEntry<bool> MassCollecting = null!;
+    public static ConfigEntry<bool> MassLevelUp = null!;
+    public static ConfigEntry<bool> RemoveLevelLimit = null!;
+    
     public static WriteOnce<float> LumberFastCollect { get; } = new();
     public static WriteOnce<float> OtherFastCollect { get; } = new();
 
     public static WriteOnce<float> RunSpeed { get; } = new();
     public static WriteOnce<float> DodgeSpeed { get; } = new();
-    public static UIMainMenuController UIMainMenuController = null!;
+    public static UIMainMenuController? UIMainMenuController = null!;
 }

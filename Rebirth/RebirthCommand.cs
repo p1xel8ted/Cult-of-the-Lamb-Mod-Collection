@@ -142,12 +142,9 @@ namespace Rebirth
         //this is stop being able to resurrect the old dead body of a born-again follower
         private static void RemoveFromDeadLists(int id)
         {
-            for (var i = 0; i < DataManager.Instance.Followers_Dead.Count; i++)
-            {
-                if (DataManager.Instance.Followers_Dead[i].ID != id) continue;
-                DataManager.Instance.Followers_Dead.RemoveAt(i);
-                DataManager.Instance.Followers_Dead_IDs.RemoveAt(i);
-            }
+            Follower.Followers.RemoveAll(a => a.Brain._directInfoAccess.ID == id);
+            DataManager.Instance.Followers_Dead.RemoveAll(a => a.ID == id);
+            DataManager.Instance.Followers_Dead_IDs.RemoveAll(a => a == id);
         }
 
         private static IEnumerator DieRoutine(Follower follower)

@@ -6,10 +6,10 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.1.3";
+    private const string PluginVer = "2.1.4";
 
     internal static ManualLogSource Log = null!;
-    internal readonly static Harmony Harmony = new(PluginGuid);
+    private readonly static Harmony Harmony = new(PluginGuid);
 
     internal static CanvasScaler? GameCanvasScaler { get; set; }
     internal static CanvasScaler? DungeonCanvasScaler { get; set; }
@@ -57,9 +57,10 @@ public partial class Plugin : BaseUnityPlugin
         HideNewGameButtons = Config.Bind("Save", "Hide New Game Button (s)", true, "Hides the new game button if you have at least one save game.");
         EnableQuickSaveShortcut = Config.Bind("Save", "Enable Quick Save Shortcut", true, "Enable/disable the quick save keyboard shortcut.");
         SaveKeyboardShortcut = Config.Bind("Save", "Save Keyboard Shortcut", new KeyboardShortcut(KeyCode.F5), "The keyboard shortcut to save the game.");
-        DirectLoadSave = Config.Bind("Save", "Direct Load Save", true, "Directly load the specified save game instead of showing the save menu.");
+        DirectLoadSave = Config.Bind("Save", "Direct Load Save", false, "Directly load the specified save game instead of showing the save menu.");
+        DirectLoadSkipKey = Config.Bind("Save", "Direct Load Skip Key", new KeyboardShortcut(KeyCode.LeftShift), "The keyboard shortcut to skip the auto-load when loading the game.");
         SaveSlotToLoad = Config.Bind("Save", "Save Slot To Load", 1, new ConfigDescription("The save slot to load.", new AcceptableValueList<int>(1, 2, 3)));
-        SaveSlotToLoad.SettingChanged += (sender, args) =>
+        SaveSlotToLoad.SettingChanged += (_, _) =>
         {
             if (!SaveAndLoad.SaveExist(SaveSlotToLoad.Value))
             {
@@ -70,7 +71,7 @@ public partial class Plugin : BaseUnityPlugin
         };
         //Scale
         EnableCustomUiScale = Config.Bind("Scale", "Enable Custom UI Scale", false, "Enable/disable the custom UI scale.");
-        EnableCustomUiScale.SettingChanged += (sender, args) =>
+        EnableCustomUiScale.SettingChanged += (_, _) =>
         {
             if (EnableCustomUiScale.Value)
             {
@@ -83,7 +84,7 @@ public partial class Plugin : BaseUnityPlugin
         };
 
         CustomUiScale = Config.Bind("Scale", "Custom UI Scale", 50, new ConfigDescription("The custom UI scale to use.", new AcceptableValueRange<int>(1, 101)));
-        CustomUiScale.SettingChanged += (sender, args) => { Scales.UpdateScale(); };
+        CustomUiScale.SettingChanged += (_, _) => { Scales.UpdateScale(); };
 
         //Weather
         ChangeWeatherOnPhaseChange = Config.Bind("Weather", "Change Weather On Phase Change", true, "By default, the game changes weather when you exit a structure, or on a new day. Enabling this makes the weather change on each phase i.e. morning, noon, evening, night.");
@@ -102,7 +103,7 @@ public partial class Plugin : BaseUnityPlugin
 
         //Lumber/mining
         LumberAndMiningStationsDontAge = Config.Bind("Lumber/Mine Mods", "Infinite Lumber & Mining Stations", false, "Lumber and mining stations should never run out and collapse. Takes 1st priority.");
-        LumberAndMiningStationsDontAge.SettingChanged += (sender, args) =>
+        LumberAndMiningStationsDontAge.SettingChanged += (_, _) =>
         {
             if (!LumberAndMiningStationsDontAge.Value) return;
             DoubleLifespanInstead.Value = false;
@@ -110,7 +111,7 @@ public partial class Plugin : BaseUnityPlugin
         };
 
         DoubleLifespanInstead = Config.Bind("Lumber/Mine Mods", "Double Life Span Instead", false, "Doubles the life span of lumber/mining stations. Takes 2nd priority.");
-        DoubleLifespanInstead.SettingChanged += (sender, args) =>
+        DoubleLifespanInstead.SettingChanged += (_, _) =>
         {
             if (!DoubleLifespanInstead.Value) return;
             LumberAndMiningStationsDontAge.Value = false;
@@ -118,7 +119,7 @@ public partial class Plugin : BaseUnityPlugin
         };
 
         FiftyPercentIncreaseToLifespanInstead = Config.Bind("Lumber/Mine Mods", "Add 50% to Life Span Instead", true, "For when double is too long for your tastes. This will extend their life by 50% instead of 100%. Takes 3rd priority.");
-        FiftyPercentIncreaseToLifespanInstead.SettingChanged += (sender, args) =>
+        FiftyPercentIncreaseToLifespanInstead.SettingChanged += (_, _) =>
         {
             if (!FiftyPercentIncreaseToLifespanInstead.Value) return;
             LumberAndMiningStationsDontAge.Value = false;
@@ -166,11 +167,12 @@ public partial class Plugin : BaseUnityPlugin
         AddExhaustedToHealingBay = Config.Bind("Followers", "Add Exhausted To Healing Bay", true, "Allows you to select exhausted followers for rest and relaxation in the healing bays.");
         BulkFollowerCommands = Config.Bind("Followers", "Bulk Inspire/Extort", true, "When collecting tithes, or inspiring, all followers are done at once.");
         OnlyShowDissenters = Config.Bind("Followers", "Only Show Dissenters In Prison Menu", true, "Only show dissenting followers when interacting with the prison.");
-
-        if (!SoftDepend.Enabled) return;
-        
-        SoftDepend.AddSettingsMenus();
-        Log.LogInfo("API detected - You can configure mod settings in the settings menu.");
+        MassLevelUp = Config.Bind("Followers", "Mass Level Up", true, "When interacting with a follower than can level, all eligible followers will be leveled up.");
+        RemoveLevelLimit = Config.Bind("Followers", "Remove Level Limit", true, "Removes the level limit for followers. They can now level up infinitely.");
+        // if (!SoftDepend.Enabled) return;
+        //
+        // SoftDepend.AddSettingsMenus();
+        // Log.LogInfo("API detected - You can configure mod settings in the settings menu.");
     }
     private void OnEnable()
     {
@@ -188,7 +190,6 @@ public partial class Plugin : BaseUnityPlugin
     private void OnDisable()
     {
         Harmony.UnpatchSelf();
-        // L($"Unloaded {PluginName}!");
     }
 
     public static void L(string message)

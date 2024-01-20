@@ -1,6 +1,3 @@
-using HarmonyLib;
-using Lamb.UI;
-
 namespace Namify;
 
 [HarmonyPatch]
@@ -46,7 +43,10 @@ public static class Patches
     {
         if (GameManager.GetInstance() is null) return;
         if (DataManager.Instance is null) return;
-        Data.GetNames();
+        if (Data.Names.Count <= 0)
+        {
+            Data.GetNames();
+        }
         if (Data.Names.Count <= 0) return;
         if (__result == _pendingName) return;
 

@@ -14,16 +14,15 @@
 
 ## Donate
 
-If you enjoy the mod, please consider a donating [here](https://ko-fi.com/p1xel8ted) or using the Buy Me a Coffee button below. Alternativly, hit that thumbs up button!
+If you enjoy the mod, please consider a donating [here](https://ko-fi.com/p1xel8ted) or using the button below. Alternatively, hit that thumbs up button!
 
-[![KoFiLogo](https://raw.githubusercontent.com/p1xel8ted/GYK-Mods-QMod/main/kofi-nexus-smaller.png)](https://ko-fi.com/p1xel8ted)
+[![KoFiLogo](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/p1xel8ted)
 
 ## Community
 
-Feel free to reach out to me on the channels below and/or join me on my own Discord for a look at my other work (Sun Haven, Graveyard Keeper, Roots of Pacha, Potion Permit and a growing list of Ultra-wide mods).
+Feel free to reach out to me on the Cult of the Lamb Modding Discord.
 
 * [Cult of the Lamb Modding Discord](https://discord.gg/R73vhh8Q2F)
-* [My Discord](https://discord.gg/39h4MJDDUT)
 
 ## Installation
 
@@ -36,42 +35,3 @@ If done correctly, you should have a Rebirth folder inside your plugins folder a
 ## Configuration
 
 Apart from On/Off, there is no configuration required.
-
-## Changelog
-
-### 1.0.3 - 9/5/2023 - You must upate COTL_API to 0.1.22!
-
-### 1.0.2 - 3/12/2022 - You must upate COTL_API to 0.1.12!
-
-* Added support for changing config options from within the Cult of the Lamb Mod settings menu.
-
-### 1.0.1 - 25/11/2022 - You must upate COTL_API to 0.1.10!
-
-* Compatibility update for COTL API 0.1.10
-* Added ability to rebirth elderly followers. Default is off. Can be changed in the config file.
-
-### 1.0.0 - 17/10/2022 - You must upate COTL_API to 0.1.6!
-
-* Moved the token from the common to rare pool of the offering shrine.
-* Added token as a refinery item to the refinery. 15 bones for 1 token.
-* Added a token mission to the Missionary structure.
-* Re-activated the custom quest. Will be expanded a little (different zones) provided there is no further issues.
-* Fixed followers being reset to level 1 on Rebirth. They now keep their level and XP provided they're lucky enough to not trigger the 10% chance of losing half their XP and 1 level.
-
-### 0.1.3 - 25/09/2022 - You must upate COTL_API to 0.1.4!
-
-* Disabled the quest until I get a chance to look at what broke (if the follower comes to you with it, it softlocks. Pressing ESC/B (on controller) appears to resolve it.)
-
-### 0.1.201 - 25/09/2022
-
-* Dependency update. Enforcing a version means I get less "it's not working messages".
-
-### 0.1.1 - 25/09/2022
-
-* The token now spawns as an actual item.
-* The token can appear in the offering shrines.
-* Each time you start the game it will add a quest to go collect a random amount (between 15 and 25) of them from one of the dungeons you have completed.
-
-### 0.1.0 - 10/09/2022
-
-* Initial release

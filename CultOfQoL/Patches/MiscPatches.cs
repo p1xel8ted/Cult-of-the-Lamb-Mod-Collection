@@ -33,7 +33,11 @@ public class MiscPatches
     [HarmonyPatch(typeof(Debug), nameof(Debug.Log), typeof(object))]
     public static bool Debug_Log(object message)
     {
-        return message is not string s || !s.Contains("Steam informs us the controller is a");
+        if (message is not string s) return true;
+        if (s.Contains("Steam informs us the controller is a")) return false;
+        if (float.TryParse(s, out _) || int.TryParse(s, out _)) return false;
+        if (s.Contains("connected")) return false;
+        return false;
     }
 
 }

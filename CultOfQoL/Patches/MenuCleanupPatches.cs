@@ -3,6 +3,9 @@
 [HarmonyPatch]
 public static class MenuCleanupPatches
 {
+    private static bool ReturningToMenu { get; set; }
+    internal static bool SkipAutoLoad { get; set; }
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Start))]
     public static void MainMenu_Start(ref MainMenu __instance)
@@ -20,17 +23,26 @@ public static class MenuCleanupPatches
         __instance._roadmapButton.gameObject.SetActive(!Plugin.RemoveMenuClutter.Value);
 
 
-        if (Plugin.DirectLoadSave.Value)
+        if (Plugin.DirectLoadSave.Value && !ReturningToMenu && !SkipAutoLoad)
         {
-            if (SaveAndLoad.SaveExist(Plugin.SaveSlotToLoad.Value))
+            ReturningToMenu = true;
+            if (SaveAndLoad.SaveExist(Plugin.SaveSlotToLoad.Value - 1))
             {
-                Plugin.UIMainMenuController.LoadMenu.OnTryLoadSaveSlot(Plugin.SaveSlotToLoad.Value);
+                Plugin.UIMainMenuController.LoadMenu.OnTryLoadSaveSlot(Plugin.SaveSlotToLoad.Value - 1);
             }
             else
             {
                 Plugin.Log.LogWarning("The slot you selected doesn't contain a save game, so direct load was aborted.");
             }
         }
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.LoadMainMenu))]
+    public static void UIPauseMenuController_LoadMainMenu()
+    {
+        ReturningToMenu = true;
+        SkipAutoLoad = false;
     }
 
     [HarmonyPostfix]

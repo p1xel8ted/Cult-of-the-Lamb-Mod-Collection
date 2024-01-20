@@ -3,201 +3,164 @@
 [HarmonyPatch]
 public static class FollowerPatches
 {
-    private enum CommandType
+    private static IEnumerator ExtortMoneyRoutine(interaction_FollowerInteraction interaction)
     {
-        Dance,
-        ExtortMoney,
-        Intimidate,
-        Bless,
-        Bribe
+        yield return new WaitForEndOfFrame();
+        interaction.follower.FacePosition(PlayerFarming.Instance.transform.position);
+        yield return new WaitForSeconds(0.25f);
+        int num;
+        for (var i = 0; i < Random.Range(3, 7); i = num + 1)
+        {
+            ResourceCustomTarget.Create(PlayerFarming.Instance.gameObject, interaction.follower.transform.position, InventoryItem.ITEM_TYPE.BLACK_GOLD, delegate
+            {
+                Inventory.AddItem(20, 1);
+            });
+            yield return new WaitForSeconds(0.1f);
+            num = i;
+        }
+        yield return new WaitForSeconds(0.25f);
     }
 
-    //todo: instance.GiveDiscipleRewardRoutine
-    // private static IEnumerator GiveRewards(Follower follower, interaction_FollowerInteraction instance, FollowerTaskType previousTaskType, CommandType type)
+
+    private static IEnumerator RunEnumerator(interaction_FollowerInteraction interaction, bool run, IEnumerator enumerator, Action? onComplete = null)
+    {
+        if (run) yield break;
+        interaction.OnEnable();
+        yield return enumerator;
+        yield return new WaitForSeconds(0.25f);
+        interaction.ShowOtherFollowers();
+        interaction.Close(true, true, false);
+        onComplete?.Invoke();
+    }
+    
+   
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnFollowerCommandFinalized), typeof(FollowerCommands[]))]
+    public static bool interaction_FollowerInteraction_OnFollowerCommandFinalized(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
+    {
+        //todo: fix bribe and re-add it
+        if (followerCommands[0] is not (FollowerCommands.ExtortMoney or FollowerCommands.Dance or FollowerCommands.Intimidate or FollowerCommands.Bless))
+        {
+            return true;
+        }
+
+        if (followerCommands[0] == FollowerCommands.ExtortMoney && __instance.follower.Brain.Stats.PaidTithes)
+        {
+            return true;
+        }
+
+        if (followerCommands[0] == FollowerCommands.Dance && __instance.follower.Brain.Stats.Inspired)
+        {
+            return true;
+        }
+
+        if (followerCommands[0] == FollowerCommands.Intimidate && __instance.follower.Brain.Stats.Intimidated)
+        {
+            return true;
+        }
+
+        if (followerCommands[0] == FollowerCommands.Bless && __instance.follower.Brain.Stats.BlessedToday)
+        {
+            return true;
+        }
+
+        if (followerCommands[0] == FollowerCommands.Bribe && __instance.follower.Brain.Stats.Bribed)
+        {
+            return true;
+        }
+
+
+        //todo: extort works fine
+        //todo: dance works fine
+        //todo: intimidate works fine
+        //todo: bless works fine
+
+        //todo: bribe has menu issues; breaks everything
+
+        foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
+        {
+            if (followerCommands[0] == FollowerCommands.ExtortMoney)
+            {
+                interaction.StartCoroutine(RunEnumerator(interaction, interaction.follower.Brain.Stats.PaidTithes, ExtortMoneyRoutine(interaction), delegate
+                {
+                    Plugin.L($"Extorting money from {interaction.follower.name}");
+                    interaction.follower.Brain.Stats.PaidTithes = true;
+                }));
+            }
+            if (followerCommands[0] == FollowerCommands.Dance)
+            {
+                interaction.StartCoroutine(RunEnumerator(interaction, interaction.follower.Brain.Stats.Inspired, interaction.DanceRoutine(false), delegate
+                {
+                    Plugin.L($"Dancing with {interaction.follower.name}");
+                    interaction.follower.Brain.Stats.Inspired = true;
+                }));
+            }
+            if (followerCommands[0] == FollowerCommands.Intimidate)
+            {
+                interaction.StartCoroutine(RunEnumerator(interaction, interaction.follower.Brain.Stats.Intimidated, interaction.IntimidateRoutine(false), delegate
+                {
+                    Plugin.L($"Intimidating {interaction.follower.name}");
+                    interaction.follower.Brain.Stats.Intimidated = true;
+                }));
+            }
+            if (followerCommands[0] == FollowerCommands.Bless)
+            {
+                interaction.StartCoroutine(RunEnumerator(interaction, interaction.follower.Brain.Stats.BlessedToday, interaction.BlessRoutine(false), delegate
+                {
+                    Plugin.L($"Blessing {interaction.follower.name}");
+                    interaction.follower.Brain.Stats.ReceivedBlessing = true;
+                }));
+            }
+            if (followerCommands[0] == FollowerCommands.Bribe)
+            {
+                interaction.StartCoroutine(RunEnumerator(interaction, interaction.follower.Brain.Stats.Bribed, interaction.BribeRoutine(), delegate
+                {
+                    Plugin.L($"Bribing {interaction.follower.name}");
+                    interaction.follower.Brain.Stats.Bribed = true;
+                }));
+            }
+        }
+        foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
+        {
+            interaction.ShowOtherFollowers();
+        }
+        
+        return false;
+    }
+
+    // [HarmonyFinalizer]
+    // [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.CacheAndSetFollowerRoutine), MethodType.Enumerator)]
+    // private static Exception? Finalizer()
     // {
-    //     switch (type)
-    //     {
-    //         case CommandType.ExtortMoney:
-    //             yield return Extort.ExtortMoneyRoutine(follower, instance);
-    //             break;
-    //         case CommandType.Bless:
-    //             yield return Bless.BlessRoutine(follower, instance, previousTaskType);
-    //             break;
-    //         case CommandType.Dance:
-    //             yield return Dance.DanceRoutine(follower, instance, previousTaskType);
-    //             break;
-    //         case CommandType.Intimidate:
-    //             yield return Intimidate.IntimidateRoutine(follower, instance, previousTaskType);
-    //             break;
-    //         case CommandType.Bribe:
-    //             yield return Bribe.BribeRoutine(follower, instance, previousTaskType);
-    //             break;
-    //     }
-    //
-    //     // yield return new WaitForSeconds(5f);
-    //     if (follower == instance.follower) yield break;
-    //     if (follower.Brain.Stats.Adoration >= follower.Brain.Stats.MAX_ADORATION)
-    //     {
-    //         Plugin.L($"Adoration >= Max adoration for {follower.name}. Beginning reward process.");
-    //         follower.StartCoroutine(instance.GiveDiscipleRewardRoutine(previousTaskType, delegate
-    //         {
-    //             follower.Brain.Stats.Adoration = 0f;
-    //             var info = follower.Brain.Info;
-    //             var xplevel = info.XPLevel;
-    //             info.XPLevel = xplevel + 1;
-    //             var speedUpSequenceMultiplier = 0.75f;
-    //             follower.AdorationUI.BarController.ShrinkBarToEmpty(2f * speedUpSequenceMultiplier);
-    //             follower.Dropped();
-    //             follower.ResetStateAnimations();
-    //             follower.Brain.ContinueToNextTask();
-    //         }, false));
-    //     }
-    //     follower.Interaction_FollowerInteraction.Close(false, true, false);
+    //     return null;
     // }
 
-    // [HarmonyWrapSafe]
-    // [HarmonyPrefix]
-    // [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnFollowerCommandFinalized), typeof(FollowerCommands[]))]
-    // public static bool interaction_FollowerInteraction_OnFollowerCommandFinalized(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
-    // {
-    //     if (!Plugin.BulkFollowerCommands.Value) return true;
-    //
-    //     if (followerCommands[0] is not (FollowerCommands.ExtortMoney or FollowerCommands.Bribe or FollowerCommands.Dance
-    //         or FollowerCommands.Intimidate or FollowerCommands.Bless))
-    //     {
-    //         return true;
-    //     }
-    //      
-    //
-    //     if (followerCommands[0] == FollowerCommands.ExtortMoney)
-    //     {
-    //         foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.PaidTithes))
-    //         {
-    //             switch (follower.Brain.CurrentTask)
-    //             {
-    //                 case FollowerTask_Sleep:
-    //                 case FollowerTask_Dissent:
-    //                 case FollowerTask_Imprisoned:
-    //                 case FollowerTask_Bathroom:
-    //                 case FollowerTask_OnMissionary:
-    //                     continue;
-    //                 default:
-    //                     __instance.StartCoroutine(Extort.ExtortMoneyRoutine(follower, __instance));
-    //                     break;
-    //             }
-    //            // follower.Interaction_FollowerInteraction.Close(false,true,false);
-    //         }
-    //
-    //     }
-    //
-    //     if (followerCommands[0] == FollowerCommands.Dance)
-    //     {
-    //         foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Inspired))
-    //         {
-    //             switch (follower.Brain.CurrentTask)
-    //             {
-    //                 case FollowerTask_Bathroom:
-    //                 case FollowerTask_Sleep:
-    //                 case FollowerTask_Dissent:
-    //                 case FollowerTask_Imprisoned:
-    //                 case FollowerTask_OnMissionary:
-    //                     continue;
-    //                 default:
-    //                     __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Dance));
-    //                     break;
-    //             }
-    //           //  follower.Interaction_FollowerInteraction.Close(false,true,false);
-    //         }
-    //     }
-    //
-    //     if (followerCommands[0] == FollowerCommands.Intimidate)
-    //     {
-    //         foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Intimidated))
-    //         {
-    //             switch (follower.Brain.CurrentTask)
-    //             {
-    //                 case FollowerTask_Bathroom:
-    //                 case FollowerTask_Sleep:
-    //                 case FollowerTask_Dissent:
-    //                 case FollowerTask_Imprisoned:
-    //                 case FollowerTask_OnMissionary:
-    //                     continue;
-    //                 default:
-    //                     __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Intimidate));
-    //                     break;
-    //             }
-    //         }
-    //     }
-    //
-    //     if (followerCommands[0] == FollowerCommands.Bless)
-    //     {
-    //         foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.BlessedToday))
-    //         {
-    //             switch (follower.Brain.CurrentTask)
-    //             {
-    //                 case FollowerTask_Bathroom:
-    //                 case FollowerTask_Sleep:
-    //                 case FollowerTask_Dissent:
-    //                 case FollowerTask_Imprisoned:
-    //                 case FollowerTask_OnMissionary:
-    //                     continue;
-    //                 default:
-    //                     __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Bless));
-    //                     break;
-    //             }
-    //         }
-    //     }
-    //
-    //     if (followerCommands[0] == FollowerCommands.Bribe)
-    //     {
-    //         foreach (var follower in Follower.Followers.Where(follower => !follower.Brain.Stats.Bribed))
-    //         {
-    //             switch (follower.Brain.CurrentTask)
-    //             {
-    //                 case FollowerTask_Bathroom:
-    //                 case FollowerTask_Sleep:
-    //                 case FollowerTask_Dissent:
-    //                 case FollowerTask_Imprisoned:
-    //                 case FollowerTask_OnMissionary:
-    //                     continue;
-    //                 default:
-    //                    __instance.StartCoroutine(GiveRewards(follower, __instance, __instance.follower.Brain.CurrentTask.Type, CommandType.Bribe));
-    //                    break;
-    //             }
-    //         }
-    //     }
-    //     __instance.Close(false,true,false);
-    //     return false;
-    // }
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.LevelUpRoutine))]
+    public static void interaction_FollowerInteraction_GiveDiscipleRewardRoutine(ref interaction_FollowerInteraction __instance)
+    {
+        if (!Plugin.CleanseIllnessAndExhaustionOnLevelUp.Value) return;
+        if (__instance.follower.Brain.Stats.Exhaustion > 0)
+        {
+            __instance.follower.Brain._directInfoAccess.Exhaustion = 0f;
+            __instance.follower.Brain.Stats.Exhaustion = 0f;
+            var onExhaustionStateChanged = FollowerBrainStats.OnExhaustionStateChanged;
+            onExhaustionStateChanged?.Invoke(__instance.follower.Brain._directInfoAccess.ID, FollowerStatState.Off, FollowerStatState.On);
+            Plugin.L($"Resetting follower {__instance.follower.name} from exhaustion!");
+        }
 
-    //ToDo: interaction_FollowerInteraction.GiveDiscipleRewardRoutine
-    // [HarmonyWrapSafe]
-    // [HarmonyPostfix]
-    // [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.GiveDiscipleRewardRoutine))]
-    // public static void interaction_FollowerInteraction_GiveDiscipleRewardRoutine(ref interaction_FollowerInteraction __instance)
-    // {
-    //     if (!Plugin.CleanseIllnessAndExhaustionOnLevelUp.Value) return;
-    //     if (__instance.follower.Brain.Stats.Exhaustion > 0)
-    //     {
-    //         __instance.follower.Brain._directInfoAccess.Exhaustion = 0f;
-    //         __instance.follower.Brain.Stats.Exhaustion = 0f;
-    //         var onExhaustionStateChanged = FollowerBrainStats.OnExhaustionStateChanged;
-    //         onExhaustionStateChanged?.Invoke(__instance.follower.Brain._directInfoAccess.ID, FollowerStatState.Off, FollowerStatState.On);
-    //         Plugin.L($"Resetting follower {__instance.follower.name} from exhaustion!");
-    //     }
-    //
-    //     if (__instance.follower.Brain.Stats.Illness > 0)
-    //     {
-    //         __instance.follower.Brain._directInfoAccess.Illness = 0f;
-    //         __instance.follower.Brain.Stats.Illness = 0f;
-    //         var onIllnessStateChanged = FollowerBrainStats.OnIllnessStateChanged;
-    //         onIllnessStateChanged.Invoke(__instance.follower.Brain._directInfoAccess.ID, FollowerStatState.Off, FollowerStatState.On);
-    //         Plugin.L($"Resetting follower {__instance.follower.name} from illness!");
-    //     }
-    // }
+        if (__instance.follower.Brain.Stats.Illness > 0)
+        {
+            __instance.follower.Brain._directInfoAccess.Illness = 0f;
+            __instance.follower.Brain.Stats.Illness = 0f;
+            var onIllnessStateChanged = FollowerBrainStats.OnIllnessStateChanged;
+            onIllnessStateChanged.Invoke(__instance.follower.Brain._directInfoAccess.ID, FollowerStatState.Off, FollowerStatState.On);
+            Plugin.L($"Resetting follower {__instance.follower.name} from illness!");
+        }
+    }
 
 
-    [HarmonyWrapSafe]
     [HarmonyPostfix]
     [HarmonyPatch(typeof(FollowerCommandGroups), nameof(FollowerCommandGroups.OldAgeCommands), typeof(Follower))]
     public static void FollowerCommandGroups_OldAgeCommands(ref List<CommandItem> __result)

@@ -2,13 +2,14 @@ namespace CultOfQoL;
 
 public static class Helpers
 {
-    internal static void Callback(Follower follower)
+    internal static void Callback(Follower follower, interaction_FollowerInteraction __interaction)
     {
-        Plugin.L($"Resetting {follower.name} and sending to next task.");
-        follower.Interaction_FollowerInteraction.Close(true,true,false);
-        follower.Dropped();
-        follower.ResetStateAnimations();
-        follower.Brain.ContinueToNextTask();
+       // Plugin.L($"Resetting {follower.name} and sending to next task.");
+        // GameManager.GetInstance().OnConversationEnd();
+        // __interaction.Close(true,true,false);
+        // follower.Dropped();
+        // follower.ResetStateAnimations();
+        // follower.Brain.ContinueToNextTask();
     }
     
     public static string GetGameObjectPath(GameObject obj)

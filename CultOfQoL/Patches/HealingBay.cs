@@ -26,7 +26,7 @@ public static class HealingBay
         if (!Run) return;
         Plugin.L($"IsHealingBay: {_isHealingBay}");
         if (!_isHealingBay) return;
-        
+
         followerSelectEntries.Clear();
         foreach (var follower in Follower.Followers)
         {
@@ -80,12 +80,12 @@ public static class HealingBay
             Plugin.L($"{type.ToString()} : {info.Name}");
             if (type == NotificationCentre.NotificationType.NoLongerIll && info == _fi)
             {
-                Plugin.L("Skipping main method!");
+                // Plugin.L("Skipping main method!");
                 __state = true;
                 return false;
             }
 
-            Plugin.L("NOT skipping main method!");
+            // Plugin.L("NOT skipping main method!");
             __state = false;
             return true;
         }
@@ -96,7 +96,7 @@ public static class HealingBay
         {
             if (!Run) return;
             if (!__state) return;
-            Plugin.L("Running postfix");
+            //Plugin.L("Running postfix");
 
             GameManager.GetInstance().StartCoroutine(StartHeal(info));
         }

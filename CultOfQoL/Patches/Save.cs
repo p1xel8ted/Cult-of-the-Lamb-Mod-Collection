@@ -3,6 +3,9 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class Save
 {
+    
+ 
+    
     [HarmonyPostfix]
     [HarmonyPatch(typeof(LoadMenu), nameof(LoadMenu.Start))]
     [HarmonyPatch(typeof(LoadMenu), nameof(LoadMenu.OnShowStarted))]
@@ -24,9 +27,7 @@ public static class Save
     [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.OnMainMenuButtonPressed))]
     private static bool UIPauseMenuController_OnMainMenuButtonPressed(ref UIPauseMenuController __instance)
     {
-       
         if (!Plugin.SaveOnQuitToMenu.Value) return true;
-       
         
         var saveAndQuit = __instance.Push(MonoSingleton<UIManager>.Instance.ConfirmationWindowTemplate);
         saveAndQuit.Configure("Save & Quit", "Are you sure you want to quit to menu? Your progress will be saved.");

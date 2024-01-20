@@ -1,18 +1,19 @@
-
-
-// ReSharper disable InconsistentNaming
-
 namespace CultOfQoL.Patches;
 
 [HarmonyPatch]
 public static class FastCollectingPatches
 {
+    private static GameManager GI => GameManager.GetInstance();
+    private static bool CollectBedsRunning { get; set; }
+    private static bool CollectAllBuildingShrinesRunning { get; set; }
+    private static bool CollectAllShrinesRunning { get; set; }
+    private static bool CollectAllOuthouseRunning { get; set; }
+    private static bool CompostBinDeadBodyRunning { get; set; }
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
     public static void Interaction_CollectResourceChest_Update(ref Interaction_CollectResourceChest __instance)
     {
-        // L($"Distance to trigger other collect: {__instance.DistanceToTriggerDeposits}");
-
         if (__instance.StructureInfo?.Inventory == null)
         {
             return;
@@ -39,21 +40,16 @@ public static class FastCollectingPatches
         }
     }
 
-    //todo: [Error  : Unity Log] NullReferenceException: Object reference not set to an instance of an object
-    // Stack trace:
-    // CultOfQoL.Patches.FastCollectingPatches.LumberjackStation_Update (LumberjackStation& __instance) (at C:/Users/Ben/OneDrive/Development/Cult-of-the-Lamb-Mod-Collection/CultOfQoL/Patches/FastCollectingPatches.cs:43)
-    // (wrapper dynamic-method) LumberjackStation.DMD<LumberjackStation::Update>(LumberjackStation)
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(LumberjackStation), nameof(LumberjackStation.Update))]
     public static void LumberjackStation_Update(ref LumberjackStation __instance)
     {
-        // L($"Distance to trigger lumber collect: {__instance.DistanceToTriggerDeposits}");
-
         if (__instance.StructureInfo?.Inventory == null)
         {
             return;
         }
-        
+
         var triggerExists = __instance.StructureInfo.Inventory.Exists(a => a.quantity >= Mathf.Abs(Plugin.TriggerAmount.Value));
         __instance.AutomaticallyInteract = false;
         if (Plugin.EnableAutoInteract.Value && (__instance.StructureInfo.Inventory.Count >= Mathf.Abs(Plugin.TriggerAmount.Value) || triggerExists))
@@ -99,44 +95,149 @@ public static class FastCollectingPatches
     public static void Interaction_Bed_OnSecondaryInteract(ref Interaction_Bed __instance)
     {
         if (!Plugin.MassCollecting.Value) return;
-        var interactions = Object.FindObjectsOfType<Interaction_Bed>().ToList();
-        foreach (var interaction in interactions)
+        if (!CollectBedsRunning)
         {
-            GameManager.GetInstance().StartCoroutine(interaction.GiveReward());
+            GI.StartCoroutine(CollectBeds(__instance));
+        }
+    }
+
+    private static IEnumerator CollectBeds(Interaction_Bed bedInteraction)
+    {
+        CollectBedsRunning = true;
+
+        var interactions = Resources.FindObjectsOfTypeAll<Interaction_Bed>();
+        foreach (var bed in interactions.Where(a => a != null && a.StructureBrain?.SoulCount > 0))
+        {
+            if (bed == null || bed == bedInteraction) continue;
+            bed.StartCoroutine(bed.GiveReward());
+        }
+        yield return new WaitForSeconds(0.10f);
+        CollectBedsRunning = false;
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(BuildingShrinePassive), nameof(BuildingShrinePassive.OnInteract), typeof(StateMachine))]
+    public static void BuildingShrinePassive_OnInteract(ref BuildingShrinePassive __instance, ref StateMachine state)
+    {
+        if (!Plugin.MassCollecting.Value) return;
+        if (!CollectAllBuildingShrinesRunning)
+        {
+            GI.StartCoroutine(CollectAllBuildingShrines(__instance, state));
+        }
+    }
+
+    private static IEnumerator CollectAllBuildingShrines(BuildingShrinePassive __instance, StateMachine state)
+    {
+        CollectAllBuildingShrinesRunning = true;
+        yield return new WaitForEndOfFrame();
+        var shrines = Resources.FindObjectsOfTypeAll<BuildingShrinePassive>();
+        foreach (var shrine in shrines.Where(a => a.StructureBrain?.SoulCount > 0))
+        {
+            if (shrine == null || shrine == __instance) continue;
+            shrine.OnInteract(state);
+            yield return new WaitForSeconds(0.10f);
+        }
+        CollectAllBuildingShrinesRunning = false;
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Interaction_Outhouse), nameof(Interaction_Outhouse.OnInteract), typeof(StateMachine))]
+    public static void Interaction_Outhouse_OnInteract(ref Interaction_Outhouse __instance, ref StateMachine state)
+    {
+        if (!Plugin.MassCollecting.Value) return;
+        if (!CollectAllOuthouseRunning)
+        {
+            GI.StartCoroutine(CollectAllOuthouse(__instance, state));
+        }
+    }
+
+    private static IEnumerator CollectAllOuthouse(Interaction_Outhouse __instance, StateMachine state)
+    {
+        CollectAllOuthouseRunning = true;
+        yield return new WaitForEndOfFrame();
+        var outhouses = Resources.FindObjectsOfTypeAll<Interaction_Outhouse>();
+        foreach (var outhouse in outhouses.Where(a => a.StructureBrain?.GetPoopCount() > 0))
+        {
+            if (outhouse == null || outhouse == __instance) continue;
+            outhouse.OnInteract(state);
+            yield return new WaitForSeconds(0.10f);
+        }
+        CollectAllOuthouseRunning = false;
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Interaction_CompostBinDeadBody), nameof(Interaction_CompostBinDeadBody.OnInteract), typeof(StateMachine))]
+    public static void Interaction_CompostBinDeadBody_OnInteract(ref Interaction_CompostBinDeadBody __instance, ref StateMachine state)
+    {
+        if (!Plugin.MassCollecting.Value) return;
+        if (!CompostBinDeadBodyRunning)
+        {
+            GI.StartCoroutine(CollectAllCompostBinDeadBody(__instance, state));
         }
     }
 
 
+    private static IEnumerator CollectAllCompostBinDeadBody(Interaction_CompostBinDeadBody __instance, StateMachine state)
+    {
+        CompostBinDeadBodyRunning = true;
+        yield return new WaitForEndOfFrame();
+        var compostBinDead = Resources.FindObjectsOfTypeAll<Interaction_CompostBinDeadBody>();
+        foreach (var cbd in compostBinDead.Where(a => a.StructureBrain?.PoopCount > 0))
+        {
+            if (cbd == null || cbd == __instance) continue;
+            cbd.OnInteract(state);
+            yield return new WaitForSeconds(0.10f);
+        }
+        CompostBinDeadBodyRunning = false;
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Interaction_OfferingShrine), nameof(Interaction_OfferingShrine.OnInteract), typeof(StateMachine))]
+    public static void Interaction_OfferingShrine_OnInteract(ref Interaction_OfferingShrine __instance, ref StateMachine state)
+    {
+        if (!Plugin.MassCollecting.Value) return;
+        if (!CollectAllShrinesRunning)
+        {
+            GI.StartCoroutine(CollectAllShrines(__instance, state));
+        }
+    }
+
+    private static IEnumerator CollectAllShrines(Interaction_OfferingShrine __instance, StateMachine state)
+    {
+        CollectAllShrinesRunning = true;
+        yield return new WaitForEndOfFrame();
+        var shrines = Resources.FindObjectsOfTypeAll<Interaction_OfferingShrine>();
+        foreach (var shrine in shrines.Where(a => a.StructureInfo?.Inventory?.Count > 0))
+        {
+            if (shrine == null || shrine == __instance) continue;
+            yield return new WaitForSeconds(0.10f);
+            shrine.OnInteract(state);
+        }
+        CollectAllShrinesRunning = false;
+    }
+
+    private static IEnumerator FilterEnumerator(IEnumerator original, Type typeToRemove)
+    {
+        while (original.MoveNext())
+        {
+            var current = original.Current;
+            if (current != null && current.GetType() != typeToRemove)
+            {
+                yield return current;
+            }
+        }
+    }
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Interaction_Bed), nameof(Interaction_Bed.GiveReward))]
+    [HarmonyPatch(typeof(Interaction_CollectedResources), nameof(Interaction_CollectedResources.GiveResourcesRoutine))]
+    private static void Interaction_Filter(ref IEnumerator __result)
+    {
+        __result = FilterEnumerator(__result, typeof(WaitForSeconds));
+    }
+
     [HarmonyPatch]
     public static class LootDelayTranspilers
     {
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(Interaction_Bed), "GiveReward", MethodType.Enumerator)]
-        [HarmonyPatch(typeof(Interaction_CollectedResources), "GiveResourcesRoutine", MethodType.Enumerator)]
-        public static IEnumerable<CodeInstruction> TranspilerOne(IEnumerable<CodeInstruction> instructions, MethodBase originalMethod)
-        {
-            if (!Plugin.FastCollecting.Value) return instructions;
-
-            var codes = new List<CodeInstruction>(instructions);
-            for (var i = 0; i < codes.Count; i++)
-            {
-                if (codes[i].opcode == OpCodes.Ldc_R4 && codes[i + 1].opcode == OpCodes.Newobj && codes[i + 1].OperandIs(AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
-                {
-                    Plugin.L($"{originalMethod.GetRealDeclaringType().Name}: Found WaitForSeconds at {i}");
-                    codes[i].operand = originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f;
-                }
-
-                // return new CodeMatcher(instructions)
-                //     .MatchForward(false,
-                //         new CodeMatch(OpCodes.Ldc_R4),
-                //         new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(WaitForSeconds), new[] {typeof(float)})))
-                //     .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Resources") ? 0.01f : 0f)
-                //     .InstructionEnumeration();
-            }
-
-            return codes.AsEnumerable();
-        }
-
         //collection speed for Interaction_CollectResourceChest - default speed is 0.1f
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
@@ -156,12 +257,6 @@ public static class FastCollectingPatches
             }
 
             return codes.AsEnumerable();
-            // return new CodeMatcher(instructions)
-            //     .MatchForward(false,
-            //         new CodeMatch(OpCodes.Ldc_R4),
-            //         new CodeMatch(OpCodes.Stfld, delayField))
-            //     .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Lumber") ? 0.025f : 0.01f)
-            //     .InstructionEnumeration();
         }
 
 
@@ -186,13 +281,6 @@ public static class FastCollectingPatches
             }
 
             return codes.AsEnumerable();
-
-            // return new CodeMatcher(instructions)
-            //     .MatchForward(false,
-            //         new CodeMatch(OpCodes.Ldc_R4),
-            //         new CodeMatch(OpCodes.Stfld, delayField))
-            //     .SetOperandAndAdvance(originalMethod.GetRealDeclaringType().Name.Contains("Outhouse") ? 0.025f : 0f)
-            //     .InstructionEnumeration();
         }
     }
 }

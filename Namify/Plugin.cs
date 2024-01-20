@@ -1,8 +1,3 @@
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.Logging;
-using HarmonyLib;
-
 namespace Namify
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
@@ -11,7 +6,7 @@ namespace Namify
     {
         private const string PluginGuid = "p1xel8ted.cotl.namify";
         private const string PluginName = "Namify";
-        private const string PluginVer = "0.1.3";
+        private const string PluginVer = "0.1.1";
 
         public static ManualLogSource Log = null!;
         private readonly static Harmony Harmony = new(PluginGuid);
@@ -33,7 +28,6 @@ namespace Namify
         private void OnDisable()
         {
             Harmony.UnpatchSelf();
-            Log.LogInfo($"Unloaded {PluginName}!");
         }
 
       

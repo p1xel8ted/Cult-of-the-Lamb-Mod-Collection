@@ -15,16 +15,16 @@ using Random = UnityEngine.Random;
 namespace Rebirth
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVer)]
-    [BepInDependency("io.github.xhayper.COTL_API", "0.1.26")]
+    [BepInDependency("io.github.xhayper.COTL_API", "0.2.1")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
-        internal const string PluginGuid = "p1xel8ted.cotl.rebirth";
+        private const string PluginGuid = "p1xel8ted.cotl.rebirth";
         private const string PluginName = "Rebirth";
         private const string PluginVer = "1.0.3";
 
         public static ManualLogSource Log { get; private set; } = null!;
-        private static readonly Harmony Harmony = new(PluginGuid);
+        private readonly static Harmony Harmony = new(PluginGuid);
         public static string PluginPath = null!;
 
         private static ConfigEntry<bool> _modEnabled = null!;
@@ -36,7 +36,7 @@ namespace Rebirth
         public static InventoryItem.ITEM_TYPE RebirthMission { get; private set; }
 
         
-        public static readonly ModdedSaveData<List<int>> RebirthSaveData = new(PluginGuid);
+        public readonly static ModdedSaveData<List<int>> RebirthSaveData = new(PluginGuid);
 
         private void Awake()
         {
@@ -82,7 +82,6 @@ namespace Rebirth
         private void OnDisable()
         {
             Harmony.UnpatchSelf();
-            Log.LogInfo($"Unloaded {PluginName}!");
         }
     }
 }
