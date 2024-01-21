@@ -6,6 +6,7 @@
 * The initial list is saved to a file where your save games are located to prevent having to make a request every time you start the game.
 * Names are removed from the list as they are used to prevent duplicates.
 * The provided API key is limited to 1000 requests per day. If you want to use your own API key, you can get one from [randommer.io](https://randommer.io/).
+* Add your own names to the list by editing the json file or by using the interface via F1. The file is saved unencrypted to allow users to edit the file themselves.
 
 ## Donate
 
@@ -26,6 +27,7 @@ Feel free to reach out to me on the channels below and/or join me on my own Disc
 
 ## Configuration
 
+* Press F1 to open the configuration interface.
 * The option to set your own API key is available in the config file.
 
 ## Issues, questions, etc.

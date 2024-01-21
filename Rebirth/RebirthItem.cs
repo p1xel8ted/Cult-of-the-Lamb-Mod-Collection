@@ -1,8 +1,3 @@
-using System.IO;
-using COTL_API.CustomInventory;
-using COTL_API.Helpers;
-using UnityEngine;
-
 namespace Rebirth;
 
 public sealed class RebirthItem : CustomInventoryItem

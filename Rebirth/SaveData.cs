@@ -11,6 +11,6 @@ public static class SaveData
     {
         Plugin.RebirthSaveData.Data?.Add(followerInfo.ID);
         Plugin.RebirthSaveData.Save();
-        Plugin.Log.LogWarning($"Saved follower data for {followerInfo.Name}");
+        Plugin.Log.LogInfo($"Saved follower data for {followerInfo.Name}");
     }
 }

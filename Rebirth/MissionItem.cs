@@ -1,5 +1,3 @@
-using COTL_API.CustomMission;
-
 namespace Rebirth;
 
 public class MissionItem: CustomMission

@@ -1,9 +1,4 @@
-﻿using System.IO;
-using COTL_API.CustomFollowerCommand;
-using COTL_API.Helpers;
-using UnityEngine;
-
-namespace Rebirth
+﻿namespace Rebirth
 {
     internal class RebirthSubCommand : CustomFollowerCommand
     {
@@ -64,6 +59,7 @@ namespace Rebirth
         }
 
 
+        // ReSharper disable once OptionalParameterHierarchyMismatch
         public override void Execute(interaction_FollowerInteraction interaction, FollowerCommands finalCommand)
         {
             if (finalCommand != FollowerCommands.AreYouSureYes) return;

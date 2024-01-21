@@ -1,6 +1,4 @@
-﻿namespace Rebirth;
-
-/// <summary>
+﻿/// <summary>
 /// Class that specifies how a setting should be displayed inside the ConfigurationManager settings window.
 /// 
 /// Usage:
@@ -38,13 +36,13 @@ internal sealed class ConfigurationManagerAttributes
     /// Custom setting editor (OnGUI code that replaces the default editor provided by ConfigurationManager).
     /// See below for a deeper explanation. Using a custom drawer will cause many of the other fields to do nothing.
     /// </summary>
-    public System.Action<BepInEx.Configuration.ConfigEntryBase>? CustomDrawer;
+    public System.Action<BepInEx.Configuration.ConfigEntryBase> CustomDrawer;
 
     /// <summary>
     /// Custom setting editor that allows polling keyboard input with the Input (or UnityInput) class.
     /// Use either CustomDrawer or CustomHotkeyDrawer, using both at the same time leads to undefined behaviour.
     /// </summary>
-    public CustomHotkeyDrawerFunc? CustomHotkeyDrawer;
+    public CustomHotkeyDrawerFunc CustomHotkeyDrawer;
 
     /// <summary>
     /// Custom setting draw action that allows polling keyboard input with the Input class.
@@ -94,12 +92,12 @@ internal sealed class ConfigurationManagerAttributes
     /// <summary>
     /// Category the setting is under. Null to be directly under the plugin.
     /// </summary>
-    public string? Category;
+    public string Category;
 
     /// <summary>
     /// If set, a "Default" button will be shown next to the setting to allow resetting to default.
     /// </summary>
-    public object? DefaultValue;
+    public object DefaultValue;
 
     /// <summary>
     /// Force the "Reset" button to not be displayed, even if a valid DefaultValue is available. 
@@ -116,12 +114,12 @@ internal sealed class ConfigurationManagerAttributes
     /// Optional description shown when hovering over the setting.
     /// Not recommended, provide the description when creating the setting instead.
     /// </summary>
-    public string? Description;
+    public string Description;
 
     /// <summary>
     /// Name of the setting.
     /// </summary>
-    public string? DispName;
+    public string DispName;
 
     /// <summary>
     /// Order of the setting on the settings list relative to other settings in a category.
@@ -142,10 +140,10 @@ internal sealed class ConfigurationManagerAttributes
     /// <summary>
     /// Custom converter from setting type to string for the built-in editor textboxes.
     /// </summary>
-    public System.Func<object, string>? ObjToStr;
+    public System.Func<object, string> ObjToStr;
 
     /// <summary>
     /// Custom converter from string to setting type for the built-in editor textboxes.
     /// </summary>
-    public System.Func<string, object>? StrToObj;
+    public System.Func<string, object> StrToObj;
 }

@@ -2,6 +2,7 @@
 
 [BepInPlugin(PluginGuid, PluginName, PluginVer)]
 [BepInDependency("io.github.xhayper.COTL_API", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("com.bepis.bepinex.configurationmanager", "18.2")]
 public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";

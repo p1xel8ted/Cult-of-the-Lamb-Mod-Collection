@@ -1,29 +1,30 @@
+using System.Linq;
+
 namespace Namify;
 
-[HarmonyPatch]
+[Harmony]
 public static class Patches
 {
     private static string _pendingName = string.Empty;
-
-    [HarmonyPatch(typeof(SaveAndLoad), nameof(SaveAndLoad.Save))]
+    
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(SaveAndLoad), nameof(SaveAndLoad.Save))]
     private static void SaveAndLoad_Save()
     {
         if (!DataManager.Instance.AllowSaving || CheatConsole.IN_DEMO) return;
         Data.SaveData();
     }
-
-    [HarmonyPatch(typeof(SaveAndLoad), nameof(SaveAndLoad.Load))]
+    
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(SaveAndLoad), nameof(SaveAndLoad.Load))]
     private static void SaveAndLoad_Load(int saveSlot)
     {
         if (CheatConsole.IN_DEMO) return;
         Data.LoadData();
     }
 
-    [HarmonyPatch(typeof(UIFollowerIndoctrinationMenuController), nameof(UIFollowerIndoctrinationMenuController.Show), typeof(Follower), typeof(OriginalFollowerLookData), typeof
-        (bool))]
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(UIFollowerIndoctrinationMenuController), nameof(UIFollowerIndoctrinationMenuController.Show), typeof(Follower), typeof(OriginalFollowerLookData), typeof(bool))]
     private static void UIFollowerIndoctrinationMenuController_Show(ref UIFollowerIndoctrinationMenuController __instance)
     {
         var instance = __instance;
@@ -32,7 +33,8 @@ public static class Patches
             var name = instance._targetFollower.Brain.Info.Name;
             if (name != _pendingName) return;
             Plugin.Log.LogInfo($"Follower name {name} confirmed! Removing name from saved name list.");
-            Data.Names.RemoveAll(n => n == _pendingName);
+            Data.NamifyNames.Remove(_pendingName);
+            Data.UserNames.Remove(_pendingName);
         });
     }
 
@@ -43,14 +45,19 @@ public static class Patches
     {
         if (GameManager.GetInstance() is null) return;
         if (DataManager.Instance is null) return;
-        if (Data.Names.Count <= 0)
+        if (Data.NamifyNames.Count <= 0)
         {
-            Data.GetNames();
+            Data.GetNamifyNames();
         }
-        if (Data.Names.Count <= 0) return;
+        if (Data.NamifyNames.Count <= 0 && Data.UserNames.Count <= 0)
+        {
+            Plugin.Log.LogError("No names found!");
+            return;
+        }
         if (__result == _pendingName) return;
 
-        _pendingName = Data.Names.RandomElement();
+        var bothNames = Data.NamifyNames.Concat(Data.UserNames).Distinct().ToList();
+        _pendingName = bothNames.RandomElement();
 
         __result = _pendingName;
     }
