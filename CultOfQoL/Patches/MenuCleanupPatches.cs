@@ -28,7 +28,10 @@ public static class MenuCleanupPatches
             ReturningToMenu = true;
             if (SaveAndLoad.SaveExist(Plugin.SaveSlotToLoad.Value - 1))
             {
-                Plugin.UIMainMenuController.LoadMenu.OnTryLoadSaveSlot(Plugin.SaveSlotToLoad.Value - 1);
+                if (Plugin.UIMainMenuController != null)
+                {
+                    Plugin.UIMainMenuController.LoadMenu.OnTryLoadSaveSlot(Plugin.SaveSlotToLoad.Value - 1);
+                }
             }
             else
             {

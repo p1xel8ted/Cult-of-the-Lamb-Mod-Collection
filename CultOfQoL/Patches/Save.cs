@@ -20,8 +20,8 @@ public static class Save
         {
             slot.gameObject.SetActive(false);
         }
+
     }
-    
     
     [HarmonyPrefix]
     [HarmonyPatch(typeof(UIPauseMenuController), nameof(UIPauseMenuController.OnMainMenuButtonPressed))]

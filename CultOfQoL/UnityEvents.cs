@@ -19,7 +19,7 @@ public partial class Plugin
             NotificationCentre.Instance.PlayGenericNotification("Game Saved!");
         }
 
-        if (DisableAd.Value && UIMainMenuController != null)
+        if (DisableAds.Value && UIMainMenuController != null)
         {
             foreach (var comp in UIMainMenuController.ad.GetComponents<Component>())
             {

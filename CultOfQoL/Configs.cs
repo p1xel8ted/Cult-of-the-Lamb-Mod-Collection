@@ -9,7 +9,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> DirectLoadSave = null!;
     internal static ConfigEntry<int> SaveSlotToLoad = null!;
     internal static ConfigEntry<KeyboardShortcut> DirectLoadSkipKey = null!;
-    internal static ConfigEntry<bool> DisableAd = null!;
+    internal static ConfigEntry<bool> DisableAds = null!;
     internal static ConfigEntry<bool> HideNewGameButtons = null!;
     internal static ConfigEntry<bool> EnableCustomUiScale = null!;
     internal static ConfigEntry<int> CustomUiScale = null!;
@@ -20,7 +20,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> FastCollecting = null!;
     internal static ConfigEntry<bool> RemoveMenuClutter = null!;
     internal static ConfigEntry<bool> RemoveTwitchButton = null!;
-    internal static ConfigEntry<bool> BulkFollowerCommands = null!;
+
     internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange = null!;
     internal static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate = null!;
     internal static ConfigEntry<bool> AdjustRefineryRequirements = null!;
@@ -29,6 +29,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> UnlockTwitchStuff = null!;
     internal static ConfigEntry<bool> LumberAndMiningStationsDontAge = null!;
     internal static ConfigEntry<bool> CollectTitheFromOldFollowers = null!;
+    internal static ConfigEntry<bool> IntimidateOldFollowers = null!;
     internal static ConfigEntry<bool> EnableGameSpeedManipulation = null!;
 
     internal static ConfigEntry<bool> DoubleSoulCapacity = null!;
@@ -38,7 +39,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> DoubleLifespanInstead = null!;
     internal static ConfigEntry<bool> DisableGameOver = null!;
 
-    internal static ConfigEntry<bool> ModEnabled = null!;
+
     internal static ConfigEntry<bool> TurnOffSpeakersAtNight = null!;
     internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck = null!;
     internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead = null!;
@@ -57,7 +58,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> GiveFollowersNewNecklaces = null!;
 
 
-    public static ConfigEntry<bool> RandomWeatherChangeWhenExitingArea = null!;
+    internal static ConfigEntry<bool> RandomWeatherChangeWhenExitingArea = null!;
     internal static ConfigEntry<bool> ChangeWeatherOnPhaseChange = null!;
     internal static ConfigEntry<bool> ShowPhaseNotifications = null!;
     internal static ConfigEntry<bool> ShowWeatherChangeNotifications = null!;
@@ -70,33 +71,50 @@ public partial class Plugin
     internal static ConfigEntry<bool> EnableBaseDamageMultiplier = null!;
     internal static ConfigEntry<float> BaseDamageMultiplier = null!;
 
-    public static ConfigEntry<float> CustomDamageMulti = null!;
+    internal static ConfigEntry<float> CustomDamageMulti = null!;
 
-    
-    public static ConfigEntry<bool> RemoveHelpButtonInPauseMenu = null!;
-    public static ConfigEntry<bool> RemoveTwitchButtonInPauseMenu  = null!;
-    public static ConfigEntry<bool> RemovePhotoModeButtonInPauseMenu = null!;
-    
-    public static ConfigEntry<bool> EnableRunSpeedMulti = null!;
-    public static ConfigEntry<bool> EnableDodgeSpeedMulti = null!;
-    public static ConfigEntry<bool> EnableLungeSpeedMulti = null!;
-    public static ConfigEntry<float> RunSpeedMulti = null!;
-    public static ConfigEntry<float> DodgeSpeedMulti = null!;
-    public static ConfigEntry<float> LungeSpeedMulti = null!;
-    
-    public static ConfigEntry<bool> OnlyShowDissenters = null!;
-    
-    public static ConfigEntry<bool> DisablePropagandaSpeakerAudio = null!;
-    
-    public static ConfigEntry<bool> UseCustomDamageValue = null!;
-    public static ConfigEntry<bool> MassCollecting = null!;
-    public static ConfigEntry<bool> MassLevelUp = null!;
-    public static ConfigEntry<bool> RemoveLevelLimit = null!;
-    
-    public static WriteOnce<float> LumberFastCollect { get; } = new();
-    public static WriteOnce<float> OtherFastCollect { get; } = new();
 
-    public static WriteOnce<float> RunSpeed { get; } = new();
-    public static WriteOnce<float> DodgeSpeed { get; } = new();
-    public static UIMainMenuController? UIMainMenuController = null!;
+    internal static ConfigEntry<bool> RemoveHelpButtonInPauseMenu = null!;
+    internal static ConfigEntry<bool> RemoveTwitchButtonInPauseMenu = null!;
+    internal static ConfigEntry<bool> RemovePhotoModeButtonInPauseMenu = null!;
+
+    internal static ConfigEntry<bool> EnableRunSpeedMulti = null!;
+    internal static ConfigEntry<bool> EnableDodgeSpeedMulti = null!;
+    internal static ConfigEntry<bool> EnableLungeSpeedMulti = null!;
+    internal static ConfigEntry<float> RunSpeedMulti = null!;
+    internal static ConfigEntry<float> DodgeSpeedMulti = null!;
+    internal static ConfigEntry<float> LungeSpeedMulti = null!;
+
+    internal static ConfigEntry<bool> OnlyShowDissenters = null!;
+
+    internal static ConfigEntry<bool> DisablePropagandaSpeakerAudio = null!;
+
+    internal static ConfigEntry<bool> UseCustomDamageValue = null!;
+
+
+    internal static ConfigEntry<bool> RemoveLevelLimit = null!;
+
+    internal static WriteOnce<float> LumberFastCollect { get; } = new();
+    internal static WriteOnce<float> OtherFastCollect { get; } = new();
+
+    internal static ConfigEntry<bool> MassBribe = null!;
+    internal static ConfigEntry<bool> MassFertilize = null!;
+    internal static ConfigEntry<bool> MassBless = null!;
+    internal static ConfigEntry<bool> MassExtort = null!;
+    internal static ConfigEntry<bool> MassPetDog = null!;
+    internal static ConfigEntry<bool> MassIntimidate = null!;
+    internal static ConfigEntry<bool> MassInspire = null!;
+    internal static ConfigEntry<bool> MassWater = null!;
+    internal static ConfigEntry<bool> MassLevelUp = null!;
+
+    internal static ConfigEntry<bool> MassCollectFromBeds = null!;
+    internal static ConfigEntry<bool> MassCollectFromOuthouses = null!;
+    internal static ConfigEntry<bool> MassCollectFromOfferingShrines = null!;
+    internal static ConfigEntry<bool> MassCollectFromPassiveShrines = null!;
+    internal static ConfigEntry<bool> MassCollectFromCompost = null!;
+    internal static ConfigEntry<bool> MassCollectFromHarvestTotems = null!;
+
+    internal static WriteOnce<float> RunSpeed { get; } = new();
+    internal static WriteOnce<float> DodgeSpeed { get; } = new();
+    internal static UIMainMenuController? UIMainMenuController = null!;
 }

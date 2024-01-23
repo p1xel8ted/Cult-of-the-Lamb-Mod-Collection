@@ -10,6 +10,8 @@ public static class FastCollectingPatches
     private static bool CollectAllOuthouseRunning { get; set; }
     private static bool CompostBinDeadBodyRunning { get; set; }
 
+    private static bool CollectAllHarvestTotemsRunning { get; set; }
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Interaction_CollectResourceChest), nameof(Interaction_CollectResourceChest.Update))]
     public static void Interaction_CollectResourceChest_Update(ref Interaction_CollectResourceChest __instance)
@@ -94,7 +96,7 @@ public static class FastCollectingPatches
     [HarmonyPatch(typeof(Interaction_Bed), nameof(Interaction_Bed.OnSecondaryInteract))]
     public static void Interaction_Bed_OnSecondaryInteract(ref Interaction_Bed __instance)
     {
-        if (!Plugin.MassCollecting.Value) return;
+        if (!Plugin.MassCollectFromBeds.Value) return;
         if (!CollectBedsRunning)
         {
             GI.StartCoroutine(CollectBeds(__instance));
@@ -104,9 +106,9 @@ public static class FastCollectingPatches
     private static IEnumerator CollectBeds(Interaction_Bed bedInteraction)
     {
         CollectBedsRunning = true;
-
-        var interactions = Resources.FindObjectsOfTypeAll<Interaction_Bed>();
-        foreach (var bed in interactions.Where(a => a != null && a.StructureBrain?.SoulCount > 0))
+        var beds = Interaction.interactions.OfType<Interaction_Bed>().ToList();
+        // var interactions = Resources.FindObjectsOfTypeAll<Interaction_Bed>();
+        foreach (var bed in beds.Where(a => a != null && a.StructureBrain?.SoulCount > 0))
         {
             if (bed == null || bed == bedInteraction) continue;
             bed.StartCoroutine(bed.GiveReward());
@@ -119,7 +121,7 @@ public static class FastCollectingPatches
     [HarmonyPatch(typeof(BuildingShrinePassive), nameof(BuildingShrinePassive.OnInteract), typeof(StateMachine))]
     public static void BuildingShrinePassive_OnInteract(ref BuildingShrinePassive __instance, ref StateMachine state)
     {
-        if (!Plugin.MassCollecting.Value) return;
+        if (!Plugin.MassCollectFromPassiveShrines.Value) return;
         if (!CollectAllBuildingShrinesRunning)
         {
             GI.StartCoroutine(CollectAllBuildingShrines(__instance, state));
@@ -130,7 +132,8 @@ public static class FastCollectingPatches
     {
         CollectAllBuildingShrinesRunning = true;
         yield return new WaitForEndOfFrame();
-        var shrines = Resources.FindObjectsOfTypeAll<BuildingShrinePassive>();
+        var shrines = Interaction.interactions.OfType<BuildingShrinePassive>().ToList();
+        // var shrines = Resources.FindObjectsOfTypeAll<BuildingShrinePassive>();
         foreach (var shrine in shrines.Where(a => a.StructureBrain?.SoulCount > 0))
         {
             if (shrine == null || shrine == __instance) continue;
@@ -144,7 +147,7 @@ public static class FastCollectingPatches
     [HarmonyPatch(typeof(Interaction_Outhouse), nameof(Interaction_Outhouse.OnInteract), typeof(StateMachine))]
     public static void Interaction_Outhouse_OnInteract(ref Interaction_Outhouse __instance, ref StateMachine state)
     {
-        if (!Plugin.MassCollecting.Value) return;
+        if (!Plugin.MassCollectFromOuthouses.Value) return;
         if (!CollectAllOuthouseRunning)
         {
             GI.StartCoroutine(CollectAllOuthouse(__instance, state));
@@ -155,7 +158,8 @@ public static class FastCollectingPatches
     {
         CollectAllOuthouseRunning = true;
         yield return new WaitForEndOfFrame();
-        var outhouses = Resources.FindObjectsOfTypeAll<Interaction_Outhouse>();
+        var outhouses = Interaction.interactions.OfType<Interaction_Outhouse>().ToList();
+        // var outhouses = Resources.FindObjectsOfTypeAll<Interaction_Outhouse>();
         foreach (var outhouse in outhouses.Where(a => a.StructureBrain?.GetPoopCount() > 0))
         {
             if (outhouse == null || outhouse == __instance) continue;
@@ -169,20 +173,20 @@ public static class FastCollectingPatches
     [HarmonyPatch(typeof(Interaction_CompostBinDeadBody), nameof(Interaction_CompostBinDeadBody.OnInteract), typeof(StateMachine))]
     public static void Interaction_CompostBinDeadBody_OnInteract(ref Interaction_CompostBinDeadBody __instance, ref StateMachine state)
     {
-        if (!Plugin.MassCollecting.Value) return;
+        if (!Plugin.MassCollectFromCompost.Value) return;
         if (!CompostBinDeadBodyRunning)
         {
             GI.StartCoroutine(CollectAllCompostBinDeadBody(__instance, state));
         }
     }
 
-
     private static IEnumerator CollectAllCompostBinDeadBody(Interaction_CompostBinDeadBody __instance, StateMachine state)
     {
         CompostBinDeadBodyRunning = true;
         yield return new WaitForEndOfFrame();
-        var compostBinDead = Resources.FindObjectsOfTypeAll<Interaction_CompostBinDeadBody>();
-        foreach (var cbd in compostBinDead.Where(a => a.StructureBrain?.PoopCount > 0))
+        var composts = Interaction.interactions.OfType<Interaction_CompostBinDeadBody>().ToList();
+        // var compostBinDead = Resources.FindObjectsOfTypeAll<Interaction_CompostBinDeadBody>();
+        foreach (var cbd in composts.Where(a => a.StructureBrain?.PoopCount > 0))
         {
             if (cbd == null || cbd == __instance) continue;
             cbd.OnInteract(state);
@@ -192,21 +196,43 @@ public static class FastCollectingPatches
     }
 
     [HarmonyPostfix]
+    [HarmonyPatch(typeof(HarvestTotem), nameof(HarvestTotem.OnInteract), typeof(StateMachine))]
+    public static void HarvestTotem_OnInteract(ref HarvestTotem __instance, ref StateMachine state)
+    {
+        if (!Plugin.MassCollectFromHarvestTotems.Value) return;
+        if (!CollectAllHarvestTotemsRunning)
+        {
+            GI.StartCoroutine(CollectAllHarvestTotems(__instance, state));
+        }
+    }
+
+    private static IEnumerator CollectAllHarvestTotems(HarvestTotem totem, StateMachine state)
+    {
+        CollectAllHarvestTotemsRunning = true;
+        foreach (var t in HarvestTotem.HarvestTotems.Where(a => a != null && a.StructureBrain?.SoulCount > 0))
+        {
+            if (t == null || t == totem) continue;
+            t.OnInteract(state);
+        }
+        yield return new WaitForSeconds(0.10f);
+        CollectAllHarvestTotemsRunning = false;
+    }
+
+    [HarmonyPostfix]
     [HarmonyPatch(typeof(Interaction_OfferingShrine), nameof(Interaction_OfferingShrine.OnInteract), typeof(StateMachine))]
     public static void Interaction_OfferingShrine_OnInteract(ref Interaction_OfferingShrine __instance, ref StateMachine state)
     {
-        if (!Plugin.MassCollecting.Value) return;
+        if (!Plugin.MassCollectFromOfferingShrines.Value) return;
         if (!CollectAllShrinesRunning)
         {
             GI.StartCoroutine(CollectAllShrines(__instance, state));
         }
     }
-
     private static IEnumerator CollectAllShrines(Interaction_OfferingShrine __instance, StateMachine state)
     {
         CollectAllShrinesRunning = true;
         yield return new WaitForEndOfFrame();
-        var shrines = Resources.FindObjectsOfTypeAll<Interaction_OfferingShrine>();
+        var shrines = Interaction.interactions.OfType<Interaction_OfferingShrine>().ToList();
         foreach (var shrine in shrines.Where(a => a.StructureInfo?.Inventory?.Count > 0))
         {
             if (shrine == null || shrine == __instance) continue;
@@ -232,6 +258,7 @@ public static class FastCollectingPatches
     [HarmonyPatch(typeof(Interaction_CollectedResources), nameof(Interaction_CollectedResources.GiveResourcesRoutine))]
     private static void Interaction_Filter(ref IEnumerator __result)
     {
+        if (!Plugin.FastCollecting.Value) return;
         __result = FilterEnumerator(__result, typeof(WaitForSeconds));
     }
 

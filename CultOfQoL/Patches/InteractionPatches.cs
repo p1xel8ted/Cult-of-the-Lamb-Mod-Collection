@@ -12,15 +12,16 @@ public static class InteractionPatches
     [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnInteract), typeof(StateMachine))]
     public static void Interaction_Follower_OnInteract(ref interaction_FollowerInteraction __instance)
     {
-        if (!Plugin.MassLevelUp.Value) return;
-        if (!__instance.follower.Brain.CanLevelUp()) return;
-        GI.StartCoroutine(LevelUpAllFollowers());
+        if (__instance.follower.Brain.CanLevelUp() && Plugin.MassLevelUp.Value)
+        {
+            GI.StartCoroutine(LevelUpAllFollowers());
+        }
     }
-
+    
     private static IEnumerator LevelUpAllFollowers()
     {
         yield return new WaitForEndOfFrame();
-        foreach (var follower in Follower.Followers.Where(follower => follower.Brain.CanLevelUp()))
+        foreach (var follower in Follower.Followers.Where(follower => follower != null && follower.Brain != null && follower.Brain.CanLevelUp()))
         {
             yield return new WaitForSeconds(0.15f);
             var interaction = follower.gameObject.GetComponent<interaction_FollowerInteraction>();
@@ -28,14 +29,11 @@ public static class InteractionPatches
         }
     }
 
-
     private static IEnumerator WaterAllPlants()
     {
         yield return new WaitForEndOfFrame();
-        var plots = Resources.FindObjectsOfTypeAll<FarmPlot>();
-        foreach (var plot in plots.Where(a => a.Structure != null && a.Structure.Brain?.Data?.GrowthStage > 0))
+        foreach (var plot in FarmPlot.FarmPlots.Where(p => p.StructureBrain != null && p.StructureBrain.CanWater()))
         {
-            Plugin.Log.LogInfo($"Watering {plot.name}");
             yield return new WaitForSeconds(0.10f);
             plot.StructureInfo.Watered = true;
             plot.StructureInfo.WateredCount = 0;
@@ -45,10 +43,36 @@ public static class InteractionPatches
         }
     }
 
-    [HarmonyPostfix]
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(FarmPlot), nameof(FarmPlot.OnInteract), typeof(StateMachine))]
-    public static void Interaction_OfferingShrine_OnInteract(ref FarmPlot __instance, ref StateMachine state)
+    public static void FarmPlot_OnInteract(ref FarmPlot __instance)
     {
-        GI.StartCoroutine(WaterAllPlants());
+        if (!Plugin.MassWater.Value) return;
+        if (__instance.StructureBrain.CanWater())
+        {
+            GI.StartCoroutine(WaterAllPlants());
+        }
     }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(FarmPlot), nameof(FarmPlot.AddFertiliser), typeof(InventoryItem.ITEM_TYPE))]
+    public static void FarmPlot_AddFertiliser(ref FarmPlot __instance, InventoryItem.ITEM_TYPE chosenItem)
+    {
+        if (!Plugin.MassFertilize.Value) return;
+        GI.StartCoroutine(AddFertiliser(chosenItem));
+    }
+
+    private static IEnumerator AddFertiliser(InventoryItem.ITEM_TYPE chosenItem)
+    {
+        yield return new WaitForEndOfFrame();
+        foreach (var plot in FarmPlot.FarmPlots.Where(p => p.StructureBrain != null && p.StructureBrain.CanFertilize()))
+        {
+            yield return new WaitForSeconds(0.10f);
+            plot.StructureBrain.AddFertilizer(chosenItem);
+            ResourceCustomTarget.Create(plot.gameObject, PlayerFarming.Instance.transform.position, chosenItem, plot.AddFertilizer);
+            Inventory.ChangeItemQuantity((int) chosenItem, -1);
+        }
+    }
+
+
 }
