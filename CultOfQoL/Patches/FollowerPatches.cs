@@ -23,7 +23,7 @@ public static class FollowerPatches
 
     private static IEnumerator RunEnumerator(bool run, IEnumerator enumerator, Action? onComplete = null)
     {
-        if (run) yield break;
+        if (!run) yield break;
         yield return enumerator;
         yield return new WaitForSeconds(1f);
         onComplete?.Invoke();
@@ -33,23 +33,26 @@ public static class FollowerPatches
     {
         if (!Plugin.MassBribe.Value) return false;
         if (followerCommands != FollowerCommands.Bribe) return false;
-        var notBribedCount = Follower.Followers.Count(follower => !follower.Brain.Stats.Bribed);
-        return notBribedCount > 1;
+        var notBribed = Follower.Followers.Count(follower => FollowerCommandItems.Bribe().IsAvailable(follower));
+        Plugin.L($"{notBribed} followers available for bribing!");
+        return notBribed > 1;
     }
 
     private static bool ShouldMassPetDog(FollowerCommands followerCommands)
     {
         if (!Plugin.MassPetDog.Value) return false;
         if (followerCommands != FollowerCommands.PetDog) return false;
-        var notPettedCount = Follower.Followers.Count(f => !f.Brain.Stats.PetDog);
-        return notPettedCount > 1;
+        var notPetted = Follower.Followers.Count(follower => FollowerCommandItems.PetDog().IsAvailable(follower));
+        Plugin.L($"{notPetted} followers available for petting!");
+        return notPetted > 1;
     }
 
     private static bool ShouldMassExtort(FollowerCommands followerCommands)
     {
         if (!Plugin.MassExtort.Value) return false;
         if (followerCommands != FollowerCommands.ExtortMoney) return false;
-        var notPaidTithesCount = Follower.Followers.Count(follower => !follower.Brain.Stats.PaidTithes);
+        var notPaidTithesCount = Follower.Followers.Count(follower => FollowerCommandItems.Extort().IsAvailable(follower));
+        Plugin.L($"{notPaidTithesCount} followers available for extorting!");
         return notPaidTithesCount > 1;
     }
 
@@ -57,7 +60,8 @@ public static class FollowerPatches
     {
         if (!Plugin.MassInspire.Value) return false;
         if (followerCommands != FollowerCommands.Dance) return false;
-        var notInspiredCount = Follower.Followers.Count(follower => !follower.Brain.Stats.Inspired);
+        var notInspiredCount = Follower.Followers.Count(follower => FollowerCommandItems.Dance().IsAvailable(follower));
+        Plugin.L($"{notInspiredCount} followers available for inspiring!");
         return notInspiredCount > 1;
     }
 
@@ -65,7 +69,8 @@ public static class FollowerPatches
     {
         if (!Plugin.MassIntimidate.Value) return false;
         if (followerCommands != FollowerCommands.Intimidate) return false;
-        var notIntimidatedCount = Follower.Followers.Count(follower => !follower.Brain.Stats.Intimidated);
+        var notIntimidatedCount = Follower.Followers.Count(follower => FollowerCommandItems.Intimidate().IsAvailable(follower));
+        Plugin.L($"{notIntimidatedCount} followers available for intimidating!");
         return notIntimidatedCount > 1;
     }
 
@@ -73,14 +78,64 @@ public static class FollowerPatches
     {
         if (!Plugin.MassBless.Value) return false;
         if (followerCommands != FollowerCommands.Bless) return false;
-        var notBlessedCount = Follower.Followers.Count(follower => !follower.Brain.Stats.BlessedToday);
+        var notBlessedCount = Follower.Followers.Count(follower => FollowerCommandItems.Bless().IsAvailable(follower));
+        Plugin.L($"{notBlessedCount} followers available for blessing!");
         return notBlessedCount > 1;
     }
 
-
-    private static bool RunForThisFollower(FollowerBrain brain)
+    private static bool ShouldMassRomance(FollowerCommands followerCommands)
     {
-        if (brain.CurrentTaskType is not (FollowerTaskType.Sleep or FollowerTaskType.SleepBedRest or FollowerTaskType.Dissent or FollowerTaskType.Imprisoned or FollowerTaskType.Mating)) return true;
+        if (!Plugin.MassRomance.Value) return false;
+        if (followerCommands != FollowerCommands.Romance) return false;
+        var notKissedCount = Follower.Followers.Count(follower => FollowerCommandItems.Kiss().IsAvailable(follower));
+        Plugin.L($"{notKissedCount} followers available for romancing!");
+        return notKissedCount > 1;
+    }
+
+    private static bool ShouldMassBully(FollowerCommands followerCommands)
+    {
+        if (!Plugin.MassBully.Value) return false;
+        if (followerCommands != FollowerCommands.Bully) return false;
+        var notBulliedCount = Follower.Followers.Count(follower => FollowerCommandItems.Bully().IsAvailable(follower));
+        Plugin.L($"{notBulliedCount} followers available for bullying!");
+        return notBulliedCount > 1;
+    }
+
+    private static bool ShouldMassReassure(FollowerCommands followerCommands)
+    {
+        if (!Plugin.MassBully.Value) return false;
+        if (followerCommands != FollowerCommands.Reassure) return false;
+        var notReassuredCount = Follower.Followers.Count(follower => FollowerCommandItems.Reassure().IsAvailable(follower));
+        Plugin.L($"{notReassuredCount} followers available for reassuring!");
+        return notReassuredCount > 1;
+    }
+
+    private static bool ShouldMassReeducate(FollowerCommands followerCommands)
+    {
+        if (!Plugin.MassBully.Value) return false;
+        if (followerCommands != FollowerCommands.Reeducate) return false;
+        var notReeducatedCount = Follower.Followers.Count(follower => FollowerCommandItems.Reeducate().IsAvailable(follower));
+        Plugin.L($"{notReeducatedCount} followers available for reeducating!");
+        return notReeducatedCount > 1;
+    }
+
+    private static bool IsFollowerDissenting(FollowerBrain brain)
+    {
+        if (brain.Info.CursedState is Thought.Dissenter) return true;
+        Plugin.L($"Skipping {brain.Info.Name} because they are dissenting!");
+        return false;
+    }
+    
+    private static bool IsFollowerImprisoned(FollowerBrain brain)
+    {
+        if (brain.Info.CursedState.ToString().Contains("Imprison", StringComparison.OrdinalIgnoreCase)) return true;
+        Plugin.L($"Skipping {brain.Info.Name} because they are in prison!");
+        return false;
+    }
+
+    private static bool IsFollowerAvailable(FollowerBrain brain)
+    {
+        if (brain.CurrentTaskType is not (FollowerTaskType.Sleep or FollowerTaskType.SleepBedRest or FollowerTaskType.Mating)) return true;
         Plugin.L($"Skipping {brain.Info.Name} because they are busy with task: {brain.CurrentTaskType.ToString()}");
         return false;
     }
@@ -89,94 +144,136 @@ public static class FollowerPatches
     [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnFollowerCommandFinalized), typeof(FollowerCommands[]))]
     public static void interaction_FollowerInteraction_OnFollowerCommandFinalized(ref interaction_FollowerInteraction __instance, params FollowerCommands[] followerCommands)
     {
-        if (followerCommands[0] is not (FollowerCommands.Bribe or FollowerCommands.PetDog or FollowerCommands.ExtortMoney or FollowerCommands.Dance or FollowerCommands.Intimidate or FollowerCommands.Bless))
-        {
-            return;
-        }
+        var cmd = followerCommands[0];
 
-        if (ShouldMassPetDog(followerCommands[0]))
+        if (cmd == FollowerCommands.Reassure && ShouldMassReassure(followerCommands[0]))
         {
             foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
             {
-                if (!RunForThisFollower(interaction.follower.Brain)) continue;
-                var isDog = interaction.follower.Brain._directInfoAccess.SkinName.Equals("Dog", StringComparison.OrdinalIgnoreCase);
-                if (!isDog)
+                var run = FollowerCommandItems.Reassure().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.ReassureRoutine(), delegate
                 {
-                    Plugin.L($"Skipping {interaction.follower.name} because they are a not a dog!");
-                    continue;
-                }
-                interaction.StartCoroutine(RunEnumerator(interaction.follower.Brain.Stats.PetDog, interaction.PetDogRoutine(), delegate
+                    interaction.follower.Brain.Stats.ScaredTraitInteracted = true;   
+                    Plugin.L($"Reassured {interaction.follower.name}! Reassure available?: {FollowerCommandItems.Reassure().IsAvailable(interaction.follower)}");
+                }));
+            }
+        }
+        if (cmd == FollowerCommands.Reeducate && ShouldMassReeducate(followerCommands[0]))
+        {
+            foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
+            {
+                var run = FollowerCommandItems.Reeducate().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain) && IsFollowerImprisoned(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.ReeducateRoutine(), delegate
                 {
-                    Plugin.L($"Petted {interaction.follower.name}!");
+                    interaction.follower.Brain.Stats.ReeducatedAction = true;
+                    Plugin.L($"Re-educated {interaction.follower.name}! Re-educate available?: {FollowerCommandItems.Reeducate().IsAvailable(interaction.follower)}");
+                }));
+            }
+        }
+
+        if (cmd == FollowerCommands.Bully && ShouldMassBully(followerCommands[0]))
+        {
+            foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
+            {
+                var run = FollowerCommandItems.Bully().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.RomanceRoutine(), delegate
+                {
+                    interaction.follower.Brain.Stats.ScaredTraitInteracted = true;   
+                    Plugin.L($"Scared straight {interaction.follower.name}! Bully available?: {FollowerCommandItems.Bully().IsAvailable(interaction.follower)}");
+                }));
+            }
+        }
+
+        if (cmd == FollowerCommands.Romance && ShouldMassRomance(followerCommands[0]))
+        {
+            foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
+            {
+                var run = FollowerCommandItems.Kiss().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.RomanceRoutine(), delegate
+                {
+                    interaction.follower.Brain.Stats.KissedAction = true;
+                    Plugin.L($"Romanced {interaction.follower.name}! Romance available?: {FollowerCommandItems.Kiss().IsAvailable(interaction.follower)}");
+                }));
+            }
+        }
+
+        if (cmd == FollowerCommands.PetDog && ShouldMassPetDog(followerCommands[0]))
+        {
+            foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
+            {
+                var run = FollowerCommandItems.PetDog().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.PetDogRoutine(), delegate
+                {
                     interaction.follower.Brain.Stats.PetDog = true;
+                    Plugin.L($"Petted {interaction.follower.name}! PetDog available?: {FollowerCommandItems.PetDog().IsAvailable(interaction.follower)}");
                 }));
             }
         }
 
-        if (ShouldMassExtort(followerCommands[0]))
+        if (cmd == FollowerCommands.ExtortMoney && ShouldMassExtort(followerCommands[0]))
         {
             foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
             {
-                if (!RunForThisFollower(interaction.follower.Brain)) continue;
-                interaction.StartCoroutine(RunEnumerator(interaction.follower.Brain.Stats.PaidTithes, ExtortMoneyRoutine(interaction), delegate
+                var run = FollowerCommandItems.Extort().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, ExtortMoneyRoutine(interaction), delegate
                 {
-                    Plugin.L($"Extorted {interaction.follower.name}!");
                     interaction.follower.Brain.Stats.PaidTithes = true;
+                    Plugin.L($"Extorted {interaction.follower.name}! Extort available?: {FollowerCommandItems.Extort().IsAvailable(interaction.follower)}");
                 }));
             }
         }
 
-        if (ShouldMassInspire(followerCommands[0]))
+        if (cmd == FollowerCommands.Dance && ShouldMassInspire(followerCommands[0]))
         {
             foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
             {
-                if (!RunForThisFollower(interaction.follower.Brain)) continue;
-                interaction.StartCoroutine(RunEnumerator(interaction.follower.Brain.Stats.Inspired, interaction.DanceRoutine(false), delegate
+                var run = FollowerCommandItems.Dance().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.DanceRoutine(false), delegate
                 {
-                    Plugin.L($"Inspired {interaction.follower.name}!");
                     interaction.follower.Brain.Stats.Inspired = true;
+                    Plugin.L($"Inspired {interaction.follower.name}! Inspire available?: {FollowerCommandItems.Dance().IsAvailable(interaction.follower)}");
                 }));
             }
         }
 
-        if (ShouldMassIntimidate(followerCommands[0]))
+        if (cmd == FollowerCommands.Intimidate && ShouldMassIntimidate(followerCommands[0]))
         {
             foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
             {
-                if (!RunForThisFollower(interaction.follower.Brain)) continue;
-                interaction.StartCoroutine(RunEnumerator(interaction.follower.Brain.Stats.Intimidated, interaction.IntimidateRoutine(false), delegate
+                var run = FollowerCommandItems.Intimidate().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.IntimidateRoutine(false), delegate
                 {
-                    Plugin.L($"Intimidated {interaction.follower.name}!");
                     interaction.follower.Brain.Stats.Intimidated = true;
+                    Plugin.L($"Intimidated {interaction.follower.name}! Intimidate available?: {FollowerCommandItems.Intimidate().IsAvailable(interaction.follower)}");
                 }));
             }
         }
 
 
-        if (ShouldMassBless(followerCommands[0]))
+        if (cmd == FollowerCommands.Bless && ShouldMassBless(followerCommands[0]))
         {
             foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
             {
-                if (!RunForThisFollower(interaction.follower.Brain)) continue;
-                interaction.StartCoroutine(RunEnumerator(interaction.follower.Brain.Stats.BlessedToday, interaction.BlessRoutine(false), delegate
+                var run = FollowerCommandItems.Bless().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.BlessRoutine(false), delegate
                 {
-                    Plugin.L($"Blessed {interaction.follower.name}!");
                     interaction.follower.Brain.Stats.ReceivedBlessing = true;
                     interaction.follower.Brain.Stats.LastBlessing = DataManager.Instance.CurrentDayIndex;
+                    Plugin.L($"Blessed {interaction.follower.name}! Bless available?: {FollowerCommandItems.Bless().IsAvailable(interaction.follower)}");
                 }));
             }
         }
 
 
-        if (ShouldMassBribe(followerCommands[0]))
+        if (cmd == FollowerCommands.Bribe && ShouldMassBribe(followerCommands[0]))
         {
             foreach (var interaction in Follower.Followers.Select(follower => follower.gameObject.GetComponent<interaction_FollowerInteraction>()))
             {
-                if (!RunForThisFollower(interaction.follower.Brain)) continue;
-                interaction.StartCoroutine(RunEnumerator(interaction.follower.Brain.Stats.Bribed, interaction.BribeRoutine(), delegate
+                var run = FollowerCommandItems.Bribe().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain);
+                interaction.StartCoroutine(RunEnumerator(run, interaction.BribeRoutine(), delegate
                 {
-                    Plugin.L($"Bribed {interaction.follower.name}!");
                     interaction.follower.Brain.Stats.Bribed = true;
+                    Plugin.L($"Bribed {interaction.follower.name}! Bribe available?: {FollowerCommandItems.Bribe().IsAvailable(interaction.follower)}");
                 }));
             }
         }

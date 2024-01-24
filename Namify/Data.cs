@@ -106,7 +106,7 @@ public static class Data
                 var nameText = JsonConvert.DeserializeObject<string[]>(req.downloadHandler.text);
                 foreach (var name in nameText)
                 {
-                    NamifyNames.Add(name);
+                    NamifyNames.AddRange(name.Split());
                 }
 
                 SaveData();

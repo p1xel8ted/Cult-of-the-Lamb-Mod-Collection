@@ -107,7 +107,6 @@ public static class FastCollectingPatches
     {
         CollectBedsRunning = true;
         var beds = Interaction.interactions.OfType<Interaction_Bed>().ToList();
-        // var interactions = Resources.FindObjectsOfTypeAll<Interaction_Bed>();
         foreach (var bed in beds.Where(a => a != null && a.StructureBrain?.SoulCount > 0))
         {
             if (bed == null || bed == bedInteraction) continue;
@@ -133,7 +132,6 @@ public static class FastCollectingPatches
         CollectAllBuildingShrinesRunning = true;
         yield return new WaitForEndOfFrame();
         var shrines = Interaction.interactions.OfType<BuildingShrinePassive>().ToList();
-        // var shrines = Resources.FindObjectsOfTypeAll<BuildingShrinePassive>();
         foreach (var shrine in shrines.Where(a => a.StructureBrain?.SoulCount > 0))
         {
             if (shrine == null || shrine == __instance) continue;
@@ -159,7 +157,6 @@ public static class FastCollectingPatches
         CollectAllOuthouseRunning = true;
         yield return new WaitForEndOfFrame();
         var outhouses = Interaction.interactions.OfType<Interaction_Outhouse>().ToList();
-        // var outhouses = Resources.FindObjectsOfTypeAll<Interaction_Outhouse>();
         foreach (var outhouse in outhouses.Where(a => a.StructureBrain?.GetPoopCount() > 0))
         {
             if (outhouse == null || outhouse == __instance) continue;
@@ -185,7 +182,6 @@ public static class FastCollectingPatches
         CompostBinDeadBodyRunning = true;
         yield return new WaitForEndOfFrame();
         var composts = Interaction.interactions.OfType<Interaction_CompostBinDeadBody>().ToList();
-        // var compostBinDead = Resources.FindObjectsOfTypeAll<Interaction_CompostBinDeadBody>();
         foreach (var cbd in composts.Where(a => a.StructureBrain?.PoopCount > 0))
         {
             if (cbd == null || cbd == __instance) continue;

@@ -26,7 +26,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> AdjustRefineryRequirements = null!;
 
     internal static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp = null!;
-    internal static ConfigEntry<bool> UnlockTwitchStuff = null!;
+    internal static ConfigEntry<bool> UnlockTwitchItems = null!;
     internal static ConfigEntry<bool> LumberAndMiningStationsDontAge = null!;
     internal static ConfigEntry<bool> CollectTitheFromOldFollowers = null!;
     internal static ConfigEntry<bool> IntimidateOldFollowers = null!;
@@ -100,6 +100,10 @@ public partial class Plugin
     internal static ConfigEntry<bool> MassBribe = null!;
     internal static ConfigEntry<bool> MassFertilize = null!;
     internal static ConfigEntry<bool> MassBless = null!;
+    internal static ConfigEntry<bool> MassRomance = null!;
+    internal static ConfigEntry<bool> MassBully = null!;
+    internal static ConfigEntry<bool> MassReassure = null!;
+    internal static ConfigEntry<bool> MassReeducate = null!;
     internal static ConfigEntry<bool> MassExtort = null!;
     internal static ConfigEntry<bool> MassPetDog = null!;
     internal static ConfigEntry<bool> MassIntimidate = null!;

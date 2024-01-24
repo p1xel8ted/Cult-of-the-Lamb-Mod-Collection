@@ -6,8 +6,10 @@
 public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
-    private const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.1.4";
+    internal const string PluginName = "Cult of QoL Collection";
+    private const string PluginVer = "2.1.5";
+
+    private const string RestartGameMessage = "You must restart the game for these changes to take effect, as in totally exit to desktop and restart the game.\n\n** indicates a restart is required if the setting is changed.";
     private const string GeneralSection = "01. General";
     private const string MenuCleanupSection = "02. Menu Cleanup";
     private const string GameMechanicsSection = "03. Game Mechanics";
@@ -30,12 +32,13 @@ public partial class Plugin : BaseUnityPlugin
     internal static ManualLogSource Log = null!;
     internal static CanvasScaler? GameCanvasScaler { get; set; }
     internal static CanvasScaler? DungeonCanvasScaler { get; set; }
-
+    private static PopupManager PopupManager = null!;
     private void Awake()
     {
         Log = new ManualLogSource(PluginName);
         BepInEx.Logging.Logger.Sources.Add(Log);
 
+        PopupManager = gameObject.AddComponent<PopupManager>();
         SceneManager.sceneLoaded += (_, _) =>
         {
             var buttons = Resources.FindObjectsOfTypeAll<MMButton>();
@@ -45,12 +48,10 @@ public partial class Plugin : BaseUnityPlugin
             }
         };
 
-    
-        
         //General
         SkipDevIntros = Config.Bind(GeneralSection, "Skip Intros", true, new ConfigDescription("Skip splash screens.", null, new ConfigurationManagerAttributes {Order = 3}));
         SkipCrownVideo = Config.Bind(GeneralSection, "Skip Crown Video", true, new ConfigDescription("Skips the video when the lamb gets given the crown.", null, new ConfigurationManagerAttributes {Order = 2}));
-        UnlockTwitchStuff = Config.Bind(GeneralSection, "Unlock Twitch Stuff", true, new ConfigDescription("Unlock pre-order DLC, Twitch plush, and Twitch drops. Paid DLC is excluded on purpose.", null, new ConfigurationManagerAttributes {Order = 1}));
+        UnlockTwitchItems = Config.Bind(GeneralSection, "Unlock Twitch Items", true, new ConfigDescription("Unlock pre-order DLC, Twitch plush, and Twitch drops. Paid DLC is excluded on purpose.", null, new ConfigurationManagerAttributes {Order = 1}));
 
         //Menu Cleanup
         RemoveMenuClutter = Config.Bind(MenuCleanupSection, "Remove Extra Menu Buttons", true, new ConfigDescription("Removes credits/road-map/discord buttons from the menus.", null, new ConfigurationManagerAttributes {Order = 6}));
@@ -67,7 +68,7 @@ public partial class Plugin : BaseUnityPlugin
         IncreaseGoldenFleeceDamageRate = Config.Bind(GameMechanicsSection, "Increase Golden Fleece Rate", true, new ConfigDescription("Doubles the damage increase.", null, new ConfigurationManagerAttributes {Order = 3}));
         UseCustomDamageValue = Config.Bind(GameMechanicsSection, "Use Custom Damage Value", false, new ConfigDescription("Use a custom damage value instead of the default 10%.", null, new ConfigurationManagerAttributes {Order = 2}));
         CustomDamageMulti = Config.Bind(GameMechanicsSection, "Custom Damage Multiplier", 2.0f, new ConfigDescription("The custom damage multiplier to use. Based off the games default 5%.", new AcceptableValueRange<float>(0, 100), new ConfigurationManagerAttributes {Order = 1}));
-        ;
+
 
         //Player Speed
         EnableRunSpeedMulti = Config.Bind(PlayerSpeedSection, "Enable Run Speed Multiplier", true, new ConfigDescription("Enable/disable the run speed multiplier.", null, new ConfigurationManagerAttributes {Order = 6}));
@@ -121,7 +122,9 @@ public partial class Plugin : BaseUnityPlugin
         RandomWeatherChangeWhenExitingArea = Config.Bind(WeatherSection, "Random Weather Change When Exiting Area", true, new ConfigDescription("When exiting a building/area, the weather will change to a random weather type instead of the previous weather.", null, new ConfigurationManagerAttributes {Order = 1}));
 
         //Game Mechanics
-        EasyFishing = Config.Bind(GameMechanicsSection, "Disable Fishing Mini-Game", true, new ConfigDescription("Fishing mini-game cheese. Just cast and let the mod do the rest.", null, new ConfigurationManagerAttributes {Order = 3}));
+        EasyFishing = Config.Bind(GameMechanicsSection, "Disable Fishing Mini-Game", true, new ConfigDescription("Fishing mini-game cheese. Just cast and let the mod do the rest.", null, new ConfigurationManagerAttributes {DispName = "Disable Fishing Mini-Game**", Order = 3}));
+        EasyFishing.SettingChanged += (_, _) => ShowRestartMessage();
+
         DisableGameOver = Config.Bind(GameMechanicsSection, "No More Game-Over", false, new ConfigDescription("Disables the game over function when you have 0 followers for consecutive days.", null, new ConfigurationManagerAttributes {Order = 2}));
         ThriceMultiplyTarotCardLuck = Config.Bind(GameMechanicsSection, "3x Tarot Luck", true, new ConfigDescription("Luck changes with game difficulty, this will multiply your luck multiplier by 3 for drawing rarer tarot cards.", null, new ConfigurationManagerAttributes {Order = 1}));
 
@@ -160,7 +163,8 @@ public partial class Plugin : BaseUnityPlugin
         //Speed
         EnableGameSpeedManipulation = Config.Bind(GameSpeedSection, "Enable Game Speed Manipulation", true, new ConfigDescription("Use left/right arrows keys to increase/decrease game speed in 0.25 increments. Up arrow to reset to default.", null, new ConfigurationManagerAttributes {Order = 5}));
         ShortenGameSpeedIncrements = Config.Bind(GameSpeedSection, "Shorten Game Speed Increments", false, new ConfigDescription("Increments in steps of 1, instead of 0.25.", null, new ConfigurationManagerAttributes {Order = 4}));
-        FastCollecting = Config.Bind(GameSpeedSection, "Speed Up Collection", true, new ConfigDescription("Increases the rate you can collect from the shrines, and other structures.", null, new ConfigurationManagerAttributes {Order = 3}));
+        FastCollecting = Config.Bind(GameSpeedSection, "Speed Up Collection", true, new ConfigDescription("Increases the rate you can collect from the shrines, and other structures.", null, new ConfigurationManagerAttributes {DispName = "Speed Up Collection**", Order = 3}));
+        FastCollecting.SettingChanged += (_, _) => ShowRestartMessage();
         SlowDownTime = Config.Bind(GameSpeedSection, "Slow Down Time", false, new ConfigDescription("Enables the ability to slow down time. This is different to the increase speed implementation. This will make the days longer, but not slow down animations.", null, new ConfigurationManagerAttributes {Order = 2}));
         SlowDownTimeMultiplier = Config.Bind(GameSpeedSection, "Slow Down Time Multiplier", 2f, new ConfigDescription("The multiplier to use for slow down time. For example, the default value of 2 is making the day twice as long.", new AcceptableValueRange<float>(0, 100), new ConfigurationManagerAttributes {Order = 1}));
 
@@ -193,21 +197,62 @@ public partial class Plugin : BaseUnityPlugin
         RemoveLevelLimit = Config.Bind(FollowersSection, "Remove Level Limit", true, new ConfigDescription("Removes the level limit for followers. They can now level up infinitely.", null, new ConfigurationManagerAttributes {Order = 1}));
 
         //Mass Section
-        MassLevelUp = Config.Bind(MassSection, "Mass Level Up", true, new ConfigDescription("When interacting with a follower than can level, all eligible followers will be leveled up.", null, new ConfigurationManagerAttributes {Order = 14}));
+        MassLevelUp = Config.Bind(MassSection, "Mass Level Up", true, new ConfigDescription("When interacting with a follower than can level, all eligible followers will be leveled up.", null, new ConfigurationManagerAttributes {DispName = "Mass Level Up**", Order = 14}));
+        MassLevelUp.SettingChanged += (_, _) => ShowRestartMessage();
+
         MassFertilize = Config.Bind(MassSection, "Mass Fertilize", true, new ConfigDescription("When fertilizing a plot, all farm plots are fertilized at once.", null, new ConfigurationManagerAttributes {Order = 13}));
+
+
         MassWater = Config.Bind(MassSection, "Mass Water", true, new ConfigDescription("When watering a plot, all farm plots are watered at once.", null, new ConfigurationManagerAttributes {Order = 12}));
-        MassBribe = Config.Bind(MassSection, "Mass Bribe", true, new ConfigDescription("When bribing a follower, all followers are bribed at once.", null, new ConfigurationManagerAttributes {Order = 11}));
-        MassBless = Config.Bind(MassSection, "Mass Bless", true, new ConfigDescription("When blessing a follower, all followers are blessed at once.", null, new ConfigurationManagerAttributes {Order = 10}));
-        MassExtort = Config.Bind(MassSection, "Mass Extort", true, new ConfigDescription("When extorting a follower, all followers are extorted at once.", null, new ConfigurationManagerAttributes {Order = 9}));
-        MassPetDog = Config.Bind(MassSection, "Mass Pet Dog", true, new ConfigDescription("When petting a a follower, all followers are petted at once.", null, new ConfigurationManagerAttributes {Order = 8}));
-        MassIntimidate = Config.Bind(MassSection, "Mass Intimidate", true, new ConfigDescription("When intimidating a follower, all followers are intimidated at once.", null, new ConfigurationManagerAttributes {Order = 7}));
-        MassInspire = Config.Bind(MassSection, "Mass Inspire", true, new ConfigDescription("When inspiring a follower, all followers are inspired at once.", null, new ConfigurationManagerAttributes {Order = 6}));
+
+
+        MassBribe = Config.Bind(MassSection, "Mass Bribe", true, new ConfigDescription("When bribing a follower, all followers are bribed at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Bribe**", Order = 11}));
+        MassBribe.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassBless = Config.Bind(MassSection, "Mass Bless", true, new ConfigDescription("When blessing a follower, all followers are blessed at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Bless**", Order = 10}));
+        MassBless.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassExtort = Config.Bind(MassSection, "Mass Extort", true, new ConfigDescription("When extorting a follower, all followers are extorted at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Extort**", Order = 9}));
+        MassExtort.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassPetDog = Config.Bind(MassSection, "Mass Pet Dog", true, new ConfigDescription("When petting a a follower, all followers are petted at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Pet Dog**", Order = 8}));
+        MassPetDog.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassIntimidate = Config.Bind(MassSection, "Mass Intimidate", true, new ConfigDescription("When intimidating a follower, all followers are intimidated at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Intimidate**", Order = 7}));
+        MassIntimidate.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassInspire = Config.Bind(MassSection, "Mass Inspire", true, new ConfigDescription("When inspiring a follower, all followers are inspired at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Inspire**", Order = 6}));
+        MassInspire.SettingChanged += (_, _) => ShowRestartMessage();
+
         MassCollectFromBeds = Config.Bind(MassSection, "Mass Collect From Beds", true, new ConfigDescription("When collecting resources from a bed, all beds are collected from at once.", null, new ConfigurationManagerAttributes {Order = 5}));
+
+
         MassCollectFromOuthouses = Config.Bind(MassSection, "Mass Collect From Outhouses", true, new ConfigDescription("When collecting resources from an outhouse, all outhouses are collected from at once.", null, new ConfigurationManagerAttributes {Order = 4}));
+
+
         MassCollectFromOfferingShrines = Config.Bind(MassSection, "Mass Collect From Offering Shrines", true, new ConfigDescription("When collecting resources from an offering shrine, all offering shrines are collected from at once.", null, new ConfigurationManagerAttributes {Order = 3}));
+
+
         MassCollectFromPassiveShrines = Config.Bind(MassSection, "Mass Collect From Passive Shrines", true, new ConfigDescription("When collecting resources from a passive shrine, all passive shrines are collected from at once.", null, new ConfigurationManagerAttributes {Order = 2}));
+
+
         MassCollectFromCompost = Config.Bind(MassSection, "Mass Collect From Compost", true, new ConfigDescription("When collecting resources from a compost, all composts are collected from at once.", null, new ConfigurationManagerAttributes {Order = 1}));
+
+
         MassCollectFromHarvestTotems = Config.Bind(MassSection, "Mass Collect From Harvest Totems", true, new ConfigDescription("When collecting resources from a harvest totem, all harvest totems are collected from at once.", null, new ConfigurationManagerAttributes {Order = 0}));
+
+
+        MassRomance = Config.Bind(MassSection, "Mass Romance", true, new ConfigDescription("When romancing a follower, all followers are romanced at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Romance**", Order = 0}));
+        MassRomance.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassBully = Config.Bind(MassSection, "Mass Bully", true, new ConfigDescription("When bullying a follower, all followers are bullied at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Bully**", Order = 0}));
+        MassBully.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassReassure = Config.Bind(MassSection, "Mass Reassure", true, new ConfigDescription("When reassuring a follower, all followers are reassured at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Reassure**", Order = 0}));
+        MassReassure.SettingChanged += (_, _) => ShowRestartMessage();
+
+        MassReeducate = Config.Bind(MassSection, "Mass Reeducate", true, new ConfigDescription("When reeducating a follower, all followers are reeducated at once.", null, new ConfigurationManagerAttributes {DispName = "Mass Reeducate**", Order = 0}));
+        MassReeducate.SettingChanged += (_, _) => ShowRestartMessage();
         // if (!SoftDepend.Enabled) return;
         //
         // SoftDepend.AddSettingsMenus();
@@ -219,5 +264,13 @@ public partial class Plugin : BaseUnityPlugin
     public static void L(string message)
     {
         Log.LogInfo(message);
+    }
+
+    private static void ShowRestartMessage()
+    {
+        if (!PopupManager.showPopup)
+        {
+            PopupManager.ShowPopup(RestartGameMessage);
+        }
     }
 }
