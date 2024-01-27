@@ -1,3 +1,7 @@
+### 0.1.3 - 25/01/2024
+
+* Fixed names being generated as first and last name.
+
 ### 0.1.2 - 21/01/2024
 
 * Added ability to add your own names. User-generated/added names are stored in their own list.

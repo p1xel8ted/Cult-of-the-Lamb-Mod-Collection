@@ -102,8 +102,10 @@ internal static class StructurePatches
             return;
         }
 
-        if (!Plugin.DoubleSoulCapacity.Value) return;
-        __result *= 2;
+        if (Plugin.DoubleSoulCapacity.Value)
+        {
+            __result *= 2;
+        }
     }
 
     [HarmonyPostfix]
@@ -116,9 +118,10 @@ internal static class StructurePatches
             return;
         }
 
-        if (!Plugin.DoubleSoulCapacity.Value) return;
-
-        __result *= 2;
+        if (Plugin.DoubleSoulCapacity.Value)
+        {
+            __result *= 2;
+        }
     }
 
     [HarmonyPostfix]
@@ -131,9 +134,10 @@ internal static class StructurePatches
             return;
         }
 
-        if (!Plugin.DoubleSoulCapacity.Value) return;
-
-        __result *= 2;
+        if (Plugin.DoubleSoulCapacity.Value)
+        {
+            __result *= 2;
+        }
     }
 
     [HarmonyPostfix]
@@ -147,8 +151,10 @@ internal static class StructurePatches
         }
 
 
-        if (!Plugin.DoubleSoulCapacity.Value) return;
-        __result *= 2;
+        if (Plugin.DoubleSoulCapacity.Value)
+        {
+            __result *= 2;
+        }
     }
 
     [HarmonyPostfix]
@@ -161,27 +167,55 @@ internal static class StructurePatches
             return;
         }
 
-        if (!Plugin.DoubleSoulCapacity.Value) return;
-        __result *= 2;
+        if (Plugin.DoubleSoulCapacity.Value)
+        {
+            __result *= 2;
+        }
     }
 
-    
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Structures_SiloSeed), nameof(Structures_SiloSeed.Capacity), MethodType.Getter)]
     [HarmonyPatch(typeof(Structures_SiloFertiliser), nameof(Structures_SiloFertiliser.Capacity), MethodType.Getter)]
-    public static void Structures_Capacity(ref float __result)
+    public static void Structures_Capacity(ref StructureBrain __instance, ref float __result)
     {
+        // public float Capacity => this.Data.Type == StructureBrain.TYPES.SEED_BUCKET ? 250f : 15f;
+        //  public float Capacity => this.Data.Type == StructureBrain.TYPES.POOP_BUCKET ? 250f : 15f;
+
+        //250 becomes 256, 15 becomes 32 if Plugin.UseMultiplesOf32.Value is true
+        __result = MakeMultipleOf32(__result);
+
+        if (Plugin.DoubleSiloCapacity.Value)
+        {
+            __result = MakeMultipleOf32(__result *= 2);
+            return;
+        }
+
         if (Plugin.UseCustomSiloCapacity.Value)
         {
-            __result = Mathf.Ceil(__result * Mathf.Abs(Plugin.CustomSiloCapacityMulti.Value));
+            __result = MakeMultipleOf32(Mathf.Ceil(__result * Mathf.Abs(Plugin.CustomSiloCapacityMulti.Value)));
         }
     }
-    
+
+    private static float MakeMultipleOf32(float value)
+    {
+        if (!Plugin.UseMultiplesOf32.Value)
+        {
+            return value;
+        }
+        return Mathf.Ceil(value / 32f) * 32f;
+    }
+
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Structures_Refinery), nameof(Structures_Refinery.GetCost), typeof(InventoryItem.ITEM_TYPE))]
     public static void Structures_Refinery_GetCost(ref List<StructuresData.ItemCost> __result)
     {
         if (!Plugin.AdjustRefineryRequirements.Value) return;
-        foreach (var item in __result) item.CostValue = Mathf.CeilToInt(item.CostValue / 2f);
+        foreach (var item in __result)
+        {
+            item.CostValue = Mathf.CeilToInt(item.CostValue / 2f);
+        }
     }
+
 }

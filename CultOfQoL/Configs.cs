@@ -13,7 +13,7 @@ public partial class Plugin
     internal static ConfigEntry<bool> HideNewGameButtons = null!;
     internal static ConfigEntry<bool> EnableCustomUiScale = null!;
     internal static ConfigEntry<int> CustomUiScale = null!;
-
+    internal static ConfigEntry<int> NotificationsScale = null!;
     internal static ConfigEntry<bool> SkipDevIntros = null!;
     internal static ConfigEntry<bool> SkipCrownVideo = null!;
     internal static ConfigEntry<bool> EasyFishing = null!;
@@ -21,10 +21,24 @@ public partial class Plugin
     internal static ConfigEntry<bool> RemoveMenuClutter = null!;
     internal static ConfigEntry<bool> RemoveTwitchButton = null!;
 
+    internal static ConfigEntry<bool> AllLootMagnets = null!;
+    internal static ConfigEntry<bool> DoubleMagnetRange = null!;
+    internal static ConfigEntry<bool> TripleMagnetRange = null!;
+    internal static ConfigEntry<bool> UseCustomMagnetRange = null!;
+    internal static ConfigEntry<int> CustomMagnetRange = null!;
+    
+    
     internal static ConfigEntry<bool> ReverseGoldenFleeceDamageChange = null!;
     internal static ConfigEntry<bool> IncreaseGoldenFleeceDamageRate = null!;
     internal static ConfigEntry<bool> AdjustRefineryRequirements = null!;
-
+    
+    internal static ConfigEntry<bool> NoNegativeTraits = null!;
+    internal static ConfigEntry<bool> UseUnlockedTraitsOnly = null!;   
+    internal static ConfigEntry<bool> IncludeImmortal = null!;
+    internal static ConfigEntry<bool> IncludeDisciple = null!;
+    internal static ConfigEntry<bool> ShowNotificationsWhenRemovingTraits = null!;
+    internal static ConfigEntry<bool> ShowNotificationsWhenAddingTraits = null!;
+    
     internal static ConfigEntry<bool> CleanseIllnessAndExhaustionOnLevelUp = null!;
     internal static ConfigEntry<bool> UnlockTwitchItems = null!;
     internal static ConfigEntry<bool> LumberAndMiningStationsDontAge = null!;
@@ -38,10 +52,12 @@ public partial class Plugin
     internal static ConfigEntry<float> SlowDownTimeMultiplier = null!;
     internal static ConfigEntry<bool> DoubleLifespanInstead = null!;
     internal static ConfigEntry<bool> DisableGameOver = null!;
-
+    
+    internal static ConfigEntry<bool> FastRitualSermons = null!;
 
     internal static ConfigEntry<bool> TurnOffSpeakersAtNight = null!;
     internal static ConfigEntry<bool> ThriceMultiplyTarotCardLuck = null!;
+    internal static ConfigEntry<bool> RareTarotCardsOnly = null!;
     internal static ConfigEntry<bool> FiftyPercentIncreaseToLifespanInstead = null!;
 
     internal static ConfigEntry<bool> EnableAutoInteract = null!;
@@ -65,8 +81,11 @@ public partial class Plugin
 
     internal static ConfigEntry<float> CustomSoulCapacityMulti = null!;
     internal static ConfigEntry<float> CustomSiloCapacityMulti = null!;
+    
+    internal static ConfigEntry<bool> DoubleSiloCapacity = null!;
     internal static ConfigEntry<bool> UseCustomSoulCapacity = null!;
     internal static ConfigEntry<bool> UseCustomSiloCapacity = null!;
+    internal static ConfigEntry<bool> UseMultiplesOf32 = null!;
 
     internal static ConfigEntry<bool> EnableBaseDamageMultiplier = null!;
     internal static ConfigEntry<float> BaseDamageMultiplier = null!;

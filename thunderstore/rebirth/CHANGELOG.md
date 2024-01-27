@@ -1,3 +1,7 @@
+### 1.0.4 - 25/01/2024 - You must update COTL_API to 0.2.2!
+
+* Maintenance update for Sins of The Flesh
+
 ### 1.0.3 - 20/01/2024 - You must update COTL_API to 0.2.1!
 
 * Maintenance update for Sins of The Flesh

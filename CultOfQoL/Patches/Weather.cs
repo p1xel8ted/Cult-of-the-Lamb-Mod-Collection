@@ -9,8 +9,7 @@ public static class Weather
     [HarmonyPatch(typeof(TimeManager), nameof(TimeManager.StartNewPhase))]
     public static void TimeManager_StartNewPhase(TimeManager __instance, ref DayPhase phase)
     {
-        var changeWeatherAndShowNotification =
-            Plugin.ChangeWeatherOnPhaseChange.Value && Plugin.ShowPhaseNotifications.Value;
+        var changeWeatherAndShowNotification = Plugin.ChangeWeatherOnPhaseChange.Value && Plugin.ShowPhaseNotifications.Value;
         if (Plugin.ChangeWeatherOnPhaseChange.Value)
         {
             if (WeatherSystemController != null)
@@ -68,6 +67,7 @@ public static class Weather
             WeatherSystemController.WeatherType.Raining => "Rain",
             WeatherSystemController.WeatherType.Windy => "Wind",
             WeatherSystemController.WeatherType.Snowing => "Snow",
+            WeatherSystemController.WeatherType.Heat => "Heat",
             _ => string.Empty
         };
 

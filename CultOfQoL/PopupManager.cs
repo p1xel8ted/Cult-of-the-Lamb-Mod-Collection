@@ -67,20 +67,24 @@ internal class PopupManager : MonoBehaviour
         {
             showPopup = false;
         }
-        if (GUILayout.Button("Close & Don't Show Again This Session", [GUILayout.Width(250), GUILayout.Height(40)]))
+        if (!ignoreDontShow)
         {
-            dontShowAgainThisSession = true;
-            showPopup = false;
+            if (GUILayout.Button("Close & Don't Show Again This Session", [GUILayout.Width(250), GUILayout.Height(40)]))
+            {
+                dontShowAgainThisSession = true;
+                showPopup = false;
+            }
         }
         GUILayout.FlexibleSpace(); // Add flexible space after the button
         GUILayout.EndHorizontal();
         GUILayout.FlexibleSpace(); 
     }
 
-
-    public void ShowPopup(string message)
+    private bool ignoreDontShow;
+    public void ShowPopup(string message, bool showCloseAndDontShowAgain)
     {
-        if (dontShowAgainThisSession) return;
+        ignoreDontShow = !showCloseAndDontShowAgain;
+        if (dontShowAgainThisSession && showCloseAndDontShowAgain) return;
         popupMessage = message;
         showPopup = true;
     }

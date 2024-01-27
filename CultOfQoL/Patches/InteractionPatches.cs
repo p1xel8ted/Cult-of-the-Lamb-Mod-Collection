@@ -8,23 +8,48 @@ public static class InteractionPatches
 {
     private static GameManager GI => GameManager.GetInstance();
 
+    // [HarmonyPostfix]
+    // [HarmonyPatch(typeof(MMConversation), nameof(MMConversation.DoClose))]
+    // public static void MMConversation_DoClose()
+    // {
+    //     MMConversation.ClearConversation();
+    //     Plugin.L("MMConversation.DoClose");
+    // }
+    //
+    
+    
     [HarmonyPrefix]
     [HarmonyPatch(typeof(interaction_FollowerInteraction), nameof(interaction_FollowerInteraction.OnInteract), typeof(StateMachine))]
-    public static void Interaction_Follower_OnInteract(ref interaction_FollowerInteraction __instance)
+    public static bool Interaction_Follower_OnInteract(ref interaction_FollowerInteraction __instance)
     {
+        if (UIMenuBase.ActiveMenus.Count > 0 || GameManager.InMenu)
+        {
+            // Plugin.L($"UIMenuBase.ActiveMenus.Count: {UIMenuBase.ActiveMenus.Count}");
+            // Plugin.L($"GameManager.InMenu: {GameManager.InMenu}");
+            // Plugin.L($"MMConversation.mmConversation != null: {MMConversation.mmConversation != null}");
+            Plugin.L("Not interacting with follower because a menu//conversation is open.");
+            foreach (var menu in UIMenuBase.ActiveMenus)
+            {
+                Plugin.L($"Menu: {menu}");
+            }
+            return false;
+        }
+
         if (__instance.follower.Brain.CanLevelUp() && Plugin.MassLevelUp.Value)
         {
             GI.StartCoroutine(LevelUpAllFollowers());
         }
+        return true;
     }
-    
+
     private static IEnumerator LevelUpAllFollowers()
     {
         yield return new WaitForEndOfFrame();
         foreach (var follower in Follower.Followers.Where(follower => follower != null && follower.Brain != null && follower.Brain.CanLevelUp()))
         {
+            if (!FollowerPatches.IsFollowerAvailable(follower.Brain) || FollowerPatches.IsFollowerImprisoned(follower.Brain)) continue;
             yield return new WaitForSeconds(0.15f);
-            var interaction = follower.gameObject.GetComponent<interaction_FollowerInteraction>();
+            var interaction = follower.Interaction_FollowerInteraction;
             GI.StartCoroutine(interaction.LevelUpRoutine(follower.Brain.CurrentTaskType, null, false));
         }
     }

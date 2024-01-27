@@ -1,3 +1,26 @@
+### 2.1.6 - 27/01/2024
+
+* Add Loot section; change the magnet distance and if loot magnets to the player or not.
+* Added some extra checks to the Mass Follower features to prevent soft locks.
+* Added ability to scale the size of the notification banners (independent of the UI scale).
+* Added option to increase sermon/ritual/etc speeds. If you happen to get any exceptions that dont result in the player freezing, ignore them.
+* Added option to make all tarot cards rare only.
+* Added option to remove negative traits, and replace them with a random positive one (or it's direct opposite if available).
+  * You need to remove the 'NothingNegative' mod first.
+  * The followers current traits will be backed up to a file in the save folder.
+* Re-implemented Double Silo Capacity option.
+* Added option to make the silo capacities multiples of 32 (fits with the plots).
+* Fixed the 'Heat' weather-type being excluded from weather change notifications.
+
+### 2.1.5 - 25/01/2024
+
+* Added Mass Fertilize, Water
+* Added Mass Pet Dog, Bribe, Bully, Reassure, Re-educate. These last 3 haven't had extensive testing.
+* If any of the Mass settings or the Level All Followers setting is enabled, the camera will not move to the followers who have leveled. This is to prevent the camera from moving all over the place. The lamb will also not hover when a follow levels. The command wheel will also close in most instances when finished. All of the above is intended, please don't raise bug reports about it.
+* Fixed some of the settings not actually doing anything.
+* Added an alert for when certain settings are toggle and require a game restart to take effect.
+* Configuration Manager is now a hard requirement for the mod to launch.
+
 ### 2.1.4 - 20/01/2024
 
 * Mass Extort, Bless, Inspire, and Intimidate have been re-implemented. Bribe is still a WIP as it breaks menus (it's disabled for now)

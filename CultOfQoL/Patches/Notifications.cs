@@ -3,7 +3,16 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class Notifications
 {
-    private readonly static List<int> StructureID = new();
+    private readonly static List<int> StructureID = [];
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(NotificationCentre), nameof(NotificationCentre.Show))]
+    public static void NotificationCentre_Show(ref NotificationCentre __instance)
+    {
+        var scale = Plugin.NotificationsScale.Value / 100f;
+        __instance._rectTransform.transform.localScale = new Vector3(scale, scale, 1f);
+    }
+
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Scarecrow), nameof(Scarecrow.ShutTrap))]
@@ -12,7 +21,7 @@ public static class Notifications
         var name = __instance.Structure.Structure_Info.GetLocalizedName();
         if (Plugin.NotifyOfScarecrowTraps.Value && !NotificationCentre.Instance.notificationsThisFrame.Contains(name))
         {
-            NotificationCentre.Instance.PlayGenericNotification($"{name} has caught a {__instance.Bird.name}!");
+            NotificationCentre.Instance.PlayGenericNotificationNonLocalizedParams($"{name} has caught a {__instance.Bird.name}!");
         }
     }
 
@@ -24,10 +33,11 @@ public static class Notifications
         var name = __instance.Data.GetLocalizedName();
         if (Plugin.NotifyOfBedCollapse.Value && !NotificationCentre.Instance.notificationsThisFrame.Contains(name))
         {
-            NotificationCentre.Instance.PlayGenericNotification($"{name} has collapsed!");
+            NotificationCentre.Instance.PlayGenericNotificationNonLocalizedParams($"{name} has collapsed!");
         }
     }
     
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Interaction_AddFuel), nameof(Interaction_AddFuel.Update))]
     public static void Interaction_AddFuel_Update(ref Interaction_AddFuel __instance)
@@ -38,7 +48,7 @@ public static class Notifications
             var name = __instance.Structure.Structure_Info.GetLocalizedName();
             if (!NotificationCentre.Instance.notificationsThisFrame.Contains(name) && __instance.Structure.Structure_Info.Fuel <= 0 && !StructureID.Contains(__instance.Structure.Structure_Info.ID))
             {
-                NotificationCentre.Instance.PlayGenericNotification($"{name} has no fuel!");
+                NotificationCentre.Instance.PlayGenericNotificationNonLocalizedParams($"{name} has no fuel!");
                 StructureID.Add(__instance.Structure.Structure_Info.ID);
                 //return;
             }

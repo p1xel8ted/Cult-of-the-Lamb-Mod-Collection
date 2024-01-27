@@ -40,6 +40,7 @@
 * Adjustments to the mass-bless/bribe etc. Still a little wonky, but better than before.
 * Support for modifying settings in game via the mod menu if have the API installed.
 * Load straight into a specified save game after menu splash.
+* And much more....
 
 Each mod can be enabled/disabled individually from within the config. There might be stuff I've missed.
 
@@ -52,17 +53,10 @@ If you enjoy the mod, please consider a donating [here](https://ko-fi.com/p1xel8
 ## Installation
 
 * Install [BepInExPack CultOfTheLamb](https://cult-of-the-lamb.thunderstore.io/package/BepInEx/BepInExPack_CultOfTheLamb/)
-* Place the plugin DLL (CultOfQoL.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
+* Install [Configuration Manager](https://cult-of-the-lamb.thunderstore.io/package/p1xel8ted/BepInEx_Configuration_Manager/)
+* Place the plugin DLLs (CultOfQoL.dll & ConfigurationManager.dll) into your "...\Cult of the Lamb\BepInEx\plugins" folder.
 
 ## Configuration
 
-The configuration file is generated when you first run the game with the mod enabled. It can be found in the "...\Cult of the Lamb\BepInEx\config" folder.
-
-## Contributors
-
-* p1xel8ted
-* Matthew-X
-
-## Known Issues
-
-* Speeding up time will break menus (doubling up), and transitions (stuck behind barrier for example.) - You need to do a full game restart to correct it.
+* The configuration file is generated when you first run the game with the mod enabled. It can be found in the "...\Cult of the Lamb\BepInEx\config" folder.
+* Press F1 in game to open the configuration manager.

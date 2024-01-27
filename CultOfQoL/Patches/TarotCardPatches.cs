@@ -3,6 +3,15 @@ namespace CultOfQoL.Patches;
 [HarmonyPatch]
 public static class TarotCardPatches
 {
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(TarotCards.TarotCard), MethodType.Constructor, [typeof(TarotCards.Card), typeof(int)])]
+    private static void TarotCard_Constructor(ref TarotCards.TarotCard __instance)
+    {
+        if (!Plugin.RareTarotCardsOnly.Value) return;
+        __instance.UpgradeIndex = TarotCards.GetMaxTarotCardLevel(__instance.CardType);
+    }
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(TarotCards), nameof(TarotCards.DrawRandomCard))]
     public static bool TarotCards_DrawRandomCard(ref TarotCards.TarotCard? __result)
