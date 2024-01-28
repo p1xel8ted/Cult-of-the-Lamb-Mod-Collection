@@ -6,8 +6,8 @@
 public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
-    internal const string PluginName = "Cult of QoL Collection";
-    private const string PluginVer = "2.1.6";
+    internal const string PluginName = "The Cult of QoL Collection";
+    private const string PluginVer = "2.1.7";
 
     private const string RestartGameMessage = "You must restart the game for these changes to take effect, as in totally exit to desktop and restart the game.\n\n** indicates a restart is required if the setting is changed.";
     private const string GeneralSection = "01. General";
@@ -20,11 +20,11 @@ public partial class Plugin : BaseUnityPlugin
     private const string WeatherSection = "09. Weather";
     private const string NotificationsSection = "10. Notifications";
     private const string FollowersSection = "11. Followers";
-    private const string FarmSection = "12. Farm";
+    // private const string FarmSection = "12. Farm";
     private const string GameSpeedSection = "13. Game Speed";
     private const string CapacitySection = "14. Capacities";
     private const string AutoInteractSection = "15. Auto-Interact (Chests)";
-    private const string PropagandaSection = "16. Propaganda Structure";
+    // private const string PropagandaSection = "16. Propaganda Structure";
     private const string MinesSection = "17. Mines";
     private const string MassSection = "18. Mass Actions";
     private const string StructureSection = "04. Structures";

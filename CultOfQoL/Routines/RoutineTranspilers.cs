@@ -86,8 +86,11 @@ public static class RoutinesTranspilers
 
         for (var index = 0; index < codes.Count; index++)
         {
-            TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 3].Calls(setStateMachine), 4);
-            TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 5].Calls(simpleAnimatorAnimate), 14);
+            if (!declaringType.Contains("IntimidateRoutine"))
+            {
+                TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 3].Calls(setStateMachine), 4);
+                TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 5].Calls(simpleAnimatorAnimate), 14);
+            }
             TryReplaceWithNop(codes, index, codes[index].LoadsField(HudManagerInstance) && codes[index + 4].Calls(HudManagerHide), 5);
             TryReplaceWithNop(codes, index, codes[index].Calls(GetInstance) && codes[index + 3].Calls(OnConversationNew) && codes[index + 4].Calls(GetInstance) && codes[index + 8].Calls(OnConversationNext), 9);
             TryReplaceWithNop(codes, index, codes[index].Calls(GetInstance) && codes[index + 4].Calls(OnConversationNext) && codes[index + 6].Calls(AddPlayerToCamera) && codes[index + 9].Calls(CameraSetOffset), 10);

@@ -43,7 +43,7 @@ public static class FollowerPatches
         if (!Plugin.MassPetDog.Value) return false;
         if (followerCommands != FollowerCommands.PetDog) return false;
         var notPetted = Follower.Followers.Count(follower => FollowerCommandItems.PetDog().IsAvailable(follower) && IsFollowerADog(follower.Brain));
-       // Plugin.L($"{notPetted} followers available for petting!");
+        // Plugin.L($"{notPetted} followers available for petting!");
         return notPetted > 1;
     }
 
@@ -118,7 +118,7 @@ public static class FollowerPatches
         //Plugin.L($"{notReeducatedCount} followers available for reeducating!");
         return notReeducatedCount > 1;
     }
-    
+
     private static bool IsFollowerADog(FollowerBrain brain)
     {
         if (brain.Info.SkinName.Contains("Dog", StringComparison.OrdinalIgnoreCase)) return true;
@@ -168,7 +168,7 @@ public static class FollowerPatches
                 interaction.StartCoroutine(RunEnumerator(run, interaction.ReassureRoutine(), delegate
                 {
                     interaction.follower.Brain.Stats.ScaredTraitInteracted = true;
-                    Plugin.L($"Reassured {interaction.follower.name}!"); 
+                    Plugin.L($"Reassured {interaction.follower.name}!");
                 }));
             }
         }
@@ -180,7 +180,7 @@ public static class FollowerPatches
                 interaction.StartCoroutine(RunEnumerator(run, interaction.ReeducateRoutine(), delegate
                 {
                     interaction.follower.Brain.Stats.ReeducatedAction = true;
-                    Plugin.L($"Re-educated {interaction.follower.name}!"); 
+                    Plugin.L($"Re-educated {interaction.follower.name}!");
                 }));
             }
         }
@@ -254,6 +254,7 @@ public static class FollowerPatches
 
         if (cmd == FollowerCommands.Intimidate && ShouldMassIntimidate(followerCommands[0]))
         {
+
             foreach (var interaction in followers.Select(follower => follower.Interaction_FollowerInteraction))
             {
                 var run = FollowerCommandItems.Intimidate().IsAvailable(interaction.follower) && IsFollowerAvailable(interaction.follower.Brain) && !IsFollowerImprisoned(interaction.follower.Brain) && !IsFollowerDissenting(interaction.follower.Brain);

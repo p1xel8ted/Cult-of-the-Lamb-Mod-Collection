@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>2.1.6</Version>
+        <Version>2.1.7</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
+        <LangVersion>12</LangVersion>
+        <Product>The Cult of QoL Collection</Product>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Update="BepInEx.Core" Version="5.4.21"/>
@@ -12,275 +14,26 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <Reference Include="AFPSCounter.Examples" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\AFPSCounter.Examples.dll</HintPath>
-      </Reference>
-      <Reference Include="AFPSCounter.Runtime" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\AFPSCounter.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="AmplifyColor" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\AmplifyColor.dll</HintPath>
-      </Reference>
-      <Reference Include="AmplifyShaderEditor.Samples.BuiltIn" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\AmplifyShaderEditor.Samples.BuiltIn.dll</HintPath>
-      </Reference>
       <Reference Include="Assembly-CSharp" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp.dll</HintPath>
-      </Reference>
-      <Reference Include="Assembly-CSharp-firstpass" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      </Reference>
-      <Reference Include="AstarPathfindingProject" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\AstarPathfindingProject.dll</HintPath>
-      </Reference>
-      <Reference Include="AsusGameSDKWrapper" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\AsusGameSDKWrapper.dll</HintPath>
-      </Reference>
-      <Reference Include="Coffee.UIParticle" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Coffee.UIParticle.dll</HintPath>
-      </Reference>
-      <Reference Include="com.steamworks.net" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\com.steamworks.net.dll</HintPath>
-      </Reference>
-      <Reference Include="COTL_API" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
-      </Reference>
-      <Reference Include="DemiLib" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\DemiLib.dll</HintPath>
       </Reference>
       <Reference Include="DOTween" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\DOTween.dll</HintPath>
       </Reference>
-      <Reference Include="DOTween.Modules" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\DOTween.Modules.dll</HintPath>
-      </Reference>
-      <Reference Include="DOTweenPro" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\DOTweenPro.dll</HintPath>
-      </Reference>
-      <Reference Include="DOTweenPro.Scripts" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\DOTweenPro.Scripts.dll</HintPath>
-      </Reference>
-      <Reference Include="Elringus.BlendModes.Runtime" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Elringus.BlendModes.Runtime.dll</HintPath>
-      </Reference>
       <Reference Include="FMODUnity" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\FMODUnity.dll</HintPath>
-      </Reference>
-      <Reference Include="FMODUnityResonance" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\FMODUnityResonance.dll</HintPath>
-      </Reference>
-      <Reference Include="GalaxyCSharp" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\GalaxyCSharp.dll</HintPath>
-      </Reference>
-      <Reference Include="KdTreeLib" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\KdTreeLib.dll</HintPath>
-      </Reference>
-      <Reference Include="LeTai.TranslucentImage" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\LeTai.TranslucentImage.dll</HintPath>
-      </Reference>
-      <Reference Include="LeTai.TranslucentImage.Demo" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\LeTai.TranslucentImage.Demo.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.Bcl.AsyncInterfaces" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.CSharp" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Microsoft.CSharp.dll</HintPath>
-      </Reference>
-      <Reference Include="Mono.Security" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Mono.Security.dll</HintPath>
       </Reference>
       <Reference Include="Newtonsoft.Json" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Newtonsoft.Json.dll</HintPath>
       </Reference>
-      <Reference Include="Pathfinding.ClipperLib" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Pathfinding.ClipperLib.dll</HintPath>
-      </Reference>
-      <Reference Include="Pathfinding.Ionic.Zip.Reduced" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
-      </Reference>
-      <Reference Include="Pathfinding.Poly2Tri" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Pathfinding.Poly2Tri.dll</HintPath>
-      </Reference>
-      <Reference Include="pb_Stl" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\pb_Stl.dll</HintPath>
-      </Reference>
-      <Reference Include="Plawius.ControllerIcons" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Plawius.ControllerIcons.dll</HintPath>
-      </Reference>
-      <Reference Include="Poly2Tri" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Poly2Tri.dll</HintPath>
-      </Reference>
-      <Reference Include="ProBuilderCore-Unity5" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\ProBuilderCore-Unity5.dll</HintPath>
-      </Reference>
-      <Reference Include="ProBuilderMeshOps-Unity5" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\ProBuilderMeshOps-Unity5.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Core" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Rewired_Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Windows" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Rewired_Windows.dll</HintPath>
-      </Reference>
-      <Reference Include="Rewired_Windows_Functions" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Rewired_Windows_Functions.dll</HintPath>
-      </Reference>
-      <Reference Include="Sirenix.OdinInspector.Attributes" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Sirenix.OdinInspector.Attributes.dll</HintPath>
-      </Reference>
-      <Reference Include="Sirenix.OdinInspector.CompatibilityLayer" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Sirenix.OdinInspector.CompatibilityLayer.dll</HintPath>
-      </Reference>
-      <Reference Include="Sirenix.Serialization" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Sirenix.Serialization.dll</HintPath>
-      </Reference>
-      <Reference Include="Sirenix.Serialization.Config" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Sirenix.Serialization.Config.dll</HintPath>
-      </Reference>
-      <Reference Include="Sirenix.Utilities" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Sirenix.Utilities.dll</HintPath>
-      </Reference>
-      <Reference Include="SocketIOUnityAssembly" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\SocketIOUnityAssembly.dll</HintPath>
-      </Reference>
       <Reference Include="spine-unity" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\spine-unity.dll</HintPath>
-      </Reference>
-      <Reference Include="UnifyLibrary" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnifyLibrary.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.2D.Common.Runtime" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.2D.Common.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.2D.SpriteShape.Runtime" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.2D.SpriteShape.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Addressables" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Addressables.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Analytics.DataPrivacy" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Analytics.DataPrivacy.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Analytics.StandardEvents" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Analytics.StandardEvents.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Analytics.Tracker" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Analytics.Tracker.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Burst" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Burst.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Burst.Unsafe" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Burst.Unsafe.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.InputSystem" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.InputSystem.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.InternalAPIEngineBridge.001" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.InternalAPIEngineBridge.001.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Mathematics" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Mathematics.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.MemoryProfiler" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.MemoryProfiler.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Postprocessing.Runtime" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ProBuilder" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ProBuilder.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ProBuilder.Csg" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ProBuilder.Csg.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ProBuilder.KdTree" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ProBuilder.KdTree.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ProBuilder.Poly2Tri" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ProBuilder.Poly2Tri.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ProBuilder.Stl" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ProBuilder.Stl.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Recorder" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Recorder.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Recorder.Base" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Recorder.Base.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ResourceManager" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ResourceManager.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.ScriptableBuildPipeline" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.ScriptableBuildPipeline.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.TextMeshPro" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-      </Reference>
-      <Reference Include="Unity.Timeline" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Unity.Timeline.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.dll</HintPath>
       </Reference>
-      <Reference Include="UnityEngine.AccessibilityModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AIModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.AIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AndroidJNIModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.AndroidJNIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AnimationModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ARModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ARModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AssetBundleModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.AudioModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ClothModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ClusterInputModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ClusterInputModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ClusterRendererModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ClusterRendererModule.dll</HintPath>
-      </Reference>
       <Reference Include="UnityEngine.CoreModule" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.CrashReportingModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.CrashReportingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.DirectorModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.DirectorModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.DSPGraphModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.DSPGraphModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.GameCenterModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.GIModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.GIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.GridModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.GridModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.HotReloadModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.HotReloadModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ImageConversionModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.IMGUIModule" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
@@ -291,74 +44,8 @@
       <Reference Include="UnityEngine.InputModule" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.InputModule.dll</HintPath>
       </Reference>
-      <Reference Include="UnityEngine.JSONSerializeModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.LocalizationModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.LocalizationModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.NVIDIAModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.NVIDIAModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ParticleSystemModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.PerformanceReportingModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.PerformanceReportingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.Physics2DModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.PhysicsModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ProfilerModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ProfilerModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.ScreenCaptureModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SharedInternalsModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SpriteMaskModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.SpriteMaskModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SpriteShapeModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.StreamingModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.StreamingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SubstanceModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.SubstanceModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.SubsystemsModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.SubsystemsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TerrainModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TerrainPhysicsModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TextCoreFontEngineModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TextCoreTextEngineModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
-      </Reference>
       <Reference Include="UnityEngine.TextRenderingModule" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TilemapModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TilemapModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.TLSModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.TLSModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.UI" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UI.dll</HintPath>
@@ -371,69 +58,6 @@
       </Reference>
       <Reference Include="UnityEngine.UIModule" Publicize="true">
         <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UIModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UmbraModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UmbraModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UNETModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UNETModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityAnalyticsCommonModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityAnalyticsModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityConnectModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityCurlModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityCurlModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityTestProtocolModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityTestProtocolModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestAudioModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestTextureModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.UnityWebRequestWWWModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VehiclesModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VFXModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.VFXModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VideoModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VirtualTexturingModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.VirtualTexturingModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.VRModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.VRModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.WindModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.WindModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine.XRModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.XRModule.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityFx.Outline" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityFx.Outline.dll</HintPath>
-      </Reference>
-      <Reference Include="websocket-sharp" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\websocket-sharp.dll</HintPath>
       </Reference>
     </ItemGroup>
 </Project>

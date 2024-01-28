@@ -3,7 +3,7 @@
 [Harmony]
 public static class PickUps
 {
-    private readonly static Dictionary<int, (float OriginalRange, bool OriginalMagnet)> OriginalSettings = new();
+    private readonly static Dictionary<int, (float OriginalRange, bool OriginalMagnet)> OriginalSettings = [];
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(PickUp), nameof(PickUp.OnEnable))]
@@ -45,11 +45,11 @@ public static class PickUps
             Plugin.DoubleMagnetRange.Value ? originalRange * 2 :
             originalRange;
         
-        Plugin.L($"Setting magnet range to {p.MagnetDistance} for {p.name}");
+       // Plugin.L($"Setting magnet range to {p.MagnetDistance} for {p.name}");
 
         if (Plugin.AllLootMagnets.Value)
         {
-            Plugin.L($"Setting magnet to player to true for {p.name}");
+            //Plugin.L($"Setting magnet to player to true for {p.name}");
             p.MagnetToPlayer = true;
         }
     }

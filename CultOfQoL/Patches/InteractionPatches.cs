@@ -8,14 +8,7 @@ public static class InteractionPatches
 {
     private static GameManager GI => GameManager.GetInstance();
 
-    // [HarmonyPostfix]
-    // [HarmonyPatch(typeof(MMConversation), nameof(MMConversation.DoClose))]
-    // public static void MMConversation_DoClose()
-    // {
-    //     MMConversation.ClearConversation();
-    //     Plugin.L("MMConversation.DoClose");
-    // }
-    //
+
     
     
     [HarmonyPrefix]
@@ -24,9 +17,6 @@ public static class InteractionPatches
     {
         if (UIMenuBase.ActiveMenus.Count > 0 || GameManager.InMenu)
         {
-            // Plugin.L($"UIMenuBase.ActiveMenus.Count: {UIMenuBase.ActiveMenus.Count}");
-            // Plugin.L($"GameManager.InMenu: {GameManager.InMenu}");
-            // Plugin.L($"MMConversation.mmConversation != null: {MMConversation.mmConversation != null}");
             Plugin.L("Not interacting with follower because a menu//conversation is open.");
             foreach (var menu in UIMenuBase.ActiveMenus)
             {

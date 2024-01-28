@@ -33,9 +33,9 @@
         <Reference Include="UnityEngine.UI" Publicize="true">
             <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
-        <Reference Include="UnityEngine.UIModule" Publicize="true">
-          <HintPath>..\CultOfQoL\obj\Release\publicized\UnityEngine.UIModule.dll</HintPath>
-        </Reference>
+<!--        <Reference Include="UnityEngine.UIModule" Publicize="true">-->
+<!--          <HintPath>..\CultOfQoL\obj\Release\publicized\UnityEngine.UIModule.dll</HintPath>-->
+<!--        </Reference>-->
         <Reference Include="UnityEngine.UnityWebRequestModule" Publicize="true">
             <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
         </Reference>

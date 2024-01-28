@@ -28,7 +28,7 @@ global using MonoMod.Utils;
 global using src.UI;
 global using src.UI.Menus;
 global using UnityEngine;
-global using UnityEngine.InputSystem.Utilities;
+// global using UnityEngine.InputSystem.Utilities;
 global using UnityEngine.SceneManagement;
 global using UnityEngine.UI;
 global using Object = UnityEngine.Object;

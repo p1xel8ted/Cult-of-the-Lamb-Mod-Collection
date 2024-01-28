@@ -1,3 +1,8 @@
+### 2.1.7 - 28/01/2024
+
+* Fixed lamb not roaring(?) when using Mass Intimidate.
+* Removed some unnecessary logging.
+
 ### 2.1.6 - 27/01/2024
 
 * Add Loot section; change the magnet distance and if loot magnets to the player or not.
