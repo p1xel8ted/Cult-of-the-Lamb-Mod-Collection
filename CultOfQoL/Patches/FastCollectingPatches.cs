@@ -238,24 +238,14 @@ public static class FastCollectingPatches
         CollectAllShrinesRunning = false;
     }
 
-    private static IEnumerator FilterEnumerator(IEnumerator original, Type typeToRemove)
-    {
-        while (original.MoveNext())
-        {
-            var current = original.Current;
-            if (current != null && current.GetType() != typeToRemove)
-            {
-                yield return current;
-            }
-        }
-    }
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Interaction_Bed), nameof(Interaction_Bed.GiveReward))]
     [HarmonyPatch(typeof(Interaction_CollectedResources), nameof(Interaction_CollectedResources.GiveResourcesRoutine))]
     private static void Interaction_Filter(ref IEnumerator __result)
     {
         if (!Plugin.FastCollecting.Value) return;
-        __result = FilterEnumerator(__result, typeof(WaitForSeconds));
+        __result = Helpers.FilterEnumerator(__result, [typeof(WaitForSeconds)]);
     }
 
     [HarmonyPatch]
@@ -306,4 +296,5 @@ public static class FastCollectingPatches
             return codes.AsEnumerable();
         }
     }
+
 }

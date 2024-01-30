@@ -1,3 +1,10 @@
+### 2.1.8 - 30/01/2024
+
+* Fixed Exhausted followers not being able to be healed in the healing bays.
+* Improved associated notifications for the healing bay.
+* Speed increase now only applies to Sermons and Rituals.
+* All logging (for QoL) has been disabled; if you wish to see it, enabled it in the config file (or via the F1 key)
+
 ### 2.1.7 - 28/01/2024
 
 * Fixed lamb not roaring(?) when using Mass Intimidate.

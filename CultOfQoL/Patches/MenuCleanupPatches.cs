@@ -35,7 +35,7 @@ public static class MenuCleanupPatches
             }
             else
             {
-                Plugin.Log.LogWarning("The slot you selected doesn't contain a save game, so direct load was aborted.");
+                Plugin.PopupManager.ShowPopup("The slot you selected doesn't contain a save game, so direct load was aborted.",false);
             }
         }
     }

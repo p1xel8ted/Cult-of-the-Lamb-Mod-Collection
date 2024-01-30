@@ -7,7 +7,7 @@ public partial class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "p1xel8ted.cotl.CultOfQoLCollection";
     internal const string PluginName = "The Cult of QoL Collection";
-    private const string PluginVer = "2.1.7";
+    private const string PluginVer = "2.1.8";
 
     private const string RestartGameMessage = "You must restart the game for these changes to take effect, as in totally exit to desktop and restart the game.\n\n** indicates a restart is required if the setting is changed.";
     private const string GeneralSection = "01. General";
@@ -19,11 +19,15 @@ public partial class Plugin : BaseUnityPlugin
     private const string ScalingSection = "08. Scale";
     private const string WeatherSection = "09. Weather";
     private const string NotificationsSection = "10. Notifications";
+
     private const string FollowersSection = "11. Followers";
+
     // private const string FarmSection = "12. Farm";
     private const string GameSpeedSection = "13. Game Speed";
     private const string CapacitySection = "14. Capacities";
+
     private const string AutoInteractSection = "15. Auto-Interact (Chests)";
+
     // private const string PropagandaSection = "16. Propaganda Structure";
     private const string MinesSection = "17. Mines";
     private const string MassSection = "18. Mass Actions";
@@ -33,7 +37,7 @@ public partial class Plugin : BaseUnityPlugin
     internal static ManualLogSource Log = null!;
     internal static CanvasScaler? GameCanvasScaler { get; set; }
     internal static CanvasScaler? DungeonCanvasScaler { get; set; }
-    private static PopupManager PopupManager = null!;
+    internal static PopupManager PopupManager = null!;
     private void Awake()
     {
         HideBepInEx();
@@ -44,6 +48,7 @@ public partial class Plugin : BaseUnityPlugin
         PopupManager = gameObject.AddComponent<PopupManager>();
 
         //General
+        EnableLogging = Config.Bind(GeneralSection, "Enable Logging", false, new ConfigDescription("Enable/disable logging.", null, new ConfigurationManagerAttributes {Order = 4}));
         SkipDevIntros = Config.Bind(GeneralSection, "Skip Intros", true, new ConfigDescription("Skip splash screens.", null, new ConfigurationManagerAttributes {Order = 3}));
         SkipCrownVideo = Config.Bind(GeneralSection, "Skip Crown Video", true, new ConfigDescription("Skips the video when the lamb gets given the crown.", null, new ConfigurationManagerAttributes {Order = 2}));
         UnlockTwitchItems = Config.Bind(GeneralSection, "Unlock Twitch Items", true, new ConfigDescription("Unlock pre-order DLC, Twitch plush, and Twitch drops. Paid DLC is excluded on purpose.", null, new ConfigurationManagerAttributes {Order = 1}));
@@ -549,8 +554,12 @@ public partial class Plugin : BaseUnityPlugin
 
     public static void L(string message)
     {
-        Log.LogInfo(message);
+        if (EnableLogging.Value)
+        {
+            Log.LogInfo(message);
+        }
     }
+
 
     private static void ShowRestartMessage()
     {
@@ -563,7 +572,7 @@ public partial class Plugin : BaseUnityPlugin
     private static bool IsNoNegativePresent()
     {
         if (!Patches.NoNegativeTraits.IsNothingNegativePresent()) return false;
-        PopupManager.ShowPopup($"You have the Nothing Negative by voidptr mod installed. Please remove it to use Cult of QoL's No Negative Traits feature.", false);
+        PopupManager.ShowPopup($"You have the 'Nothing Negative' mod by voidptr installed. Please remove it to use Cult of QoL's No Negative Traits feature.", false);
         return true;
     }
 

@@ -3,6 +3,7 @@
 [Harmony]
 public static class RoutinesTranspilers
 {
+    private const string IntimidateRoutine = "IntimidateRoutine";
 
     private readonly static MethodInfo GetInstance = AccessTools.Method(typeof(GameManager), nameof(GameManager.GetInstance));
     private readonly static MethodInfo OnConversationNext = AccessTools.Method(typeof(GameManager), nameof(GameManager.OnConversationNext));
@@ -21,7 +22,7 @@ public static class RoutinesTranspilers
     private readonly static Dictionary<string, Func<ConfigEntry<bool>>> routineChecks = new()
     {
         ["BribeRoutine"] = () => Plugin.MassBribe,
-        ["IntimidateRoutine"] = () => Plugin.MassIntimidate,
+        [IntimidateRoutine] = () => Plugin.MassIntimidate,
         ["BullyRoutine"] = () => Plugin.MassBully,
         ["ReassureRoutine"] = () => Plugin.MassReassure,
         ["ReeducateRoutine"] = () => Plugin.MassReeducate,
@@ -75,7 +76,7 @@ public static class RoutinesTranspilers
 
         foreach (var pair in routineCheckResults)
         {
-            LogWarning($"Not patching {declaringType}:{original.Name} as {pair.Value.Invoke().Definition.Key} is false!");
+            Plugin.Log.LogWarning($"Not patching {declaringType}:{original.Name} as {pair.Value.Invoke().Definition.Key} is false!");
             return instructions;
         }
 
@@ -86,7 +87,7 @@ public static class RoutinesTranspilers
 
         for (var index = 0; index < codes.Count; index++)
         {
-            if (!declaringType.Contains("IntimidateRoutine"))
+            if (!declaringType.Contains(IntimidateRoutine))
             {
                 TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 3].Calls(setStateMachine), 4);
                 TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 5].Calls(simpleAnimatorAnimate), 14);
@@ -98,11 +99,7 @@ public static class RoutinesTranspilers
 
         return codes.AsEnumerable();
     }
-
-    private static void LogWarning(string message)
-    {
-        Plugin.Log.LogWarning($"[Mass Actions] -> {message}");
-    }
+    
 
     private static void LogOnce(string declaringType, string message)
     {

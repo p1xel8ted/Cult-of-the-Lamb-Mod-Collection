@@ -2,16 +2,19 @@ namespace CultOfQoL;
 
 public static class Helpers
 {
-    internal static void Callback(Follower follower, interaction_FollowerInteraction __interaction)
+
+    public static IEnumerator FilterEnumerator(IEnumerator original, Type[] typesToRemove)
     {
-       // Plugin.L($"Resetting {follower.name} and sending to next task.");
-        // GameManager.GetInstance().OnConversationEnd();
-        // __interaction.Close(true,true,false);
-        // follower.Dropped();
-        // follower.ResetStateAnimations();
-        // follower.Brain.ContinueToNextTask();
+        while (original.MoveNext())
+        {
+            var current = original.Current;
+            if (current != null && !typesToRemove.Contains(current.GetType()))
+            {
+                yield return current;
+            }
+        }
     }
-    
+
     public static string GetGameObjectPath(GameObject obj)
     {
         var path = obj.name;

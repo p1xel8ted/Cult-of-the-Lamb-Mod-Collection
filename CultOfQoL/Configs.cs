@@ -2,6 +2,7 @@ namespace CultOfQoL;
 
 public partial class Plugin
 {
+    internal static ConfigEntry<bool> EnableLogging = null!;
     internal static ConfigEntry<bool> EnableQuickSaveShortcut = null!;
     internal static ConfigEntry<KeyboardShortcut> SaveKeyboardShortcut = null!;
     internal static ConfigEntry<bool> SaveOnQuitToDesktop = null!;

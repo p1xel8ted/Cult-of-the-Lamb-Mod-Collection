@@ -7,11 +7,8 @@ public static class RitualSermonSpeed
     internal static bool RitualRunning { get; set; }
     
     [HarmonyPrefix]
-    [HarmonyPatch(typeof(Interaction_TempleAltar), nameof(Interaction_TempleAltar.DoRitual))]
-    [HarmonyPatch(typeof(Interaction_TempleAltar), nameof(Interaction_TempleAltar.DoSermon))]
-    [HarmonyPatch(typeof(Interaction_TempleAltar), nameof(Interaction_TempleAltar.DoDoctrine))]
-    [HarmonyPatch(typeof(Interaction_TempleAltar), nameof(Interaction_TempleAltar.DoPlayerUpgrade))]
-    [HarmonyPatch(typeof(Interaction_TempleAltar), nameof(Interaction_TempleAltar.DoCultUpgrade))]
+    [HarmonyPatch(typeof(Interaction_TempleAltar), nameof(Interaction_TempleAltar.DoRitual))] // rituals
+    [HarmonyPatch(typeof(SermonController), nameof(SermonController.Play))] // sermons
     private static void Interaction_TempleAltar_Do()
     {
         if (Plugin.FastRitualSermons.Value)
@@ -19,7 +16,7 @@ public static class RitualSermonSpeed
             RitualRunning = true;
         }
     }
-
+     
    
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Follower), nameof(Follower.UseUnscaledTime), MethodType.Getter)]
@@ -28,8 +25,8 @@ public static class RitualSermonSpeed
         if (!RitualRunning) return;
         __result = false;
     }
-
-   
+    
+    
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Follower), nameof(Follower.UseUnscaledTime), MethodType.Setter)]
     private static void Follower_UseUnscaledTime_Set(ref bool value)
@@ -59,7 +56,7 @@ public static class RitualSermonSpeed
     private static void GameManager_Update()
     {
         if (!RitualRunning || !Plugin.FastRitualSermons.Value) return;
-
+    
         GameManager.SetTimeScale(10); //set this too fast and stuff starts to break...
     }
 }
