@@ -4,7 +4,16 @@
 public static class RoutinesTranspilers
 {
     private const string IntimidateRoutine = "IntimidateRoutine";
-
+    private const string BribeRoutine = "BribeRoutine";
+    private const string BullyRoutine = "BullyRoutine";
+    private const string ReassureRoutine = "ReassureRoutine";
+    private const string ReeducateRoutine = "ReeducateRoutine";
+    private const string BlessRoutine = "BlessRoutine";
+    private const string DanceRoutine = "DanceRoutine";
+    private const string PetDogRoutine = "PetDogRoutine";
+    private const string LevelUpRoutine = "LevelUpRoutine";
+    private const string RomanceRoutine = "RomanceRoutine";
+    private const string ExtortMoneyRoutine = "ExtortMoneyRoutine";
     private readonly static MethodInfo GetInstance = AccessTools.Method(typeof(GameManager), nameof(GameManager.GetInstance));
     private readonly static MethodInfo OnConversationNext = AccessTools.Method(typeof(GameManager), nameof(GameManager.OnConversationNext));
     private readonly static MethodInfo OnConversationNew = AccessTools.Method(typeof(GameManager), nameof(GameManager.OnConversationNew), [typeof(bool), typeof(bool)]);
@@ -21,17 +30,17 @@ public static class RoutinesTranspilers
 
     private readonly static Dictionary<string, Func<ConfigEntry<bool>>> routineChecks = new()
     {
-        ["BribeRoutine"] = () => Plugin.MassBribe,
+        [BribeRoutine] = () => Plugin.MassBribe,
         [IntimidateRoutine] = () => Plugin.MassIntimidate,
-        ["BullyRoutine"] = () => Plugin.MassBully,
-        ["ReassureRoutine"] = () => Plugin.MassReassure,
-        ["ReeducateRoutine"] = () => Plugin.MassReeducate,
-        ["BlessRoutine"] = () => Plugin.MassBless,
-        ["DanceRoutine"] = () => Plugin.MassInspire,
-        ["PetDogRoutine"] = () => Plugin.MassPetDog,
-        ["LevelUpRoutine"] = () => Plugin.MassLevelUp,
-        ["RomanceRoutine"] = () => Plugin.MassRomance,
-        ["ExtortMoneyRoutine"] = () => Plugin.MassExtort
+        [BullyRoutine] = () => Plugin.MassBully,
+        [ReassureRoutine] = () => Plugin.MassReassure,
+        [ReeducateRoutine] = () => Plugin.MassReeducate,
+        [BlessRoutine] = () => Plugin.MassBless,
+        [DanceRoutine] = () => Plugin.MassInspire,
+        [PetDogRoutine] = () => Plugin.MassPetDog,
+        [LevelUpRoutine] = () => Plugin.MassLevelUp,
+        [RomanceRoutine] = () => Plugin.MassRomance,
+        [ExtortMoneyRoutine] = () => Plugin.MassExtort
     };
 
     private static bool RunThisTranspiler => routineChecks.Any(pair => pair.Value.Invoke().Value);
@@ -87,19 +96,17 @@ public static class RoutinesTranspilers
 
         for (var index = 0; index < codes.Count; index++)
         {
-            if (!declaringType.Contains(IntimidateRoutine))
-            {
-                TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 3].Calls(setStateMachine), 4);
-                TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 5].Calls(simpleAnimatorAnimate), 14);
-            }
+            // if (!declaringType.Contains(IntimidateRoutine, StringComparison.OrdinalIgnoreCase))
+            // {
+            //     TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 3].Calls(setStateMachine), 4);
+            //     TryReplaceWithNop(codes, index, codes[index].LoadsField(PlayerInstance) && codes[index + 5].Calls(simpleAnimatorAnimate), 14);
+            // }
             TryReplaceWithNop(codes, index, codes[index].LoadsField(HudManagerInstance) && codes[index + 4].Calls(HudManagerHide), 5);
             TryReplaceWithNop(codes, index, codes[index].Calls(GetInstance) && codes[index + 3].Calls(OnConversationNew) && codes[index + 4].Calls(GetInstance) && codes[index + 8].Calls(OnConversationNext), 9);
             TryReplaceWithNop(codes, index, codes[index].Calls(GetInstance) && codes[index + 4].Calls(OnConversationNext) && codes[index + 6].Calls(AddPlayerToCamera) && codes[index + 9].Calls(CameraSetOffset), 10);
         }
-
         return codes.AsEnumerable();
     }
-    
 
     private static void LogOnce(string declaringType, string message)
     {
@@ -117,4 +124,5 @@ public static class RoutinesTranspilers
             codes[index + j].opcode = OpCodes.Nop;
         }
     }
+
 }

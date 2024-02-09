@@ -158,7 +158,7 @@ public static class FollowerPatches
         }
 
         var cmd = followerCommands[0];
-        var followers = FollowerManager.Followers.SelectMany(followerList => followerList.Value).ToList();
+        var followers = Helpers.AllFollowers;
 
         if (cmd == FollowerCommands.Reassure && ShouldMassReassure(followerCommands[0]))
         {

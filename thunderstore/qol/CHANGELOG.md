@@ -1,3 +1,9 @@
+### 2.1.9 - 09/02/2024
+
+* Fixed Romance MissingMethodException breaking everything else. This method didn't change in the new update, so no idea what caused this. Recompling against updated game files fixed it.
+* Fixed the softlock after performing a sermon, and then choosing the Crown menu with Fast Sermons/Rituals enabled.
+* Remove some patches for mass commands that re-enables the animations (lamb roaring, dancing etc); this was un-intended.
+
 ### 2.1.8 - 30/01/2024
 
 * Fixed Exhausted followers not being able to be healed in the healing bays.

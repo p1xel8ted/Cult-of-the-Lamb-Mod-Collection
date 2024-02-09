@@ -30,9 +30,9 @@ public static class HealingBay
         if (!isHealingBay) return;
         Plugin.L($"Is Healing Bay: TRUE");
 
-        var followers = FollowerManager.Followers.SelectMany(followerList => followerList.Value).ToList();
+     
         followerSelectEntries.Clear();
-        followerSelectEntries.AddRange(from follower in followers
+        followerSelectEntries.AddRange(from follower in Helpers.AllFollowers
             where follower.Brain.Info.CursedState is Thought.FeelingUnwell or Thought.Ill or Thought.Injured or Thought.TiredFromMissionary or Thought.TiredFromMissionaryHappy or Thought.TiredFromMissionaryScared ||
                   follower.Brain.Stats.Exhaustion > 0f ||
                   follower.Brain.Stats.Illness > 0f ||

@@ -2,6 +2,7 @@ namespace CultOfQoL;
 
 public static class Helpers
 {
+    internal static List<Follower> AllFollowers => FollowerManager.Followers.SelectMany(followerList => followerList.Value).ToList();
 
     public static IEnumerator FilterEnumerator(IEnumerator original, Type[] typesToRemove)
     {

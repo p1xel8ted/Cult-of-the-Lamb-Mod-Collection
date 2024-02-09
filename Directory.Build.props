@@ -24,11 +24,11 @@
   </ItemDefinitionGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>F:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\$(MSBuildProjectName)</OutputPath>
+    <OutputPath>I:\SteamLibrary\steamapps\common\Cult of the Lamb\BepInEx\plugins\$(MSBuildProjectName)</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>F:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\$(MSBuildProjectName)</OutputPath>
+    <OutputPath>I:\SteamLibrary\steamapps\common\Cult of the Lamb\BepInEx\plugins\$(MSBuildProjectName)</OutputPath>
   </PropertyGroup>
 
   

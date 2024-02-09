@@ -24,16 +24,16 @@
     </ItemGroup>
     <ItemGroup>
       <Reference Include="Assembly-CSharp" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp.dll</HintPath>
+        <HintPath>I:\SteamLibrary\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\Assembly-CSharp.dll</HintPath>
       </Reference>
       <Reference Include="COTL_API" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
+        <HintPath>I:\SteamLibrary\steamapps\common\Cult of the Lamb\BepInEx\plugins\COTL_API.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.dll</HintPath>
+        <HintPath>I:\SteamLibrary\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule" Publicize="true">
-        <HintPath>F:\Games\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        <HintPath>I:\SteamLibrary\steamapps\common\Cult of the Lamb\Cult Of The Lamb_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
     </ItemGroup>
 </Project>

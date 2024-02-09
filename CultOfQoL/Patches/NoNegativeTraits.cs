@@ -63,7 +63,7 @@ public static class NoNegativeTraits
     internal static void UpdateAllFollowerTraits()
     {
         if (IsNothingNegativePresent()) return;
-        foreach (var follower in FollowerManager.Followers.SelectMany(followerList => followerList.Value))
+        foreach (var follower in Helpers.AllFollowers)
         {
             ProcessTraitReplacement(follower.Brain);
         }
